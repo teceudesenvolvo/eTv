@@ -47,10 +47,12 @@ class ListItem extends Component{
   }
 
   loadAvisos = async () => {
-    await axios.get(`/class.json`)
+    // await axios.get(`/sessoes.json`)
+    // await axios.get(`/class.json`)
+    await axios.get(``)
             .catch(err => console.log(err))
             .then(res => {
-                const avisoAll = res.data
+                const avisoAll = res.data.items
                 let avisos = []
                 for(let key in avisoAll){
                     avisos.push({
@@ -65,12 +67,10 @@ class ListItem extends Component{
                 // }
 
                 
-                avisos = avisos.filter(content => content.title.toUpperCase().includes(this.state.searchCourse.toUpperCase()))
-                this.setState({avisos: avisos})
-                   
-
-
                 
+                this.setState({avisos: avisos})
+                // avisos = avisos.filter(content => content.title.toUpperCase().includes(this.state.searchCourse.toUpperCase()))
+                console.log({avisos: avisos})             
 
                
 
@@ -85,9 +85,7 @@ class ListItem extends Component{
 
   componentDidMount(){
 
-    setInterval(
-      () => this.loadAvisos(),
-    500);
+   
 
     const loadPage  = () => this.loadAvisos()
     loadPage()
@@ -108,8 +106,10 @@ class ListItem extends Component{
           })}
         }
         >
-              <img src={aviso.imageUrl}/>
-              <p className='titleCard'> {aviso.title} </p>
+              <img src={aviso.snippet.thumbnails.high.url}/>
+              <p className='titleCard'> {
+              aviso.snippet.title
+              } </p>
               {/* <p className='txtCard'> {aviso.description} </p> */}
       </li>
     )
@@ -119,7 +119,10 @@ class ListItem extends Component{
         <MainMenu />
         <div className="backgroundHero heroPg">
             <input type="text" className="searchText" placeholder="Qual o conteúdo que você deseja assistir?"
-              value={this.state.search} onChange={(event) => this.setState({ searchCourse: event.target.value })}
+              value={this.state.search} onChange={(event) => {
+                this.setState({ searchCourse: event.target.value });
+                this.loadAvisos()
+              }}
             />
         </div>
 

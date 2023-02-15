@@ -36,10 +36,11 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
     }
 
     loadAvisos = async () => {
-      await axios.get(`/courses.json`)
+      // await axios.get(`/courses.json`)
+      await axios.get(``)
               .catch(err => console.log(err))
               .then(res => {
-                  const avisoAll = res.data
+                  const avisoAll = res.data.items
                   let avisos = []
                   for(let key in avisoAll){
                       avisos.push({
@@ -52,7 +53,7 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
                   //     return content.condominio.includes(this.state.email)
                   // })
                   if(avisos.length >4){
-                    avisos.length = 16;
+                    avisos.length = 8;
                     this.setState({avisos: avisos})
                   }
               })
@@ -77,8 +78,8 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
           })}
         }
         >
-              <img src={aviso.imageUrl}/>
-              <p className='titleCard'> {aviso.title} </p>
+              <img src={aviso.snippet.thumbnails.high.url}/>
+              <p className='titleCard'> {aviso.snippet.title} </p>
               {/* <p className='txtCard'> {aviso.description} </p> */}
       </li>
     )
@@ -87,8 +88,8 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
     <div>
         <section className="courses">
           <div className="divTitleSection">
-            <h1 className="titleSection">eClass</h1>
-            <p className="newsSection">Cursos</p>
+            <h1 className="titleSection">Sessões</h1>
+            <p className="newsSection">Sessões Plenárias</p>
           </div>
             <ul  className="listAreas2">
               {listAvisos}

@@ -47,11 +47,12 @@ import Talk from '../components/talk'
     }
 
     loadAllCourse = async () => {
-      await axios.get(`courseFeacture.json`)
+      // await axios.get(`courseFeacture.json`)
+      await axios.get(``)
         .catch(err => console.log(err))
         .then(res => {
           this.setState({
-            cousesAll: res.data
+            cousesAll: res.data.items
           })
           console.log(this.state.cousesAll)
 
@@ -61,17 +62,22 @@ import Talk from '../components/talk'
 
 
     loadCouseFeactures = async () => {
-      await axios.get(`courses/${this.state.cousesAll}.json`)
+      // await axios.get(`courses/${this.state.cousesAll}.json`)
+      await axios.get(``)
               .catch(err => console.log(err))
               .then(res => {
                 this.setState({
-                  title: res.data.title,
-                  subtitle: res.data.subtitle,
-                  description: res.data.description,
-                  teacher: res.data.teacher,
-                  logoUrl: res.data.logoUrl,
-                  imgUrl: res.data.bgUrl,
+                  // title: res.data.title,
+                  // subtitle: res.data.subtitle,
+                  // description: res.data.description,
+                  // teacher: res.data.teacher,
+                  // logoUrl: res.data.logoUrl,
+                  // imgUrl: res.data.bgUrl,
+                  title: res.data.items[1].snippet.title,
+                  description: res.data.items[1].snippet.description,
+                  imgUrl: res.data.items[1].snippet.thumbnails.high.url,
                 })
+                console.log(this.state.title)
               })
     }
   
@@ -108,7 +114,7 @@ import Talk from '../components/talk'
           <div className="curso-destaque">
             {/* <p><img className="logo-curso-destaque" src={this.state.logoUrl}/></p> */}
             <h1 className="title-curso-destaque">{this.state.title}</h1>
-            <p className="desc-curso-destaque">{this.state.subtitle}</p>
+            <p className="desc-curso-destaque">{this.state.description}</p>
             <p><input type="button" value="Começar" className="btn-curso-destaque" 
               onClick={
                 () => {this.setState({id: this.state.cousesAll}, () => {

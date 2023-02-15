@@ -48,22 +48,23 @@ class Gestao extends Component{
       console.log(this.props.idAula)
       console.log(this.props.tipoAula)
       await axios.get(`class/${this.props.idAula}.json`)
+      // await axios.get(`https://graph.facebook.com/facebook/picture?redirect=false`)
               .catch(err => console.log(err))
               .then(res => {
                 this.setState({
                   title: res.data.title,
                   description: res.data.description,
-                  uriVideo: res.data.uriVideo,
+                  uriVideo: res.data.url,
                   idCouse: res.data.idCourse,
                 })
               })
   }
 
   componentDidMount() {
-    this.providerGoogle = new firebase.auth.GoogleAuthProvider();
-    if (this.props.userId === '') {
-      window.location.href = "/login"
-    }
+    // this.providerGoogle = new firebase.auth.GoogleAuthProvider();
+    // if (this.props.userId === '') {
+    //   window.location.href = "/login"
+    // }
     const loadPage  = () => this.loadAula()
     loadPage()
   }
