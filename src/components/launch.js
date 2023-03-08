@@ -76,7 +76,7 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
         this.loadAllCourse()
       }
 
-      loadPage()
+      // loadPage()
     }
   
   render(){

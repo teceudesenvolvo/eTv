@@ -18,7 +18,6 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
   
   function itemClick(){
     window.location.href = "/item"
-    console.log(this.state.id)
   }
 
   

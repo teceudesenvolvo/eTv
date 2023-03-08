@@ -46,7 +46,7 @@ class Gestao extends Component{
 
   loadAula = async () => {  
       console.log(this.props.idAula)
-      console.log(this.props.tipoAula)
+      console.log(this.props.tipoAula) 
       await axios.get(`class/${this.props.idAula}.json`)
       // await axios.get(`https://graph.facebook.com/facebook/picture?redirect=false`)
               .catch(err => console.log(err))

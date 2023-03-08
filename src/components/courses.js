@@ -79,14 +79,18 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
     const listAvisos = avisos.map((aviso) => 
         <li className="Areas type1" key={aviso.id}
         onClick={
-          () => {this.setState({idAula: `${aviso.id}`, idCurso: `${aviso.idCourse}`, tipo: 'class'}, () => {
+          () => {this.setState({idAula: aviso.id, idCurso: aviso.etag, tipo: 'class'}, () => {
             (this.props.openAula(this.state))
-            (window.location.href = "/player")
+            // (window.location.href = "/player")
+            console.log(this.props.idAula)
+            console.log(this.state.idCurso)
+            console.log(this.state.tipo)
           })}
         }
         >
               <img src={aviso.snippet.thumbnails.high.url}/>
               <p className='titleCard'> {aviso.snippet.title} </p>
+              <p className='titleCard'> {aviso.etag} </p>
               {/* <p className='txtCard'> {aviso.description} </p> */}
       </li>
     )
