@@ -3,6 +3,11 @@ body{
   overflow-x: hidden;
   width: 100%;
 }
+
+body > iframe{
+  z-index: -1 !important;
+}
+
 .App {
   text-align: center;
   color: #fff;

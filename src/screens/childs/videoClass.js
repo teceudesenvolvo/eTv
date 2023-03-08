@@ -105,4 +105,3 @@ const mapStateToProps = store => {
 };
 
 export default connect(mapStateToProps)(Gestao)
-// export default Gestao
