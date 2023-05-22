@@ -47,21 +47,14 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
               .catch(err => console.log(err))
               .then(res => {
                   const avisoAll = res.data.items
-                  let avisos = []
-                  for(let key in avisoAll){
-                      avisos.push({
-                          ...avisoAll[key],
-                          id: key
-                      })
-                  }
                   // consultas
                   // visitantes = visitantes.filter(content => {
                   //     return content.condominio.includes(this.state.email)
                   // })
-                  if(avisos.length > 4){
-                    avisos.reverse()
-                    avisos.length = 12;
-                    this.setState({avisos: avisos})
+                  if(avisoAll.length > 4){
+                    avisoAll.reverse()
+                    avisoAll.length = 12;
+                    this.setState({avisos: avisoAll})
                   }
               })
     }
@@ -79,18 +72,16 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
     const listAvisos = avisos.map((aviso) => 
         <li className="Areas type1" key={aviso.id}
         onClick={
-          () => {this.setState({idAula: aviso.id, idCurso: aviso.etag, tipo: 'class'}, () => {
+          () => {this.setState({idAula: aviso.id.videoId, idCurso: aviso.id, tipo: 'class'}, () => {
             (this.props.openAula(this.state))
-            // (window.location.href = "/player")
             console.log(this.props.idAula)
-            console.log(this.state.idCurso)
-            console.log(this.state.tipo)
+            (window.location.href = "/player")
           })}
         }
         >
               <img src={aviso.snippet.thumbnails.high.url}/>
               <p className='titleCard'> {aviso.snippet.title} </p>
-              <p className='titleCard'> {aviso.etag} </p>
+              {/* <p className='titleCard'> {aviso.etag} </p> */}
               {/* <p className='txtCard'> {aviso.description} </p> */}
       </li>
     )
@@ -113,9 +104,20 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
   }
 }
 
+const mapStateToProps = store => {
+  return{
+    id: store.course.id,
+    idAula: store.course.idAula,
+    idCurso: store.course.idCurso,
+    tipoAula: store.course.tipoAula,
+    tipoItem: store.course.tipo,
+    userId: store.user.userId,
+  }
+};
+
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({openAula, LoggedOut}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Avisos);
+export default connect(mapStateToProps, mapDispatchToProps)(Avisos);

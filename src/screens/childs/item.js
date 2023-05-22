@@ -92,7 +92,7 @@ class Gestao extends Component{
                     </p> */}
                     {/* <FaSearch className="searchIcon"/>
                     <input className="searchItem" type="text" placeholder="Pesquisar" /> */}
-                    <p><FaLock/> Conteúdo exclusivo para assinantes <b>eudesenvolvo.com</b></p>
+                    {/* <p><FaLock/> Conteúdo exclusivo para assinantes <b>eudesenvolvo.com</b></p> */}
                   </div>
             </div>
         </header>

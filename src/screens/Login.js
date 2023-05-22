@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux'
 import axios from 'axios'
 
 import logo from '../assets/images/logo12.png'
-import bg101 from '../assets/images/BANNER.png'
 import '../App.css'
 
 // Firebase
@@ -19,10 +18,8 @@ import firebaseConfig from './firebaseConfig'
 
 const API_KEY = 'ak_live_b8qQSH3mDivhqgwXhFNc5JnAggaA8m'
 const BaseURL = 'https://api.pagar.me/1/subscriptions'
-const EK_KEY = 'ek_live_CwgSVhbDMCSIIKt0hxCdyQ2EOHB4b1'
-const IDPLAN = '1212867'
-
-
+// const EK_KEY = 'ek_live_CwgSVhbDMCSIIKt0hxCdyQ2EOHB4b1'
+// const IDPLAN = '1212867'
 
 
 
@@ -96,8 +93,8 @@ class Login extends Component {
 
 
       .catch((err) => {
-        var erroCode = err.code;
-        var erroMessage = err.message;
+        // var erroCode = err.code;
+        // var erroMessage = err.message;
       })
   }
 
@@ -197,8 +194,8 @@ class Login extends Component {
       .catch((error) => {
         var errorCode = error.code
         var errorMessage = error.message
-        var email = error.email
-        var credentialError = error.credential
+        // var email = error.email
+        // var credentialError = error.credential
         this.setState({ status: errorMessage, classErr: 'txtErro' })
         console.log(errorCode, ' / ', errorMessage, ' / ')
       })
@@ -216,7 +213,7 @@ class Login extends Component {
         <header className="item-header-dashboard"></header>
 
         <div className="searchBox itemBoxInsert loginBox">
-          <img className="logo-login" src={logo} alt-text="Logotipo" onClick={goHome} />
+          <img className="logo-login" src={logo} alt="Logotipo" onClick={goHome} />
           <h1 className={this.state.classErr}>{this.state.status}</h1>
           {/* <p className="searchTitle">Login</p> */}
           <form>

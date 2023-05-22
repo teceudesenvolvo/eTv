@@ -21,6 +21,7 @@ function onClickHandler(){
     // data.append('file', this.state.selectedFile)
     console.log('Botão funciona')
     console.log(this.state.id)
+
 }
 
 function goFilter(){
@@ -40,24 +41,28 @@ class Gestao extends Component{
       data: '',
       teacher: 'Professor',
       uriVideo: ``,
+      avisos: '',
+      videos: ''
     }
   }
 
 
   loadAula = async () => {  
-      console.log(this.props.idAula)
-      console.log(this.props.tipoAula) 
-      await axios.get(`class/${this.props.idAula}.json`)
-      // await axios.get(`https://graph.facebook.com/facebook/picture?redirect=false`)
+            axios.get(``)
               .catch(err => console.log(err))
               .then(res => {
+                const videoAll = res.data.items
+
+                const videos = videoAll.filter(content => content.id.videoId.includes(this.props.idAula)) 
+                console.log(videos)
                 this.setState({
-                  title: res.data.title,
-                  description: res.data.description,
-                  uriVideo: res.data.url,
-                  idCouse: res.data.idCourse,
+                  videos: videos,
+                  title: videos[0].snippet.title,
+                  description: videos[0].snippet.description,
+
                 })
               })
+
   }
 
   componentDidMount() {
@@ -77,8 +82,9 @@ class Gestao extends Component{
         <MainMenu/>
         <div className='box-video-aula'>
           <div className='video-play'>
-            <ReactPlayer width='100%' height='480px' url={this.state.uriVideo} controls='true'/> 
-            <div className='desc-video'>
+            <ReactPlayer scrolling="no" frameborder="0" onload="iFrameResize()" 
+            url={`www.youtube.com/watch?v=${this.props.idAula}`} controls='true'/> 
+            <div className='desc-video' >
               <h1>{this.state.title}</h1>
               <p>{this.state.description}</p>    
             </div>

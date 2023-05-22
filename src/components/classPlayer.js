@@ -44,10 +44,10 @@ import imgAvisos from '../assets/images/for-courses.png'
 
     loadAvisos = async () => {
       // Lista de itens
-      await axios.get(`/class.json`)
+      await axios.get(``)
               .catch(err => console.log(err))
               .then(res => {
-                  const aulaAll = res.data
+                  const aulaAll = res.data.items
                   let aulas = []
                   for(let key in aulaAll){
                       aulas.push({
@@ -55,21 +55,26 @@ import imgAvisos from '../assets/images/for-courses.png'
                           id: key
                       })
                   }
-                  console.log('aula: ' + this.props.idAula)
-                  console.log('curso: ' +this.props.idCourse)
+
+
+                  // console.log('aula: ' + this.props.idAula)
+                  // console.log('curso: ' +this.props.idCourse)
 
                   // consultas
-                  aulas = aulas.filter(aula => {
-                      return (
-                        aula.idCourse === this.props.idCurso
-                      )
-                  })
+                  // aulas = aulas.filter(aula => {
+                  //     return (
+                  //       aula.idCourse === this.props.idAula
+                  //     )
+                  // })
 
                   
                   // aulas = aulas.filter(aula => aula.idCourse === this.props.id)
 
-                  this.setState({aulas: aulas})
                   
+                  if(aulas.length > 4){
+                    aulas.length = 6;
+                    this.setState({aulas: aulas})
+                  }
                   
               })
     }
@@ -83,6 +88,7 @@ import imgAvisos from '../assets/images/for-courses.png'
 
     // Avisos
     const aulas = this.state.aulas
+    
   
     const listAvisos = aulas.map((aula) => 
         {
@@ -94,11 +100,10 @@ import imgAvisos from '../assets/images/for-courses.png'
             });
           } }
         >
-          <img src={aula.imageUrl}/>
+          <img src={aula.snippet.thumbnails.high.url}/>
           <FaPlayCircle className="iconPlay" /> 
-          <p className='titleCard'> {aula.title}</p>
-          <p className='courseCard'>{this.state.titleCourse}</p>
-        </li>;
+          <p className='titleCard'> {aula.snippet.title} </p>
+          </li>;
       }
     )
   

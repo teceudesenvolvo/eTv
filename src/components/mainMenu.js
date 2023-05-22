@@ -96,7 +96,7 @@ class MainMenu extends React.Component {
             <a href="/buscar" className="left-menu-item">Buscar</a>
             <FaBell className="notification"/>
           </div>
-          <div img className="profile-items" >
+          <div className="profile-items" >
             {/* <img className="profile-icon" onClick={goProfile} src={profile} /> */}
             <FaUserCircle className="profile-icon" onClick={this.goProfile} />
             <FaAngleDown/>

@@ -54,7 +54,7 @@ import Talk from '../components/talk'
           this.setState({
             cousesAll: res.data.items
           })
-          console.log(this.state.cousesAll)
+          // console.log(this.state.cousesAll)
 
           this.loadCouseFeactures()
         })
@@ -77,7 +77,7 @@ import Talk from '../components/talk'
                   description: res.data.items[1].snippet.description,
                   imgUrl: res.data.items[1].snippet.thumbnails.high.url,
                 })
-                console.log(this.state.title)
+                // console.log(this.state.title)
               })
     }
   
