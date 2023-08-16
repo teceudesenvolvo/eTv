@@ -14,8 +14,9 @@ import {FaSearch, FaBell, FaUserCircle, FaAngleDown} from 'react-icons/fa'
 
 
 // ITEMS MENU
-import logo from '../assets/images/EUDESENVOLVO-10.png'
-import profile from '../assets/images/profile.png'
+import logo from '../assets/images/logo-pacatuba.png'
+// import logo from '../assets/images/EUDESENVOLVO-10.png'
+// import profile from '../assets/images/profile.png'
 
 function goInicio() {
   window.location.href = "/"
@@ -50,7 +51,7 @@ class MainMenu extends React.Component {
     super(props)
     this.state = {
       profileOptions: 'Login',
-      profileOptions2: 'Assine agora'
+      profileOptions2: 'Cadastre-se'
     }
   }
 

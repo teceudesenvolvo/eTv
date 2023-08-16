@@ -306,6 +306,7 @@ body > iframe{
 }
 .backgroundHero{
   width: 103%;
+  height: 690px;
   margin-left: -50px !important;
   margin: 0 auto;
   border: none;
@@ -355,7 +356,7 @@ body > iframe{
   font-size: 50px;
   line-height: 47px;
   width: 40%;
-  color: rgb(182, 182, 182);
+  color: rgb(255, 255, 255);
   margin-bottom: -10px;
 }
 .logo-curso-destaque{
@@ -699,6 +700,10 @@ body > iframe{
   margin-top: 0px;
   font-size: 12px;
   font-weight: 600;
+  max-width: 33ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .courseCard{

@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios'
 
 //Imagens
-import bgSite from '../assets/images/curso-bg-1.png'
+import bgSite from '../assets/images/capa.png'
 // import logoCursoDestaque from '../assets/images/logo-curso-andré-1.png'
 
 // Icones
@@ -75,7 +75,8 @@ import Talk from '../components/talk'
                   // imgUrl: res.data.bgUrl,
                   title: res.data.items[1].snippet.title,
                   description: res.data.items[1].snippet.description,
-                  imgUrl: res.data.items[1].snippet.thumbnails.high.url,
+                  // imgUrl: 'https://www.cmpacatuba.ce.gov.br/fotos/260/Capa260.png',
+                  imgUrl: '../../src/assets/images/capa.png',
                 })
                 // console.log(this.state.title)
               })
@@ -110,12 +111,12 @@ import Talk from '../components/talk'
         <MainMenu/>
         
         <div className="backgroundHero">
-          <p><img className="backgroundHero" src={this.state.imgUrl}/></p>
+          <p><img className="backgroundHero" src={bgSite}/></p>
           <div className="curso-destaque">
             {/* <p><img className="logo-curso-destaque" src={this.state.logoUrl}/></p> */}
-            <h1 className="title-curso-destaque">{this.state.title}</h1>
-            <p className="desc-curso-destaque">{this.state.description}</p>
-            <p><input type="button" value="Começar" className="btn-curso-destaque" 
+            <h1 className="title-curso-destaque">Bem vindo a Câmara de Pacatuba</h1>
+            <p className="desc-curso-destaque">Câmara Municipal de Pacatuba</p>
+            <p><input type="button" value="Assistir Ao Vivo" className="btn-curso-destaque" 
               onClick={
                 () => {this.setState({id: this.state.cousesAll}, () => {
                   (this.props.clickButton(this.state))

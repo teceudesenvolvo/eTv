@@ -87,8 +87,8 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
     <div>
         <section className="courses">
           <div className="divTitleSection">
-            <h1 className="titleSection">Sessões</h1>
-            <p className="newsSection">Sessões Plenárias</p>
+            <h1 className="titleSection">Conteúdo</h1>
+            <p className="newsSection">O que você deseja?</p>
           </div>
             <ul  className="listAreas2">
               {listAvisos}
