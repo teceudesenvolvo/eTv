@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { LoggedIn } from '../store/actions'
 import { bindActionCreators } from 'redux'
-import { createUser } from '../store/actions/index'
+// import { createUser } from '../store/actions/index'
 
 import axios from 'axios'
 
@@ -13,7 +13,6 @@ import firebaseConfig from './firebaseConfig'
 import { cpf } from 'cpf-cnpj-validator'
 
 import logo from '../assets/images/logo12.png'
-import bg101 from '../assets/images/BANNER.png'
 import '../App.css'
 
 
@@ -26,9 +25,9 @@ const API_KEY_FIREBASE = 'AIzaSyARJhClRUouS0OCKm1YzdNna-ayyTRZjwU'
 function goHome() {
   window.location.href = "/"
 }
-function goPayment() {
-  window.location.href = "/pagamento"
-}
+// function goPayment() {
+//   window.location.href = "/pagamento"
+// }
 
 class SignUp extends Component {
 
@@ -82,7 +81,7 @@ class SignUp extends Component {
 
       })
       .catch(err => {
-        if (err != '') {
+        if (err !== '') {
           this.setState({ status: 'Este email já foi cadastrado', classErr: 'txtErro' })
         }
       })
@@ -94,7 +93,7 @@ class SignUp extends Component {
         <header className="item-header-dashboard"></header>
 
         <div className="searchBox itemBoxInsert loginBox singupBox">
-          <img className="logo-login" src={logo} alt-text="Logotipo" onClick={goHome} />
+          <img className="logo-login" src={logo} alt="Logotipo" onClick={goHome} />
           <h1 className={this.state.classErr}>{this.state.status}</h1>
           <form>
             <input type="text" className="input-login" placeholder="Nome*"
@@ -149,9 +148,9 @@ class SignUp extends Component {
                   // Validação de email
                   else if (this.state.email === '') {
                     this.setState({ status: 'Digite sua email', classErr: 'txtErro' })
-                  } else if (this.state.email.includes('@') == false) {
+                  } else if (this.state.email.includes('@') === false) {
                     this.setState({ status: 'Digite um email válido', classErr: 'txtErro' })
-                  } else if (this.state.email.includes('.') == false) {
+                  } else if (this.state.email.includes('.') === false) {
                     this.setState({ status: 'Digite um email válido', classErr: 'txtErro' })
                   } else if (this.state.email.length < 8) {
                     this.setState({ status: 'Digite um email válido', classErr: 'txtErro' })
@@ -162,7 +161,7 @@ class SignUp extends Component {
                     this.setState({ status: 'Digite seu senha', classErr: 'txtErro' })
                   } else if (this.state.password.length < 6) {
                     this.setState({ status: 'Digite uma senha segura, maior que 6 caracteres com números e letras', classErr: 'txtErro' })
-                  } else if(this.state.confirmPassword != this.state.password){
+                  } else if(this.state.confirmPassword !== this.state.password){
                     this.setState({ status: 'Confirmação de senha está diferente', classErr: 'txtErro' })
                   }
 

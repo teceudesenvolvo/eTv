@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { LoggedIn } from '../store/actions'
 import { bindActionCreators } from 'redux'
 
-import { cpf } from 'cpf-cnpj-validator'
+// import { cpf } from 'cpf-cnpj-validator'
 
 import axios from 'axios'
 
@@ -20,15 +20,15 @@ import firebase from 'firebase'
 import firebaseConfig from './firebaseConfig'
 
 
-const authBaseURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
-const API_KEY_FIREBASE = 'AIzaSyARJhClRUouS0OCKm1YzdNna-ayyTRZjwU'
+// const authBaseURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
+// const API_KEY_FIREBASE = 'AIzaSyARJhClRUouS0OCKm1YzdNna-ayyTRZjwU'
 
 
 
 //Voltar para início
-function goHome() {
-  window.location.href = "/"
-}
+// function goHome() {
+//   window.location.href = "/"
+// }
 
 
 
@@ -62,10 +62,10 @@ class Payment extends Component {
 
   authenticate() {
 
-    var user = firebase.auth().currentUser;
+    // var user = firebase.auth().currentUser;
     var newPassword = this.state.newPass;
     var newEmail = this.state.email;
-    var credential;
+    // var credential;
 
     firebase.auth().signInWithEmailAndPassword(this.props.email, this.state.password)
       .then(res => {
@@ -79,7 +79,7 @@ class Payment extends Component {
 
         }
           //  Update Email
-        else if(this.state.email != this.props.email){
+        else if(this.state.email !== this.props.email){
           firebase.auth().currentUser.updateEmail(newEmail)
             .catch(err => {
               this.setState({ status: 'Email já cadastrado!', classErr: 'txtErro' })
@@ -153,9 +153,9 @@ class Payment extends Component {
                   // Validação de email
                   else if (this.state.email === '') {
                     this.setState({ status: 'Digite sua email', classErr: 'txtErro' })
-                  } else if (this.state.email.includes('@') == false) {
+                  } else if (this.state.email.includes('@') === false) {
                     this.setState({ status: 'Digite um email válido', classErr: 'txtErro' })
-                  } else if (this.state.email.includes('.') == false) {
+                  } else if (this.state.email.includes('.') === false) {
                     this.setState({ status: 'Digite um email válido', classErr: 'txtErro' })
                   } else if (this.state.email.length < 8) {
                     this.setState({ status: 'Digite um email válido', classErr: 'txtErro' })
@@ -166,7 +166,7 @@ class Payment extends Component {
                     this.setState({ status: 'Digite seu senha', classErr: 'txtErro' })
                   } else if (this.state.password.length < 6) {
                     this.setState({ status: 'Digite uma senha segura, maior que 6 caracteres com números e letras', classErr: 'txtErro' })
-                  } else if (this.state.confirmNewPass != this.state.password) {
+                  } else if (this.state.confirmNewPass !== this.state.password) {
                     this.setState({ status: 'A confirmação está diferente da senha escolhida', classErr: 'txtErro' })
                   }
 

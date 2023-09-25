@@ -2,11 +2,9 @@ import React from 'react';
 import '../App.css'
 
 import {Switch, Route} from 'react-router-dom'
-import {ConnectedRouter} from 'connected-react-router'
-import history from './History'
 
 // Firebase
-import firebaseConfig from './firebaseConfig'
+// import firebaseConfig from './firebaseConfig'
 
 //Logomarca
 
@@ -78,7 +76,7 @@ function App() {
       <footer className="footer">
         <div className="footer-logo">
           {/* <img src={Logo} className="logoFooter"/> */}
-          <p> eudesenvolvo.com &copy; 2020 - {moment().format('YYYY')} - Eudesenvolvo Comercial LTDA - Todos os direitos reservados - <a href="https://help.eudesenvolvo.com/">Ajuda</a> </p>
+          <p> eudesenvolvo.com &copy; 2020 - {moment().format('YYYY')} - Todos os direitos reservados - <a href="https://help.eudesenvolvo.com/">Ajuda</a> </p>
         </div>
       </footer>
     </div>

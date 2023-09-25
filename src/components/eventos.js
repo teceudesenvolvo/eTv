@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
+import React from 'react';
 import '../App.css'
 
 import {connect} from 'react-redux'
@@ -9,22 +8,19 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios'
 
 
-// ITEMS ICONS
-import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
-
 // Icones
 
   //mudança de páginas
-  function list(){
-    window.location.href = "/listItems"
-  }
-  function inicio(){
-    window.location.href = "/inicio"
-  }
-  function itemClick(){
-    window.location.href = "/item"
-    console.log(this.state.id)
-  }
+  // function list(){
+  //   window.location.href = "/listItems"
+  // }
+  // function inicio(){
+  //   window.location.href = "/inicio"
+  // }
+  // function itemClick(){
+  //   window.location.href = "/item"
+  //   console.log(this.state.id)
+  // }
 
   class Elas extends React.Component{
     
@@ -40,7 +36,7 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
     }
 
     loadAvisos = async () => {
-      await axios.get(`/courses.json`)
+      await axios.get(`/class.json`)
               .catch(err => console.log(err))
               .then(res => {
                   const avisoAll = res.data
@@ -81,7 +77,7 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
           })}
         }
         >
-              <img src={aviso.imageUrl}/>
+              <img src={aviso.imageUrl} alt='imageThurbl'/>
               <p className='titleCard titleCardMargin'> {aviso.title} </p>
               {/* <p className='txtCard'> {aviso.description} </p> */}
       </li>
@@ -92,8 +88,8 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
         <section className="courses">
           <div className="divTitleSection">
             {/* <div className="item-separator"></div> */}
-            <h1 className="titleSection">eTalk</h1>
-            <p className="newsSection">Novidades</p>
+            <h1 className="titleSection">Eventos</h1>
+            <p className="newsSection">Todos os eventos da câmara</p>
           </div>
             <ul  className="listAreas2">
               {listAvisos}

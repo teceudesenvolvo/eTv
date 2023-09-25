@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactPlayer from 'react-player'
 
 import axios from 'axios'
 
@@ -13,23 +12,23 @@ import '../../App.css'
 
 //Icones
 
-function onClickHandler(){
-    // const data = new FormData() 
-    // data.append('file', this.state.selectedFile)
-    console.log('Botão funciona')
-}
+// function onClickHandler(){
+//     // const data = new FormData() 
+//     // data.append('file', this.state.selectedFile)
+//     console.log('Botão funciona')
+// }
 
-function goHome(){
-  window.location.href = "/buscar"
-}
+// function goHome(){
+//   window.location.href = "/buscar"
+// }
 
-function content(){
-    window.location.href = "/item"
-}
+// function content(){
+//     window.location.href = "/item"
+// }
 
-function goFilter(){
-    window.location.href = "/listItems"
-}
+// function goFilter(){
+//     window.location.href = "/listItems"
+// }
 
 
 class ListItem extends Component{
@@ -106,7 +105,7 @@ class ListItem extends Component{
           })}
         }
         >
-              <img src={aviso.snippet.thumbnails.high.url}/>
+              <img src={aviso.snippet.thumbnails.high.url} alt='Thumb' />
               <p className='titleCard'> {
               aviso.snippet.title
               } </p>

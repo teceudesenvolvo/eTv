@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
+import React from 'react';
 import '../App.css'
 
 import {connect} from 'react-redux'
@@ -10,20 +9,18 @@ import axios from 'axios'
 
 import {FaPlayCircle} from 'react-icons/fa'
 
-// ITEMS ICONS
-import imgAvisos from '../assets/images/for-courses.png'
 
   //mudança de páginas
-  function list(){
-    window.location.href = "/listItems"
-  }
-  function inicio(){
-    window.location.href = "/inicio"
-  }
-  function itemClick(){
-    window.location.href = "/item"
-    console.log(this.state.id)
-  }
+  // function list(){
+  //   window.location.href = "/listItems"
+  // }
+  // function inicio(){
+  //   window.location.href = "/inicio"
+  // }
+  // function itemClick(){
+  //   window.location.href = "/item"
+  //   console.log(this.state.id)
+  // }
 
   class Class extends React.Component{
     
@@ -100,7 +97,7 @@ import imgAvisos from '../assets/images/for-courses.png'
             });
           } }
         >
-          <img src={aula.snippet.thumbnails.high.url}/>
+          <img alt='thurbmail' src={aula.snippet.thumbnails.high.url}/>
           <FaPlayCircle className="iconPlay" /> 
           <p className='titleCard'> {aula.snippet.title} </p>
           </li>;

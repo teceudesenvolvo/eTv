@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
 import '../App.css'
-
-import logo from '../assets/images/logo12.png'
 
 import {connect} from 'react-redux'
 import {clickButton, LoggedIn} from '../store/actions/index'
@@ -18,17 +15,14 @@ import bgSite from '../assets/images/capa.png'
 
 // Components
 import MainMenu from '../components/mainMenu'
-import Course from '../components/courses'
-import Eclass from '../components/eclass'
+import Sessoes from '../components/sections'
+import Recentes from '../components/recentes'
 import Lancamentos from '../components/launch'
-import Elas from '../components/elas'
-import Talk from '../components/talk'
+import Event from '../components/eventos'
+import Reunioes from '../components/reunioes'
 
 
   //mudança de páginas
-  function inicio(){
-    window.location.href = "/inicio"
-  }
   
   class Home extends Component{
     constructor(props){
@@ -111,7 +105,7 @@ import Talk from '../components/talk'
         <MainMenu/>
         
         <div className="backgroundHero">
-          <p><img className="backgroundHero" src={bgSite}/></p>
+          <p><img className="backgroundHero" src={bgSite} alt='background site'/></p>
           <div className="curso-destaque">
             {/* <p><img className="logo-curso-destaque" src={this.state.logoUrl}/></p> */}
             <h1 className="title-curso-destaque">Bem vindo a Câmara de Pacatuba</h1>
@@ -128,17 +122,15 @@ import Talk from '../components/talk'
         
         
 
-        <Eclass/>
+        <Recentes/>
 
         <Lancamentos/>
 
-        {/* <Talk /> */}
+        <Sessoes />
 
-        {/* <Elas /> */}
+        <Event />
 
-        <Course />
-
-        {/* <Lives /> */}
+        <Reunioes />
 
       </div>
     );

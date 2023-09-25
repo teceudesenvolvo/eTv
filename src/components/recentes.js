@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
+import React from 'react';
 import '../App.css'
 
 import {connect} from 'react-redux'
@@ -8,25 +7,12 @@ import { bindActionCreators } from 'redux';
 
 import axios from 'axios'
 
-
-// ITEMS ICONS
-import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
-
 // Icones
 
   //mudança de páginas
-  function list(){
-    window.location.href = "/listItems"
-  }
-  function inicio(){
-    window.location.href = "/inicio"
-  }
-  function itemClick(){
-    window.location.href = "/item"
-    console.log(this.state.id)
-  }
 
-  class Elas extends React.Component{
+  
+  class eClass extends React.Component{
     
     constructor(props){
       super(props)
@@ -34,16 +20,18 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
         id: '566',
         tipo: 'aviso',
         avisos: [],
-        carregar: 'Carregar Elas',
+        carregar: 'Carregar Avisos',
         btnLoad: "visitanteBtn"
       }
     }
 
     loadAvisos = async () => {
-      await axios.get(`/class.json`)
+      // await axios.get(`/courses.json`)
+      await axios.get(``)
               .catch(err => console.log(err))
               .then(res => {
-                  const avisoAll = res.data
+                  console.log('1')
+                  const avisoAll = res.data.items
                   let avisos = []
                   for(let key in avisoAll){
                       avisos.push({
@@ -55,15 +43,15 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
                   // visitantes = visitantes.filter(content => {
                   //     return content.condominio.includes(this.state.email)
                   // })
-                  if(avisos.length > 4){
-                    avisos.length = 4;
+                  if(avisos.length >4){
+                    avisos.length = 8;
                     this.setState({avisos: avisos})
                   }
               })
     }
 
     componentDidMount() {
-      const loadPage  = () => this.loadAvisos()
+      const loadPage  = () => console.log(this.loadAvisos())
       loadPage()
     }
   
@@ -73,7 +61,7 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
     const avisos = this.state.avisos 
   
     const listAvisos = avisos.map((aviso) => 
-        <li className="Areas type1" key={aviso.id}
+        <li className="Areas typePodcast" key={aviso.id}
         onClick={
           () => {this.setState({id: aviso.id}, () => {
             (this.props.clickButton(this.state))
@@ -81,8 +69,8 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
           })}
         }
         >
-              <img src={aviso.imageUrl}/>
-              <p className='titleCard titleCardMargin'> {aviso.title} </p>
+              <img src={aviso.snippet.thumbnails.high.url} alt='thumb' />
+              <p className='titleCard'> {aviso.snippet.title} </p>
               {/* <p className='txtCard'> {aviso.description} </p> */}
       </li>
     )
@@ -91,9 +79,8 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
     <div>
         <section className="courses">
           <div className="divTitleSection">
-            {/* <div className="item-separator"></div> */}
-            <h1 className="titleSection">eElas</h1>
-            <p className="newsSection">Novidades</p>
+            <h1 className="titleSection">Recentes</h1>
+            <p className="newsSection">Eventos e sessões mais recentes</p>
           </div>
             <ul  className="listAreas2">
               {listAvisos}
@@ -110,4 +97,4 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators({clickButton, LoggedOut}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Elas);
+export default connect(null, mapDispatchToProps)(eClass);

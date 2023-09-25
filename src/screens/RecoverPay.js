@@ -14,7 +14,7 @@ import MainMenu from '../components/mainMenu'
 // import backgroundIMG from '../../src/assets/images/bg106.jpg'
 
 import pagarme from 'pagarme'
-import firebase from 'firebase'
+// import firebase from 'firebase'
 
 
 const API_KEY = 'ak_live_b8qQSH3mDivhqgwXhFNc5JnAggaA8m'
@@ -25,9 +25,9 @@ const IDPLAN = '1212867'
 
 
 //Voltar para início
-function goHome() {
-  window.location.href = "/"
-}
+// function goHome() {
+//   window.location.href = "/"
+// }
 
 
 class Payment extends Component {

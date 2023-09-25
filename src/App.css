@@ -393,13 +393,24 @@ body > iframe{
 .backgroundLaunch{
   width: 103%;
   height: 500px;
-  margin: 50px 0 60px -50px !important;
+  margin-left: -10px;
   border: none;
-  object-fit: cover;
+  object-fit: contain;
 }
-.imgFilter{
-  filter: brightness(100%);
+
+.videoLiveInicio{
+  width: 46%;
+  margin-left: 40%;
+  height: 360px;
 }
+
+.videoLiveInicio>div>div>iframe{
+  width: 100%;
+  height: 90%;
+  margin-top: 15px;
+}
+
+
 .curso-lancamento{
   text-align: left;
   position: relative;
@@ -423,7 +434,7 @@ body > iframe{
 .btn-curso-lancamento{
   background-color: #FF6200;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500px;
   width: 12%;
   height: 40px;
   border: none;
@@ -720,7 +731,7 @@ body > iframe{
 .box-video-aula{
   position: relative;
   top: 150px;
-  width: 100%;
+  width: 95%;
   margin: 0 auto;
   margin-top: 10px;
   text-align: left;
@@ -737,13 +748,12 @@ body > iframe{
 }
 .players-video{
   z-index: 0;
-  margin-top: -125px;
-  margin-bottom: 100px;
+  margin-top: 150px;
 }
 
 .desc-video{
   font-size: 15px;
-  width: 100%;
+  width: 40%;
   margin-top: -10px;
   text-align: left;
 }
@@ -2502,6 +2512,9 @@ footer > div > p > a {
     width: 80%;
   }
   .title-curso-destaque{
+    font-size: 30px;
+    line-height: 47px;
+    width: 80%;
     left: 0px;
   }
   .desc-curso-destaque{
@@ -2541,9 +2554,29 @@ footer > div > p > a {
     margin-left: 40px;
   }
   .backgroundLaunch{
-    height: 700px;
+    height: 500px;
     width: 110%;
   }
+
+  .backgroundLaunch>p>img{
+    opacity: 0;
+  }
+  
+  .videoLiveInicio {
+    width: 100%;
+    margin-left: -70px;
+    height: 360px;
+  }
+  
+  .videoLiveInicio > div > div > iframe {
+    width: 55%;
+    height: 90%;
+    margin-top: 100px;
+  }
+
+
+
+
   .box-class{
     display: block;
   }

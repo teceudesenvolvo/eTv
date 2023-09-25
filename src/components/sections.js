@@ -1,30 +1,25 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import '../App.css';
 
 import {connect} from 'react-redux';
-import {openAula, clickButton, LoggedOut} from '../store/actions/index';
+import {openAula, LoggedOut} from '../store/actions/index';
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
 
-
-// ITEMS ICONS
-import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
-
 // Icones
 
   //mudança de páginas
-  function list(){
-    window.location.href = "/listItems"
-  }
-  function inicio(){
-    window.location.href = "/inicio"
-  }
-  function itemClick(){
-    window.location.href = "/item"
-    console.log(this.state.id)
-  }
+  // function list(){
+  //   window.location.href = "/listItems"
+  // }
+  // function inicio(){
+  //   window.location.href = "/inicio"
+  // }
+  // function itemClick(){
+  //   window.location.href = "/item"
+  //   console.log(this.state.id)
+  // }
 
   class Avisos extends React.Component{
     
@@ -56,11 +51,12 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
                     avisoAll.length = 12;
                     this.setState({avisos: avisoAll})
                   }
+                  console.log('1')
               })
     }
 
     componentDidMount() {
-      const loadPage  = () => this.loadAvisos()
+      const loadPage  = () => console.log(this.loadAvisos())
       loadPage()
     }
   
@@ -79,7 +75,7 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
           })}
         }
         >
-              <img src={aviso.snippet.thumbnails.high.url}/>
+              <img src={aviso.snippet.thumbnails.high.url} alt='thurmb'/>
               <p className='titleCard'> {aviso.snippet.title} </p>
               {/* <p className='titleCard'> {aviso.etag} </p> */}
               {/* <p className='txtCard'> {aviso.description} </p> */}
@@ -91,8 +87,8 @@ import imgCourseFeacture from '../assets/images/gerencia-e-controle.png'
         <section className="courses">
           <div className="divTitleSection">
             {/* <div className="item-separator"></div> */}
-            <h1 className="titleSection">Eventos</h1>
-            <p className="newsSection">Nossos Eventos</p>
+            <h1 className="titleSection">Sessões</h1>
+            <p className="newsSection">Ultimas Sessões</p>
           </div>
             <ul  className="listAreas2">
               {listAvisos}

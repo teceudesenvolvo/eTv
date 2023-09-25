@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import ReactPlayer from 'react-player'
 
 import axios from 'axios'
 
 import {connect} from 'react-redux'
 
-import bg101 from '../../assets/images/BANNER.png'
 import '../../App.css'
 
 import MainMenu from '../../components/mainMenu'
@@ -20,8 +18,6 @@ import firebaseConfig from '../firebaseConfig'
 
 const API_KEY = 'ak_live_b8qQSH3mDivhqgwXhFNc5JnAggaA8m'
 const BaseURL = 'https://api.pagar.me/1/subscriptions'
-const EK_KEY = 'ek_live_CwgSVhbDMCSIIKt0hxCdyQ2EOHB4b1'
-const IDPLAN = '548587' 
 
 
 

@@ -16,13 +16,13 @@ function goHome(){
   window.location.href = "/"
 }
 
-const onKeyDown = (event) => {
-  if(event.key === 'Enter'){
-    // entrar();
-  }else{
-    console.log('Não fui')
-  }
-}
+// const onKeyDown = (event) => {
+//   if(event.key === 'Enter'){
+//     // entrar();
+//   }else{
+//     console.log('Não fui')
+//   }
+// }
 
 class Login extends Component{
   state = {
@@ -59,7 +59,7 @@ class Login extends Component{
         <header className="item-header-dashboard"></header>
 
         <div className="searchBox itemBoxInsert loginBox singupBox forgotBox">
-            <img className="logo-login" src={logo} alt-text="Logotipo" onClick={goHome}/>
+            <img className="logo-login" src={logo} alt="Logotipo" onClick={goHome}/>
             <h1>{this.state.status}</h1>
             <form>
               <h2>Informe o mesmo e-mail que você utilizou ao criar sua conta.</h2>

@@ -4,7 +4,6 @@ import ReactPlayer from 'react-player'
 import axios from 'axios'
 
 import {connect} from 'react-redux'
-import firebase from 'firebase'
 
 // Componetes
 import ClassPlayer from '../../components/classPlayer'
@@ -16,17 +15,17 @@ import '../../App.css'
 
 
 
-function onClickHandler(){
-    // const data = new FormData() 
-    // data.append('file', this.state.selectedFile)
-    console.log('Botão funciona')
-    console.log(this.state.id)
+// function onClickHandler(){
+//     // const data = new FormData() 
+//     // data.append('file', this.state.selectedFile)
+//     console.log('Botão funciona')
+//     console.log(this.state.id)
 
-}
+// }
 
-function goFilter(){
-    window.location.href = "/listItems"
-  }
+// function goFilter(){
+//     window.location.href = "/listItems"
+//   }
 
 class Gestao extends Component{
   constructor(props){
@@ -84,15 +83,15 @@ class Gestao extends Component{
           <div className='video-play'>
             <ReactPlayer scrolling="no" frameborder="0" onload="iFrameResize()" 
             url={`www.youtube.com/watch?v=${this.props.idAula}`} controls='true'/> 
+          </div>
             <div className='desc-video' >
               <h1>{this.state.title}</h1>
               <p>{this.state.description}</p>    
             </div>
-          </div>
+        </div>
           <div className='players-video'>
             <ClassPlayer />
           </div>
-        </div>
         
     </div>
     )

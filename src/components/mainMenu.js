@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
+import React from 'react';
 import '../App.css'
 
 import { connect } from 'react-redux'
@@ -7,8 +6,6 @@ import { LoggedOut } from '../store/actions/index'
 import { bindActionCreators } from 'redux';
 
 import firebase from 'firebase'
-
-import axios from 'axios'
 
 import {FaSearch, FaBell, FaUserCircle, FaAngleDown} from 'react-icons/fa'
 
@@ -83,7 +80,7 @@ class MainMenu extends React.Component {
     return (
       <nav className="main-menu">
 
-        <img className="logo-menu" src={logo} onClick={goInicio} />
+        <img className="logo-menu" src={logo} onClick={goInicio} alt='logomarca' />
 
         <div className="menu-items">
           {/* <a className="itemsMenu" onClick={goInicio}>Podcast</a>
@@ -103,7 +100,7 @@ class MainMenu extends React.Component {
             <FaAngleDown/>
             <div className="dropMenu">
               <ul className="dropMenu-items">
-                <li className="dropMenu-btn-li dropMenu-btn-li1" ><a className="dropMenu-btn" onClick={
+                <li className="dropMenu-btn-li dropMenu-btn-li1" ><a className="dropMenu-btn" href='/#' onClick={
                     () => {
                       if(this.props.userId){
                         this.goProfile()
@@ -112,7 +109,7 @@ class MainMenu extends React.Component {
                       }
                     }
                   }>{this.state.profileOptions}</a></li>
-                <li className="dropMenu-btn-li dropMenu-btn-li2"><a className="dropMenu-btn" onClick={
+                <li className="dropMenu-btn-li dropMenu-btn-li2"><a className="dropMenu-btn" href='/#' onClick={
                     () => {
                       if(this.props.userId){
                         this.logOut()

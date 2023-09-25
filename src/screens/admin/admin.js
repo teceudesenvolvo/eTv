@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 
-import {connect} from 'react-redux'
+// import {connect} from 'react-redux'
 
 import bg101 from '../../assets/images/BANNER.png'
 import '../../App.css'
 
 //Icones
-function goHome(){
-  window.location.href = "/homeManager"
-}
-function goDashboard(){
-    window.location.href = "/dashboard"
-}
-function goPainelFinanceiro(){
-    window.location.href = "/painelFinanceiro"
-  }
+// function goHome(){
+//   window.location.href = "/homeManager"
+// }
+// function goDashboard(){
+//     window.location.href = "/dashboard"
+// }
+// function goPainelFinanceiro(){
+//     window.location.href = "/painelFinanceiro"
+//   }
 
 class Dashboard extends Component{
   constructor(props){
@@ -29,30 +29,17 @@ class Dashboard extends Component{
   
   render() {
     // Apartamentos
-    const items = [
-      {
-          id: 1,
-          morador: '910-A',
-          condominio: 'Modelo'
-      },
-      {
-        id: 2,
-        morador: '910-B',
-        condominio: 'Modelo'
-      },
-
-      ]  
-      const listItem = items.map((item) => 
-          <option>
-            {item.morador}
-          </option>
-      )
+      // const listItem = items.map((item) => 
+      //     <option>
+      //       {item.morador}
+      //     </option>
+      // )
     return (
     <div className="App">
     <div className="backgroundHero heroPg">
       
     <p>
-      <img className="backgroundHero heroPg" src={bg101}/>
+      <img className="backgroundHero heroPg" alt='BgAdmin' src={bg101}/>
     </p>
     
         </div>

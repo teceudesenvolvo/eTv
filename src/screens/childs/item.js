@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactPlayer from 'react-player'
 
 import axios from 'axios'
 
@@ -11,26 +10,22 @@ import { bindActionCreators } from 'redux';
 import Class from '../../components/class'
 import MainMenu from '../../components/mainMenu'
 
-
-import logo from '../../assets/images/logo12.png'
-import bg101 from '../../assets/images/BANNER.png'
 import '../../App.css'
 
-import {FaLock, FaSearch, FaPlayCircle} from 'react-icons/fa'
 
 
 //Icones
 
-function onClickHandler(){
-    // const data = new FormData() 
-    // data.append('file', this.state.selectedFile)
-    console.log('Botão funciona')
-    console.log(this.state.id)
-}
+// function onClickHandler(){
+//     // const data = new FormData() 
+//     // data.append('file', this.state.selectedFile)
+//     console.log('Botão funciona')
+//     console.log(this.state.id)
+// }
 
-function goFilter(){
-    window.location.href = "/listItems"
-  }
+// function goFilter(){
+//     window.location.href = "/listItems"
+//   }
 
 
 class Gestao extends Component{
@@ -79,7 +74,7 @@ class Gestao extends Component{
       <div className="App">
         <MainMenu/>
         <div className="backgroundHero heroPg">
-            <p><img className="backgroundHero heroPg" src={this.state.bgUrl}/></p>
+            <p><img alt='heroBackground' className="backgroundHero heroPg" src={this.state.bgUrl}/></p>
         </div>
         <header className="item-header-content">
             <div className="box-class">

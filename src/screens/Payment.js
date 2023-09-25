@@ -23,9 +23,9 @@ const IDPLAN = '1212867'
 
 
 //Voltar para início
-function goHome() {
-  window.location.href = "/"
-}
+// function goHome() {
+//   window.location.href = "/"
+// }
 
 
 
@@ -197,7 +197,7 @@ class Payment extends Component {
 
         <div className="searchBox itemBoxInsert loginBox singupBox paymentBox">
 
-          <img className="logo-login" src={logo} alt-text="Logotipo" />
+          <img className="logo-login" src={logo} alt="Logotipo" />
           <h1 className={this.state.classErr}>{this.state.status}</h1>
           <form>
             {/* <div className='div-label'><label>Nome no cartão*</label></div> */}

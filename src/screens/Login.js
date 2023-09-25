@@ -160,7 +160,7 @@ class Login extends Component {
           .catch(err => console.log(err))
       })
       .catch(function (err) {
-        var erroCode = err.code;
+        // var erroCode = err.code;
         var erroMessage = err.message;
         if (erroMessage) {
           ref.setState({ status: `Usuário e/ou Senha invalidos`, classErr: 'txtErro' })
