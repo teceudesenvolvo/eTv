@@ -43,8 +43,8 @@ import axios from 'axios'
                   // visitantes = visitantes.filter(content => {
                   //     return content.condominio.includes(this.state.email)
                   // })
-                  if(avisos.length >4){
-                    avisos.length = 8;
+                  if(avisos.length > 4){
+                    avisos.length = 4;
                     this.setState({avisos: avisos})
                   }
               })

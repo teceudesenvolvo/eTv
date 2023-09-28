@@ -48,7 +48,7 @@ import axios from 'axios';
                   // })
                   if(avisoAll.length > 4){
                     avisoAll.reverse()
-                    avisoAll.length = 12;
+                    avisoAll.length = 4;
                     this.setState({avisos: avisoAll})
                   }
                   console.log('1')

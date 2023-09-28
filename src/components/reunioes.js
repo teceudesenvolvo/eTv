@@ -36,30 +36,25 @@ import axios from 'axios'
     }
 
     loadAvisos = async () => {
-      await axios.get(`/courses.json`)
+      await axios.get(``)
               .catch(err => console.log(err))
               .then(res => {
-                  const avisoAll = res.data
-                  let avisos = []
-                  for(let key in avisoAll){
-                      avisos.push({
-                          ...avisoAll[key],
-                          id: key
-                      })
-                  }
+                  const avisoAll = res.data.items
                   // consultas
                   // visitantes = visitantes.filter(content => {
                   //     return content.condominio.includes(this.state.email)
                   // })
-                  if(avisos.length > 4){
-                    avisos.length = 4;
-                    this.setState({avisos: avisos})
+                  if(avisoAll.length > 4){
+                    avisoAll.reverse()
+                    avisoAll.length = 4;
+                    this.setState({avisos: avisoAll})
                   }
+                  console.log('1')
               })
     }
 
     componentDidMount() {
-      const loadPage  = () => this.loadAvisos()
+      const loadPage  = () => console.log(this.loadAvisos())
       loadPage()
     }
   
@@ -71,14 +66,16 @@ import axios from 'axios'
     const listAvisos = avisos.map((aviso) => 
         <li className="Areas type1" key={aviso.id}
         onClick={
-          () => {this.setState({id: aviso.id}, () => {
-            (this.props.clickButton(this.state))
-            (window.location.href = "/item")
+          () => {this.setState({idAula: aviso.id.videoId, idCurso: aviso.id, tipo: 'class'}, () => {
+            (this.props.openAula(this.state))
+            console.log(this.props.idAula)
+            (window.location.href = "/player")
           })}
         }
         >
-              <img src={aviso.imageUrl} alt='cardImg' />
-              <p className='titleCard titleCardMargin'> {aviso.title} </p>
+              <img src={aviso.snippet.thumbnails.high.url} alt='thurmb'/>
+              <p className='titleCard'> {aviso.snippet.title} </p>
+              {/* <p className='titleCard'> {aviso.etag} </p> */}
               {/* <p className='txtCard'> {aviso.description} </p> */}
       </li>
     )
