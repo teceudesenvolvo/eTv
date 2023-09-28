@@ -2483,7 +2483,7 @@ footer > div > p > a {
 
 @media (max-width: 900px){
   body{
-    overflow-x: hidden;
+    overflow-x: hidden !important;
     width: 100%;
   }
   .backgroundHero{
