@@ -68,7 +68,7 @@ import axios from 'axios';
     const listAvisos = avisos.map((aviso) => 
         <li className="Areas type1" key={aviso.id}
         onClick={
-          () => {this.setState({idAula: aviso.id.videoId, idCurso: aviso.id, tipo: 'class'}, () => {
+          () => {this.setState({idAula: aviso.contentDetails.videoId, idCurso: aviso.id, tipo: 'class'}, () => {
             (this.props.openAula(this.state))
             console.log(this.props.idAula)
             (window.location.href = "/player")

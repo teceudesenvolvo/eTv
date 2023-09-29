@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import ReactPlayer from 'react-player'
 
 import axios from 'axios'
-
+import moment from 'moment';
 import {connect} from 'react-redux'
 
 // Componetes
 import ClassPlayer from '../../components/classPlayer'
 import MainMenu from '../../components/mainMenu'
+
 
 
 
@@ -52,12 +53,13 @@ class Gestao extends Component{
               .then(res => {
                 const videoAll = res.data.items
 
-                const videos = videoAll.filter(content => content.id.videoId.includes(this.props.idAula)) 
+                const videos = videoAll.filter(content => content.contentDetails.videoId.includes(this.props.idAula)) 
                 console.log(videos)
                 this.setState({
                   videos: videos,
                   title: videos[0].snippet.title,
                   description: videos[0].snippet.description,
+                  dataPublic: videos[0].snippet.publishedAt,
 
                 })
               })
@@ -87,6 +89,7 @@ class Gestao extends Component{
             <div className='desc-video' >
               <h1>{this.state.title}</h1>
               <p>{this.state.description}</p>    
+              <p>Transmitido em {moment(this.state.dataPublic).utc().format('DD  MM YYYY')}</p>    
             </div>
         </div>
           <div className='players-video'>
