@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css'
 
 import {connect} from 'react-redux'
-import {clickButton, LoggedOut} from '../store/actions/index'
+import {openAula, LoggedOut} from '../store/actions/index'
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios'
@@ -18,6 +18,8 @@ import axios from 'axios'
       super(props)
       this.state = {
         id: '566',
+        idCurso: '',
+        idAula: '',
         tipo: 'aviso',
         avisos: [],
         carregar: 'Carregar Avisos',
@@ -32,21 +34,15 @@ import axios from 'axios'
               .then(res => {
                   console.log('1')
                   const avisoAll = res.data.items
-                  let avisos = []
-                  for(let key in avisoAll){
-                      avisos.push({
-                          ...avisoAll[key],
-                          id: key
-                      })
-                  }
+                  
                   // consultas
                   // visitantes = visitantes.filter(content => {
                   //     return content.condominio.includes(this.state.email)
                   // })
-                  if(avisos.length > 4){
-                    avisos.length = 4;
-                    this.setState({avisos: avisos})
-                  }
+                  console.log(avisoAll.length)
+                  avisoAll.length = 8;
+                    this.setState({avisos: avisoAll})
+                  
               })
     }
 
@@ -63,9 +59,11 @@ import axios from 'axios'
     const listAvisos = avisos.map((aviso) => 
         <li className="Areas typePodcast" key={aviso.id}
         onClick={
-          () => {this.setState({id: aviso.contentDetails.videoId}, () => {
-            (this.props.clickButton(this.state))
+          () => {this.setState({idAula: aviso.contentDetails.videoId, idCurso: aviso.id, tipo: 'class'}, () => {
+            (this.props.openAula(this.state))
+            console.log(this.props.idAula)
             (window.location.href = "/player")
+            // iRnqTM31iww
           })}
         }
         >
@@ -92,9 +90,20 @@ import axios from 'axios'
   }
 }
 
+const mapStateToProps = store => {
+  return{
+    id: store.course.id,
+    idAula: store.course.idAula,
+    idCurso: store.course.idCurso,
+    tipoAula: store.course.tipoAula,
+    tipoItem: store.course.tipo,
+    userId: store.user.userId,
+  }
+};
+
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({clickButton, LoggedOut}, dispatch);
+  return bindActionCreators({openAula, LoggedOut}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(eClass);
+export default connect(mapStateToProps, mapDispatchToProps)(eClass);

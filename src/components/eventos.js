@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css'
 
 import {connect} from 'react-redux'
-import {clickButton, LoggedOut} from '../store/actions/index'
+import {openAula, clickButton, LoggedOut} from '../store/actions/index'
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios'
@@ -60,13 +60,13 @@ import axios from 'axios'
   
   render(){
 
-    // Carregar Lista de Videos
+    // Carregar Aulas
     const avisos = this.state.avisos 
   
     const listAvisos = avisos.map((aviso) => 
         <li className="Areas type1" key={aviso.id}
         onClick={
-          () => {this.setState({idAula: aviso.id.videoId, idCurso: aviso.id, tipo: 'class'}, () => {
+          () => {this.setState({idAula: aviso.contentDetails.videoId, idCurso: aviso.id, tipo: 'class'}, () => {
             (this.props.openAula(this.state))
             console.log(this.props.idAula)
             (window.location.href = "/player")
@@ -99,8 +99,19 @@ import axios from 'axios'
 }
 
 
+const mapStateToProps = store => {
+  return{
+    id: store.course.id,
+    idAula: store.course.idAula,
+    idCurso: store.course.idCurso,
+    tipoAula: store.course.tipoAula,
+    tipoItem: store.course.tipo,
+    userId: store.user.userId,
+  }
+};
+
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({clickButton, LoggedOut}, dispatch);
+  return bindActionCreators({openAula, clickButton, LoggedOut}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Elas);
+export default connect(mapStateToProps, mapDispatchToProps)(Elas);
