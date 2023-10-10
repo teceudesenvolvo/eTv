@@ -109,7 +109,7 @@ class MainMenu extends React.Component {
                       }
                     }
                   }>{this.state.profileOptions}</a></li>
-                <li className="dropMenu-btn-li dropMenu-btn-li2"><a className="dropMenu-btn" href='/#' onClick={
+                {/* <li className="dropMenu-btn-li dropMenu-btn-li2"><a className="dropMenu-btn" href='/#' onClick={
                     () => {
                       if(this.props.userId){
                         this.logOut()
@@ -117,7 +117,7 @@ class MainMenu extends React.Component {
                         goSingup()
                       }
                     }
-                  }>{this.state.profileOptions2}</a></li>
+                  }>{this.state.profileOptions2}</a></li> */}
               </ul>
             </div>
           </div>
