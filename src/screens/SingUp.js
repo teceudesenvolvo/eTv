@@ -12,7 +12,8 @@ import firebaseConfig from './firebaseConfig'
 
 import { cpf } from 'cpf-cnpj-validator'
 
-import logo from '../assets/images/logo12.png'
+import logo from '../assets/images/logo-pacatuba.png'
+
 import '../App.css'
 
 

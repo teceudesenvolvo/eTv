@@ -6,7 +6,8 @@ import { bindActionCreators } from 'redux'
 
 import axios from 'axios'
 
-import logo from '../assets/images/logo12.png'
+import logo from '../assets/images/logo-pacatuba.png'
+
 import '../App.css'
 
 // Firebase
@@ -237,12 +238,12 @@ class Login extends Component {
                 )
               } className="btnLogin" value="Entrar" />
               <br />
-              <input type="button" className="btnLogin btnCadastro" value="Cadastre-se" onClick={
+              {/* <input type="button" className="btnLogin btnCadastro" value="Cadastre-se" onClick={
                 (() => {
                   window.location.href = "/cadastro"
                 }
                 )
-              }/>
+              }/> */}
             </div>
             <br />
             {/* <input type="button" className="btnLoginSM" value="Conectar Facebook"
