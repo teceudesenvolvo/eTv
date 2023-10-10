@@ -76,7 +76,7 @@ function App() {
       <footer className="footer">
         <div className="footer-logo">
           {/* <img src={Logo} className="logoFooter"/> */}
-          <p> e|Videos &copy; 2020 - {moment().format('YYYY')} - Todos os direitos reservados - <a href="https://help.eudesenvolvo.com/">Ajuda</a> </p>
+          <p> e|Videos &copy; 2020 - {moment().format('YYYY')} - Todos os direitos reservados - </p>
         </div>
       </footer>
     </div>
