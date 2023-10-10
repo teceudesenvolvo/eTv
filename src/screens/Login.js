@@ -238,12 +238,24 @@ class Login extends Component {
                 )
               } className="btnLogin" value="Entrar" />
               <br />
+              
+              
+              
+              
+              
+              
+              
               {/* <input type="button" className="btnLogin btnCadastro" value="Cadastre-se" onClick={
                 (() => {
                   window.location.href = "/cadastro"
                 }
                 )
               }/> */}
+
+
+
+
+
             </div>
             <br />
             {/* <input type="button" className="btnLoginSM" value="Conectar Facebook"
