@@ -128,9 +128,9 @@ import Reunioes from '../components/reunioes'
 
         <Sessoes />
 
-        <Event />
+        {/* <Event />
 
-        <Reunioes />
+        <Reunioes /> */}
 
       </div>
     );

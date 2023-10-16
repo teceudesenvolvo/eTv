@@ -50,9 +50,9 @@ import axios from 'axios';
                     })
                 }
                   avisos = avisos.filter(content => content.snippet.title.toUpperCase().includes('SESSÃO'))
+                  this.setState({avisos: avisos})
                   if(avisos.length > 4){
                     avisos.length = 4;
-                    this.setState({avisos: avisos})
                   }
               })
     }
