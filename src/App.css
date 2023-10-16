@@ -28,7 +28,6 @@ body > iframe{
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: white;
   z-index: -1000;
 }
 .App-logo{
@@ -75,6 +74,7 @@ body > iframe{
   display: inline-flex;
   align-items: center;
   z-index: 10;
+  color: white;
 }
 .logo-menu{
   max-height: 90px;
@@ -82,6 +82,7 @@ body > iframe{
   position: absolute;
   left: 30px;
   cursor: pointer;
+  color: white;
 }
 .menu-items{
   margin-top: 10px;
@@ -391,11 +392,12 @@ body > iframe{
 /* Lançamentos */
 
 .backgroundLaunch{
-  width: 103%;
-  height: 500px;
-  margin-left: -10px;
+  width: 95%;
+  margin-left: 0px;
   border: none;
   object-fit: contain;
+  margin-top: 50px;
+  height: 320px;
 }
 
 .videoLiveInicio{
@@ -464,6 +466,13 @@ body > iframe{
   background-color: #ff620079;
 }
 
+.watchVideo{
+  width: 70% !important;
+  margin-top: 27%;
+  margin-left: 33%;
+}
+
+
 
 /* ----------------------------------- Cursos ------------------------------------------------ */
 .courses{
@@ -524,7 +533,6 @@ body > iframe{
   background-color: rgba(159, 159, 159, 0.23);
   border-radius: 5px;
   border: none;
-  color: white;
 }
 .ficha-tecnica{
   width: 100%;
@@ -600,7 +608,6 @@ body > iframe{
   margin-left: -20px;
   flex: 1;
   width: 105%;
-  color: white;
   padding-top: 30px;
   padding-bottom: 30px;
 }
@@ -625,7 +632,6 @@ body > iframe{
   text-align: left;
   font-size: 20px;
   font-weight: 700;
-  color: #fff;
 }
 .titleSection > img {
   margin-right: 15px;
@@ -2541,8 +2547,14 @@ footer > div > p > a {
     width: 100%;
     margin-left: -60px;
   }
-  .curso-lancamento{
-    margin-top: -120px;
+  .backgroundLaunch{
+    background-color: #3e4095;
+    width: 100%;
+    margin-left: -20px;
+  }
+  .watchVideo{
+    width: 85%;
+    margin-top: 100px;
   }
   .desc-curso-lancamento{
     width: 60%;
@@ -2568,15 +2580,12 @@ footer > div > p > a {
     height: 360px;
   }
   
-  .videoLiveInicio > div > div > iframe {
+  /* .videoLiveInicio > div > div > iframe {
     width: 55%;
     height: 90%;
     margin-top: 100px;
-  }
+  } */
 
-  .watchVideo{
-    width: 80%;
-  }
 
 
 

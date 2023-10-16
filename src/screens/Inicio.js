@@ -122,9 +122,9 @@ import Reunioes from '../components/reunioes'
         
         
 
-        <Recentes/>
-
         <Lancamentos/>
+        {/* <Recentes/> */}
+
 
         <Sessoes />
 
