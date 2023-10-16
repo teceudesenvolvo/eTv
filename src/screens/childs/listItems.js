@@ -67,8 +67,8 @@ class ListItem extends Component{
 
                 
                 
+                avisos = avisos.filter(content => content.snippet.title.toUpperCase().includes(this.state.searchCourse.toUpperCase()))
                 this.setState({avisos: avisos})
-                // avisos = avisos.filter(content => content.title.toUpperCase().includes(this.state.searchCourse.toUpperCase()))
                 console.log({avisos: avisos})             
 
                

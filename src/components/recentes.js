@@ -41,7 +41,7 @@ import axios from 'axios'
                   // })
                   console.log(avisoAll.length)
                   avisoAll.length = 8;
-                    this.setState({avisos: avisoAll})
+                  this.setState({avisos: avisoAll})
                   
               })
     }

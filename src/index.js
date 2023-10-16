@@ -15,7 +15,7 @@ import * as serviceWorker from './serviceWorker';
 import axios from 'axios'
 // axios.defaults.baseURL = 'https://eu-desenvolvo-default-rtdb.firebaseio.com/'
 // axios.defaults.baseURL = 'https://e-tv-camara-default-rtdb.firebaseio.com'
-axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=100&playlistId=PLpwsxuPrGwtkNhKGHux2A0kUszllhPADa&key=AIzaSyD8yzd37B3Rvpy6A27PrelCLrIkGbOQTx4'
+axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=10000&playlistId=PLpwsxuPrGwtkNhKGHux2A0kUszllhPADa&key=AIzaSyCfZfFR3QzWmQWBYMgwmXx8n2EdyjdFi2s'
 
 ReactDOM.render(
 

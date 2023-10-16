@@ -41,17 +41,19 @@ import axios from 'axios';
       await axios.get(``)
               .catch(err => console.log(err))
               .then(res => {
-                  const avisoAll = res.data.items
-                  // consultas
-                  // visitantes = visitantes.filter(content => {
-                  //     return content.condominio.includes(this.state.email)
-                  // })
-                  if(avisoAll.length > 4){
-                    avisoAll.reverse()
-                    avisoAll.length = 4;
-                    this.setState({avisos: avisoAll})
+                const avisoAll = res.data.items
+                let avisos = []
+                for(let key in avisoAll){
+                    avisos.push({
+                        ...avisoAll[key],
+                        id: key
+                    })
+                }
+                  avisos = avisos.filter(content => content.snippet.title.toUpperCase().includes('SESSÃO'))
+                  if(avisos.length > 4){
+                    avisos.length = 4;
+                    this.setState({avisos: avisos})
                   }
-                  console.log('1')
               })
     }
 
