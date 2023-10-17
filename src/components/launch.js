@@ -49,7 +49,7 @@ import backgroundLive from '../assets/images/backgrond-launch-live.gif'
             <p><img className="backgroundLaunch imgFilter" src={backgroundLive} alt='backgroundLive'/></p>
             <div className="curso-lancamento">
               <h1 className="title-curso-lancamento">Ao Vivo</h1>
-              <p className="desc-curso-lancamento">Assista agora mesmo</p>
+              <p className="desc-curso-lancamento">Assista agora</p>
               <p>
                   {/* <input type="button" value="Assista Agora" className="btn-curso-lancamento" 
                   onClick={
@@ -68,7 +68,7 @@ import backgroundLive from '../assets/images/backgrond-launch-live.gif'
                 </p>
                     <div className='videoLiveInicio'>
                       <ReactPlayer className="watchVideo" scrolling="no" frameborder="0" onload="iFrameResize()" 
-                      url={`https://fb.watch/nJcIq8C1G-/`} controls='true'/> 
+                      url={`https://fb.watch/nKFmIJ1HAJ/`} controls='true'/> 
                     </div>
 
             </div>
