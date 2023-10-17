@@ -2505,7 +2505,10 @@ footer > div > p > a {
     text-align: center;
   }
   .App-logo{
-    margin-top: 80px;
+    top: 10px;
+  }
+  .logo-menu{
+    top: 10px;
   }
   .left-menu{
     display: none;
