@@ -393,11 +393,10 @@ body > iframe{
 
 .backgroundLaunch{
   width: 95%;
-  margin-left: 0px;
   border: none;
   object-fit: contain;
+  display: inline-block;
   margin-top: 50px;
-  height: 320px;
 }
 
 .videoLiveInicio{
@@ -416,8 +415,9 @@ body > iframe{
 .curso-lancamento{
   text-align: left;
   position: relative;
-  left: 80px;
-  top: -450px;
+  left: 31px;
+  top: -420px;
+  width: 95%;
 }
 .title-curso-lancamento{
   font-family: Open Sans, sans-serif;
@@ -2543,18 +2543,18 @@ footer > div > p > a {
     margin-left: 50px;
   }
   .courses{
-    margin-top: 00px;
+    margin-top: -400px;
     width: 100%;
     margin-left: -60px;
   }
   .backgroundLaunch{
-    background-color: #3e4095;
-    width: 100%;
+    width: 90%;
     margin-left: -20px;
+    height: 417px;
+    width: 110%;
   }
   .watchVideo{
-    width: 85%;
-    margin-top: 100px;
+    width: 95%;
   }
   .desc-curso-lancamento{
     width: 60%;
@@ -2565,10 +2565,6 @@ footer > div > p > a {
   .divTitleSection{
     margin-left: 40px;
   }
-  .backgroundLaunch{
-    height: 500px;
-    width: 110%;
-  }
 
   .backgroundLaunch>p>img{
     opacity: 0;
@@ -2576,7 +2572,7 @@ footer > div > p > a {
   
   .videoLiveInicio {
     width: 100%;
-    margin-left: -70px;
+    margin-left: -25%;
     height: 360px;
   }
   

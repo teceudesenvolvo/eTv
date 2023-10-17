@@ -48,8 +48,8 @@ import backgroundLive from '../assets/images/backgrond-launch-live.gif'
           <div className="backgroundLaunch">
             <p><img className="backgroundLaunch imgFilter" src={backgroundLive} alt='backgroundLive'/></p>
             <div className="curso-lancamento">
-              <h1 className="title-curso-lancamento">{this.state.title}</h1>
-              <p className="desc-curso-lancamento">{this.state.description}</p>
+              {/* <h1 className="title-curso-lancamento">{this.state.title}</h1>
+              <p className="desc-curso-lancamento">{this.state.description}</p> */}
               <p>
                   {/* <input type="button" value="Assista Agora" className="btn-curso-lancamento" 
                   onClick={
