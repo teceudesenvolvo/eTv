@@ -83,13 +83,13 @@ class Gestao extends Component{
         <MainMenu/>
         <div className='box-video-aula'>
           <div className='video-play'>
-            <ReactPlayer scrolling="no" frameborder="0" onload="iFrameResize()" 
+            <ReactPlayer className="playVideoWatch" scrolling="no" frameborder="0" onload="iFrameResize()" 
             url={`www.youtube.com/watch?v=${this.props.idAula}`} controls='true'/> 
           </div>
             <div className='desc-video' >
               <h1>{this.state.title}</h1>
               <p>{this.state.description}</p>    
-              <p>Transmitido em {moment(this.state.dataPublic).utc().format('DD  MM YYYY')}</p>    
+              {/* <p>Transmitido em {moment(this.state.dataPublic).utc().format('DD  MM YYYY')}</p>     */}
             </div>
         </div>
           <div className='players-video'>

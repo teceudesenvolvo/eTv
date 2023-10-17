@@ -426,12 +426,14 @@ body > iframe{
   width: 40%;
   color: rgb(182, 182, 182);
   margin-bottom: -10px;
+  display: none;
 }
 .desc-curso-lancamento{
   font-size: 16px;
   width: 40%;
   color: rgb(182, 182, 182);
   margin-bottom: 30px;
+  display: none;
 }
 .btn-curso-lancamento{
   background-color: #FF6200;
@@ -468,8 +470,8 @@ body > iframe{
 
 .watchVideo{
   width: 70% !important;
-  margin-top: 27%;
   margin-left: 33%;
+  margin-top: 27%;
 }
 
 
@@ -479,6 +481,7 @@ body > iframe{
   width: 100%;
   margin: 0 auto;
   margin-left: -3%;
+  margin-top: -500px;
 }
 .course-featured{
   width: 80%;
@@ -2556,7 +2559,11 @@ footer > div > p > a {
   .watchVideo{
     width: 95%;
   }
+  .title-curso-lancamento{
+    display: block;
+  }
   .desc-curso-lancamento{
+    display: block;
     width: 60%;
   }
   .btn-curso-lancamento{
@@ -2611,11 +2618,15 @@ footer > div > p > a {
     margin-left: 25px !important;
   }
   .box-video-aula{
+    display: inline;
     width: 95%;
     margin-left: -20px;
   }
   .box-video-aula > h1{
     margin-left: 10px;
+  }
+  .playVideoWatch{
+    width: 100% !important;
   }
   .attr-video{
     display: block;
@@ -2648,6 +2659,8 @@ footer > div > p > a {
   }
   .box-video-aula > div{
     height: 215px !important;
+    width: 80%;
+    margin-top: 180px;
   }
   .input-login{
     width: 80%;
