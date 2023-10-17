@@ -2507,6 +2507,9 @@ footer > div > p > a {
   .App-logo{
     margin-top: 80px;
   }
+  .left-menu{
+    display: none;
+  }
   .Areas:hover{
     transform: scale(1);
     box-shadow: 1px 1px rgba(0,0,0,0.1);
