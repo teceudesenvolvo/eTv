@@ -108,7 +108,7 @@ import Reunioes from '../components/reunioes'
           <p><img className="backgroundHero" src={bgSite} alt='background site'/></p>
           <div className="curso-destaque">
             {/* <p><img className="logo-curso-destaque" src={this.state.logoUrl}/></p> */}
-            <h1 className="title-curso-destaque">Bem vindo a Câmara de Pacatuba</h1>
+            <h1 className="title-curso-destaque">Bem vindo a TV Câmara de Pacatuba</h1>
             <p className="desc-curso-destaque">Câmara Municipal de Pacatuba</p>
             {/* <p><input type="button" value="Assistir Ao Vivo" className="btn-curso-destaque" 
               onClick={
