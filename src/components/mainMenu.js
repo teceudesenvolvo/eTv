@@ -97,10 +97,10 @@ class MainMenu extends React.Component {
           <div className="profile-items" >
             {/* <img className="profile-icon" onClick={goProfile} src={profile} /> */}
             <FaUserCircle className="profile-icon" onClick={this.goProfile} />
-            <FaAngleDown/>
+            {/* <FaAngleDown/> */}
             <div className="dropMenu">
               <ul className="dropMenu-items">
-                <li className="dropMenu-btn-li dropMenu-btn-li1" ><a className="dropMenu-btn" href='/#' onClick={
+                {/* <li className="dropMenu-btn-li dropMenu-btn-li1" ><a className="dropMenu-btn" href='/#' onClick={
                     () => {
                       if(this.props.userId){
                         this.goProfile()
@@ -108,7 +108,7 @@ class MainMenu extends React.Component {
                         this.logOut()
                       }
                     }
-                  }>{this.state.profileOptions}</a></li>
+                  }>{this.state.profileOptions}</a></li> */}
                 {/* <li className="dropMenu-btn-li dropMenu-btn-li2"><a className="dropMenu-btn" href='/#' onClick={
                     () => {
                       if(this.props.userId){
