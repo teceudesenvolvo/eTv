@@ -6,8 +6,6 @@ import {connect} from 'react-redux'
 import {clickButton, LoggedOut} from '../store/actions/index'
 import { bindActionCreators } from 'redux';
 
-import axios from 'axios'
-
 import backgroundLive from '../assets/images/backgrond-launch-live.gif'
 
 
@@ -68,7 +66,7 @@ import backgroundLive from '../assets/images/backgrond-launch-live.gif'
                 </p>
                     <div className='videoLiveInicio'>
                       <ReactPlayer className="watchVideo" scrolling="no" frameborder="0" onload="iFrameResize()" 
-                      url={`https://fb.watch/tPaooevWo2/`} controls='true'/>
+                      url={`https://fb.watch/tPcH3DSr9W/`} controls='true'/>
                     </div>
             </div>
           </div>
