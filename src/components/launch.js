@@ -62,11 +62,13 @@ import backgroundLive from '../assets/images/backgrond-launch-live.gif'
                       (this.props.clickButton(this.state))
                       (window.location.href = "/item")
                     })}}
+
                     /> */}
                 </p>
                     <div className='videoLiveInicio'>
                       <ReactPlayer className="watchVideo" scrolling="no" frameborder="0" onload="iFrameResize()" 
-                      url={`https://fb.watch/wYZ2rKED5W/`} controls='true'/>
+                      url={`https://fb.watch/x99sw1U93l/`} controls='true'/>
+                      
                     </div>
             </div>
           </div>
