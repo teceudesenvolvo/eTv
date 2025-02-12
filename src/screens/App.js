@@ -73,9 +73,8 @@ function App() {
 
         </Switch>
       
-      <footer className="footer">
+        <footer className="footer">
         <div className="footer-logo">
-          {/* <img src={Logo} className="logoFooter"/> */}
           <p> <a href="https://eudesenvolvo.com/govtech" >e | Videos</a> &copy; 2020 - {moment().format('YYYY')} </p>
         </div>
       </footer>

@@ -1,8 +1,19 @@
 body{
-  background-color: #1f1f1f;
+  background-color: #dadada;
   overflow-x: hidden;
   width: 100%;
 }
+
+.periodo-eleitoral-title{
+  margin-top: 20%;
+  font-size: 30px;
+}
+.periodo-eleitoral-text{
+  margin-bottom: 20%;
+  font-size: 15px;
+  width: 95%;
+}
+
 
 body > iframe{
   z-index: -1 !important;
@@ -10,7 +21,7 @@ body > iframe{
 
 .App {
   text-align: center;
-  color: #fff;
+  color: #1f1f1f;
   margin-top: -21px;
   padding: 10px;
   font-size: 8px;
@@ -68,13 +79,15 @@ body > iframe{
 /* Menu Navigation ------------------------------------------------------------------------------------ */
 .main-menu{
   width: 100%;
+  height: 100px;
   position: absolute;
-  top: 20px;
+  top: 0px;
   left: 0;
   display: inline-flex;
   align-items: center;
   z-index: 10;
   color: white;
+  background-color: #00128A;
 }
 .logo-menu{
   max-height: 90px;
@@ -135,7 +148,7 @@ body > iframe{
   width: 50px;
   border-radius: 9px;
   position: absolute;
-  top: -10px;
+  top: 20px;
   left: 93%;
   transition: 0.4s all;
 }
@@ -400,15 +413,14 @@ body > iframe{
 }
 
 .videoLiveInicio{
-  width: 46%;
-  margin-left: 40%;
-  height: 360px;
+  width: 95%;
+  height: 500px;
 }
 
 .videoLiveInicio>div>div>iframe{
   width: 100%;
   height: 90%;
-  margin-top: 15px;
+  margin-top: 55px;
 }
 
 
@@ -416,9 +428,15 @@ body > iframe{
   text-align: left;
   position: relative;
   left: 31px;
-  top: -420px;
   width: 95%;
+  margin: 10px;
 }
+
+#jmvplayer--pseudo_pip{
+  width: 100%;
+  height: 700px;
+}
+
 .title-curso-lancamento{
   font-family: Open Sans, sans-serif;
   font-size: 30px;
@@ -469,20 +487,31 @@ body > iframe{
 }
 
 .watchVideo{
-  width: 70% !important;
-  margin-left: 33%;
-  margin-top: 27%;
+  width: 100% !important;
+  height: 750px !important;
 }
 
+#facebook-player-dh8o5{
+  width: 100%;
+  height: 65% !important;
+}
 
 
 /* ----------------------------------- Cursos ------------------------------------------------ */
 .courses{
   width: 100%;
-  margin: 0 auto;
+  margin: 90px auto 50px auto;
   margin-left: -3%;
-  margin-top: -500px;
 }
+.eventos{
+  width: 100%;
+  margin: 0 auto 50px auto;
+}
+.mensagem{
+  width: 100%;
+  margin-left: -3%;
+}
+
 .course-featured{
   width: 80%;
   display: inline-flex;
@@ -617,9 +646,13 @@ body > iframe{
 .sectionColor > h1{
   color: white;
 }
+.divTitleSectionLive{
+  margin-top: 220px !important;
+  margin-bottom: -90px !important;
+}
 .divTitleSection{
   margin-left: 90px;
-  margin-top: 90px;
+  margin-top: 20px;
   display: inline-flex;
   width: 100%;
   align-items: flex-start;
@@ -636,6 +669,35 @@ body > iframe{
   font-size: 20px;
   font-weight: 700;
 }
+.titleLive{
+  margin: -20px 0px 0px -20px;
+  text-align: left;
+  font-size: 20px;
+  font-weight: 700;
+}
+.msgLive{
+  margin-top: 10px !important;
+  margin-left: -150px !important;
+}
+.circleLive{
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  margin-left: -130px;
+  margin-top: 16px;
+  border-radius: 50%;
+  animation-name: recorder;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  border: 1px solid red;
+}
+
+@keyframes recorder {
+  0% {background-color: red;}
+  50% {background-color: transparent;}
+  100% {background-color: red;}
+}
+
 .titleSection > img {
   margin-right: 15px;
   margin-bottom: -10px;
@@ -997,7 +1059,7 @@ body > iframe{
   align-items: center;
 }
 .Areas{
-  margin: 10px;
+  margin: 20px 10px;
   background-color: transparent;
   color: #000;
   font-size: 8px !important;
@@ -1031,7 +1093,7 @@ body > iframe{
   object-fit: cover;
 }
 .Areas > p{
-  color: #fff;
+  color: #1f1f1f;
   margin-top: 10px;
   opacity: 1;
   z-index: 1;
@@ -1438,7 +1500,7 @@ body > iframe{
 
 /* Manager Inputs */
 .input-login{
-  width: 50%;
+  width: 350px;
   margin-top: 5px;
   margin-bottom: 5px;
   height: 30px;
@@ -1488,7 +1550,7 @@ body > iframe{
   width: 85%;
 }
 .loginBox{
-  width: 40% !important;
+  width: 60% !important;
   height: 455px;
   flex: 1;
   width: 85%;
@@ -1990,7 +2052,6 @@ body > iframe{
   width: 53%;
   font-weight: 600;
   text-align: left;
-  margin-left: 23%;
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 1px solid #bababa;
@@ -2441,7 +2502,7 @@ body > iframe{
 /* Rodapé -------------------------------------------------------------------------------*/
 .footerSection{
   width: 30px;
-  background-color: #000;
+  background-color: #00128A;
   height: 50px;
   width: 100%;
   margin: 0 auto;
@@ -2455,37 +2516,42 @@ body > iframe{
 .footer-logo{
   margin-top: -100px;
   width: 30px;
-  background-color: #000;
-  height: 50px;
+  background-color: #00128A;
+  height: 130px;
   width: 100%;
-  margin-bottom: -20px;
   margin-left: -10px;
   padding-top: 5px;
 }
+.footer-logo>p{
+  width: 100%;
+  height: 40px;
+  background-color: #000942;
+  padding-top:100px;
+}
 .logoFooter{
-  margin-top: 15px;
-  margin-bottom: -15px;
-  width: 60px;
+  margin-top: 53px;
+  margin-left: 50%;
+  width: 360px;
+  height: 150px;
 }
 .logoFooter-City{
   width: 200px;
-  margin-top: 30px;
   margin-left: 20%;
 }
 .footerSeparator{
   margin-top: 50px;
 }
 .footer{
-  background-color: #000;
+  background-color: #003529;
   flex: 1;
   width: 103%;
   margin-top: 200px;
   margin-left: -10px;
   font-size: 13px;
-  color: #a7a7a7;
+  color: #fff;
 }
 footer > div > p > a {
-  color: #ff5000;
+  color: #fa7a3e;
 }
 
 /* Mobile  ----------------------------------------------------------------------- */
@@ -2509,13 +2575,28 @@ footer > div > p > a {
   }
   .logo-menu{
     top: 10px;
+    margin-left: 17%;
   }
   .left-menu{
+
     display: none;
   }
   .Areas:hover{
     transform: scale(1);
     box-shadow: 1px 1px rgba(0,0,0,0.1);
+  }
+  .curso-lancamento{
+    top: 25px;
+  }
+  #jmvplayer--pseudo_pip{
+    margin-top: 30px;
+    width: 80%;
+    height: 270px;
+  }
+  
+
+  .titleLive{
+    margin-left: -10px;
   }
   .backgroundHero{
     width: 110%;
@@ -2552,7 +2633,12 @@ footer > div > p > a {
     margin-left: 50px;
   }
   .courses{
-    margin-top: -400px;
+    margin-top: -200px;
+    width: 100%;
+    margin-left: -60px;
+  }
+  .eventos{
+    margin-top: 0px;
     width: 100%;
     margin-left: -60px;
   }
@@ -2563,8 +2649,13 @@ footer > div > p > a {
     width: 110%;
   }
   .watchVideo{
-    width: 95%;
+    width: 100% !important;
+    height: 200px !important;
+    margin-left: 0px;
+    margin-top: -80px;
   }
+
+
   .title-curso-lancamento{
     display: block;
   }
@@ -2585,7 +2676,6 @@ footer > div > p > a {
   
   .videoLiveInicio {
     width: 100%;
-    margin-left: -25%;
     height: 360px;
   }
   
@@ -2613,8 +2703,9 @@ footer > div > p > a {
     width: 250px;
   }
   .profile-items{
-    top: 10px;
+    top: 20px;
     left: 80%;
+    display: none;
   }
   .btn-dash{
     margin-left: 35px !important;
@@ -2669,7 +2760,7 @@ footer > div > p > a {
     margin-top: 180px;
   }
   .input-login{
-    width: 80%;
+    width: 255px;
     margin-left: -70px;
   }
   .title-modify{
@@ -2827,12 +2918,15 @@ footer > div > p > a {
   .footer{
     width: 112%;
   }
+  .logoFooter{
+    margin-left: 0%;
+  }
   .footer-logo {
-    height: 100px;
-    width: 76%;
-    margin-left: 30px;
+    height: 120px;
+    width: 100%;
   }
   .loginBox{
     width: 95% !important;
+    
   }  
 }
