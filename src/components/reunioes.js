@@ -63,6 +63,7 @@ import axios from 'axios'
     // Carregar Aulas
     const avisos = this.state.avisos 
   
+    
     const listAvisos = avisos.map((aviso) => 
         <li className="Areas type1" key={aviso.id}
         onClick={
