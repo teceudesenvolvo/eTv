@@ -75,7 +75,7 @@ function App() {
       
         <footer className="footer">
         <div className="footer-logo">
-          <p> <a href="https://eudesenvolvo.com/govtech" >e | Videos</a> &copy; 2020 - {moment().format('YYYY')} </p>
+          <p> <a href="https://eudesenvolvo.com/govtech" >Linked Tecnologias</a> &copy; 2020 - {moment().format('YYYY')} </p>
         </div>
       </footer>
     </div>
