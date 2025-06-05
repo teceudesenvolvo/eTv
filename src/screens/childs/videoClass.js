@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactPlayer from 'react-player'
 
 import axios from 'axios'
-import moment from 'moment';
 import {connect} from 'react-redux'
 
 // Componetes

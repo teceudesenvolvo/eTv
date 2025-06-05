@@ -41,8 +41,8 @@ class Liveatual extends React.Component {
   };
 
   fetchLiveStreams = (accessToken) => {
-    const API_KEY = 'AIzaSyAvzOdQzU-H_tneJBcbVnmO60dEzWMKhT4';
-    const PLAYLIST_ID = 'PLTrq6afnTQmGtNTPcf5fidnO6wF4ZtSgU';
+    // const API_KEY = 'AIzaSyAvzOdQzU-H_tneJBcbVnmO60dEzWMKhT4';
+    // const PLAYLIST_ID = 'PLTrq6afnTQmGtNTPcf5fidnO6wF4ZtSgU';
 
     axios.get('').then(response => {
       console.log(response); // Verificar os dados da resposta da API

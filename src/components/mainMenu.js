@@ -7,21 +7,19 @@ import { bindActionCreators } from 'redux';
 
 import firebase from 'firebase'
 
-import {FaSearch, FaBell, FaUserCircle, FaAngleDown} from 'react-icons/fa'
+import {FaSearch, FaBell, FaUserCircle} from 'react-icons/fa'
 
 
 // ITEMS MENU
 import logo from '../assets/images/logo-pacatuba.png'
-// import logo from '../assets/images/EUDESENVOLVO-10.png'
-// import profile from '../assets/images/profile.png'
 
 function goInicio() {
   window.location.href = "/"
 }
 
-function goSingup() {
-  window.location.href = "/cadastro"
-}
+// function goSingup() {
+//   window.location.href = "/cadastro"
+// }
 
 
 

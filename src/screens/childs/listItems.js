@@ -46,24 +46,18 @@ class ListItem extends Component{
   }
 
   loadAvisos = async () => {
-    // await axios.get(`/sessoes.json`)
-    // await axios.get(`/class.json`)
     await axios.get(``)
             .catch(err => console.log(err))
             .then(res => {
                 const avisoAll = res.data.items
                 let avisos = []
-                for(let key in avisoAll){
+                for(const key in avisoAll){
                     avisos.push({
                         ...avisoAll[key],
                         id: key
                     })
                 }
-             
-                // if(avisos.length > 4){
-                //   avisos.reverse()
-                //   avisos.length = 12;
-                // }
+            
 
                 
                 

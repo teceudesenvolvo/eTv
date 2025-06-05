@@ -9,18 +9,6 @@ import axios from 'axios';
 
 // Icones
 
-  //mudança de páginas
-  // function list(){
-  //   window.location.href = "/listItems"
-  // }
-  // function inicio(){
-  //   window.location.href = "/inicio"
-  // }
-  // function itemClick(){
-  //   window.location.href = "/item"
-  //   console.log(this.state.id)
-  // }
-
   class Avisos extends React.Component{
     
     constructor(props){

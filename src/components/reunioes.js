@@ -10,18 +10,6 @@ import axios from 'axios'
 
 // Icones
 
-  //mudança de páginas
-  // function list(){
-  //   window.location.href = "/listItems"
-  // }
-  // function inicio(){
-  //   window.location.href = "/inicio"
-  // }
-  // function itemClick(){
-  //   window.location.href = "/item"
-  //   console.log(this.state.id)
-  // }
-
   class Elas extends React.Component{
     
     constructor(props){
@@ -40,16 +28,13 @@ import axios from 'axios'
               .catch(err => console.log(err))
               .then(res => {
                   const avisoAll = res.data.items
-                  // consultas
-                  // visitantes = visitantes.filter(content => {
-                  //     return content.condominio.includes(this.state.email)
-                  // })
+                  console.log(res.data.items)
                   if(avisoAll.length > 4){
                     avisoAll.reverse()
                     avisoAll.length = 4;
                     this.setState({avisos: avisoAll})
                   }
-                  console.log('1')
+                  
               })
     }
 

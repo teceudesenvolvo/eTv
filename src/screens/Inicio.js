@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios'
 
 //Imagens
-import bgSite from '../assets/images/capa.png'
 
 // Icones
 
@@ -16,7 +15,6 @@ import bgSite from '../assets/images/capa.png'
 import MainMenu from '../components/mainMenu'
 import Sessoes from '../components/sections'
 import LiveAtual from '../components/liveAtual'
-import Lancamentos from '../components/launch'
 import Reunioes from '../components/reunioes'
 
 
