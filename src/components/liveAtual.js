@@ -2,101 +2,102 @@ import React from 'react';
 import '../App.css';
 
 import ReactPlayer from 'react-player';
-import { clickButton, LoggedOut } from '../store/actions/index'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { clickButton, LoggedOut } from '../store/actions/index';
 import axios from 'axios';
 
+// Câmara Pacatuba YouTube Channel
+const CHANNEL_ID = 'UCGXhrFTkevDVos5fFyl7HHg';
+const API_KEY = 'AIzaSyAvzOdQzU-H_tneJBcbVnmO60dEzWMKhT4';
+// Fallback: most recent known session (valid ID from channel)
+const FALLBACK_VIDEO_ID = '5bWnirEQwVU';
 
 class Liveatual extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tokenAccess: null,
-      liveStreamId: null,
-      playlistVideoId: null
+      videoId: FALLBACK_VIDEO_ID,
+      isLive: false,
+      isPlaying: false
     };
   }
 
-  // Autenticação
-  getAccessToken = async () => {
+  fetchLatestVideo = async () => {
     try {
-      const response = await axios.post(
-        'https://oauth2.googleapis.com/token',
-        {
-          client_id: '690193859816-clfb1alj3telks2pn44cpgrcte4unt79.apps.googleusercontent.com',
-          client_secret: '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',
-          refresh_token: '1//0hGQmkhgnpw65CgYIARAAGBESNwF-L9IrwfwjVYJddwl3Cl8-naCqEE79Yhj0XQusqSC1Et7FzTvENKvcz2yPh-Kn8EHs5SioyGI',
-          grant_type: 'refresh_token',
-          scope: 'https://www.googleapis.com/auth/youtube.readonly',
-          redirect_uri: 'https://tvcamara.cmaquiraz.ce.gov.br/'
-        }
+      // Try to find a current live stream first
+      const liveRes = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&eventType=live&type=video&key=${API_KEY}`
       );
-      const accessToken = response.data.access_token;
-      this.setState({ tokenAccess: accessToken });
-      this.fetchLiveStreams(accessToken);
+      if (liveRes.data.items && liveRes.data.items.length > 0) {
+        this.setState({ videoId: liveRes.data.items[0].id.videoId, isLive: true });
+        return;
+      }
+    } catch (err) {
+      console.warn('Live check failed, trying recent video:', err.message);
+    }
+    try {
+      // Fall back to most recent video
+      const recentRes = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&order=date&type=video&maxResults=1&key=${API_KEY}`
+      );
+      if (recentRes.data.items && recentRes.data.items.length > 0) {
+        this.setState({ videoId: recentRes.data.items[0].id.videoId, isLive: false });
+      }
     } catch (error) {
-      console.error("Erro ao obter o token de acesso:", error);
+      console.warn('Using fallback video:', error.message);
+      // Keep FALLBACK_VIDEO_ID already in state
     }
   };
 
-  fetchLiveStreams = (accessToken) => {
-    // const API_KEY = 'AIzaSyAvzOdQzU-H_tneJBcbVnmO60dEzWMKhT4';
-    // const PLAYLIST_ID = 'PLTrq6afnTQmGtNTPcf5fidnO6wF4ZtSgU';
-
-    axios.get('').then(response => {
-      console.log(response); // Verificar os dados da resposta da API
-      const items = response.data.items;
-      const liveStreamItem = items.find(item => item.snippet.title.toLowerCase().includes('ao vivo'));
-      if (liveStreamItem) {
-        const liveStreamId = liveStreamItem.snippet.resourceId.videoId;
-        this.setState({ liveStreamId });
-      } else {
-        const latestVideoId = items.length > 0 ? items[0].snippet.resourceId.videoId : null;
-        this.setState({ playlistVideoId: latestVideoId });
-      }
-    }).catch(error => {
-      console.error('Erro ao buscar itens da playlist:', error);
-    });
-  };
-
   componentDidMount() {
-    this.getAccessToken();
+    this.fetchLatestVideo();
   }
 
   render() {
-    const { liveStreamId, playlistVideoId } = this.state;
+    const { videoId, isLive, isPlaying } = this.state;
+    const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
     return (
-      <div>
-        <section>
-          <div className="backgroundLaunch">
-            
-            <div className="curso-lancamento">
-              
-              <div className='videoLiveInicio'>
-                {liveStreamId ? (
-                  <ReactPlayer
-                    className="watchVideo"
-                    scrolling="no"
-                    frameborder="0"
-                    url={`https://www.youtube.com/watch?v=${liveStreamId}`}
-                    controls='true'
-                  />
-                ) : (
-                  playlistVideoId && (
-                    <ReactPlayer
-                      className="watchVideo"
-                      scrolling="no"
-                      frameborder="0"
-                      url={`https://www.youtube.com/watch?v=${playlistVideoId}`}
-                      controls='true'
-                    />
-                  )
-                )}
+      <div className="hero-wrapper">
+        <section className={`hero-section ${isPlaying ? 'playing' : ''}`}>
+          {!isPlaying ? (
+            <div
+              className="hero-teaser"
+              style={{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.75)), url(${thumbnail})` }}
+            >
+              <div className="hero-content">
+                <div className="divTitleSectionLive-hero">
+                  <h1 className="titleLive-hero">Tv Câmara Pacatuba</h1>
+                  {isLive ? (
+                    <div className="live-badge">
+                      <div className="circleLive-hero"></div>
+                      <p className="msgLive-hero">Ao Vivo Agora</p>
+                    </div>
+                  ) : (
+                    <p className="msgLive-hero">Última Transmissão</p>
+                  )}
+                </div>
+                <button className="btn-watch-now" onClick={() => this.setState({ isPlaying: true })}>
+                  <span className="icon-play">▶</span> Assistir Agora
+                </button>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="video-player-container">
+              <ReactPlayer
+                className="watchVideo"
+                url={`https://www.youtube.com/watch?v=${videoId}`}
+                playing={true}
+                controls={true}
+                width="100%"
+                height="100%"
+              />
+              <button className="btn-close-player" onClick={() => this.setState({ isPlaying: false })}>
+                ✕ Fechar
+              </button>
+            </div>
+          )}
         </section>
       </div>
     );

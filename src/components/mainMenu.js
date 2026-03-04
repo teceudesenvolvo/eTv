@@ -7,11 +7,11 @@ import { bindActionCreators } from 'redux';
 
 import firebase from 'firebase'
 
-import {FaSearch, FaBell, FaUserCircle} from 'react-icons/fa'
+import { FaSearch, FaBell, FaUserCircle } from 'react-icons/fa'
 
 
 // ITEMS MENU
-import logo from '../assets/images/logo-pacatuba.png'
+const logo = 'https://www.cmpacatuba.ce.gov.br/imagens/logo.png';
 
 function goInicio() {
   window.location.href = "/"
@@ -31,7 +31,7 @@ function goInicio() {
 class MainMenu extends React.Component {
 
   componentDidMount() {
-    if(this.props.userId){
+    if (this.props.userId) {
       this.setState({
         profileOptions: 'Profile',
         profileOptions2: 'Sair'
@@ -39,10 +39,10 @@ class MainMenu extends React.Component {
     }
   }
 
-  
 
 
-  constructor(props){
+
+  constructor(props) {
     super(props)
     this.state = {
       profileOptions: 'Login',
@@ -62,15 +62,15 @@ class MainMenu extends React.Component {
     })
   }
 
-   goProfile = () => {
-    if(this.props.userId){
+  goProfile = () => {
+    if (this.props.userId) {
       window.location.href = "/dashboard"
-    }else{
+    } else {
       window.location.href = "/login"
     }
-    
+
   }
-  
+
 
 
   render() {
@@ -86,36 +86,19 @@ class MainMenu extends React.Component {
           <a className="itemsMenu">Class</a> */}
         </div>
 
-        <div>
-          <div className="left-menu">
-            <FaSearch className="search-icon"/>
-            <a href="/buscar" className="left-menu-item">Buscar</a>
-            <FaBell className="notification"/>
+        <div className="right-menu" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div className="left-menu" style={{ margin: 0, padding: 0 }}>
+            <FaSearch className="search-icon" />
+            <a href="/buscar" className="left-menu-item" style={{ marginLeft: '5px', marginRight: '15px' }}>Buscar</a>
+            <FaBell className="notification" />
           </div>
-          <div className="profile-items" >
+          <div className="profile-items" style={{ position: 'relative', top: 0, left: 0, margin: 0, width: 'auto' }}>
             {/* <img className="profile-icon" onClick={goProfile} src={profile} /> */}
-            <FaUserCircle className="profile-icon" onClick={this.goProfile} />
+            <FaUserCircle className="profile-icon" onClick={this.goProfile} style={{ margin: 0 }} />
             {/* <FaAngleDown/> */}
             <div className="dropMenu">
               <ul className="dropMenu-items">
-                {/* <li className="dropMenu-btn-li dropMenu-btn-li1" ><a className="dropMenu-btn" href='/#' onClick={
-                    () => {
-                      if(this.props.userId){
-                        this.goProfile()
-                      }else{
-                        this.logOut()
-                      }
-                    }
-                  }>{this.state.profileOptions}</a></li> */}
-                {/* <li className="dropMenu-btn-li dropMenu-btn-li2"><a className="dropMenu-btn" href='/#' onClick={
-                    () => {
-                      if(this.props.userId){
-                        this.logOut()
-                      }else{
-                        goSingup()
-                      }
-                    }
-                  }>{this.state.profileOptions2}</a></li> */}
+                {/* dropdown options commented out in original */}
               </ul>
             </div>
           </div>
@@ -127,7 +110,7 @@ class MainMenu extends React.Component {
 }
 
 const mapStateToProps = store => {
-  return{
+  return {
     email: store.user.email,
     userId: store.user.userId,
   }

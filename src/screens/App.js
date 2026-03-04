@@ -1,12 +1,7 @@
 import React from 'react';
 import '../App.css'
 
-import {Switch, Route} from 'react-router-dom'
-
-// Firebase
-// import firebaseConfig from './firebaseConfig'
-
-//Logomarca
+import { Switch, Route } from 'react-router-dom'
 
 //Início
 import Inicio from '../screens/Inicio'
@@ -34,52 +29,37 @@ import Payment from './Payment';
 import RecoverPay from './RecoverPay'
 import CancelPlan from './childs/CancelPlan'
 
-import moment from 'moment'
-
 function App() {
   return (
     <div className="App">
-        <Switch>
-          {/* Tela de Início */}
-          <Route exact path="/" component={Inicio}/>
-          <Route path="/home" component={Home}/>
-          <Route exact path="/login" component={Login}/>
-          <Route exact path="/cadastro" component={SingUp}/>
+      <Switch>
+        {/* Tela de Início */}
+        <Route exact path="/" component={Inicio} />
+        <Route path="/home" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/cadastro" component={SingUp} />
 
-          {/* Pagamento */}
-          <Route exact path="/pagamento" component={Payment}/>
-          <Route exact path="/alterarpagamento" component={RecoverPay}/>
-          <Route exact path="/cancelarassinatura" component={CancelPlan}/>
-          
-          {/* Telas Childs */}
-          <Route path="/buscar" component={ListItem}/>
-          <Route path="/esqueci-a-senha" component={ForgotPass}/>
+        {/* Pagamento */}
+        <Route exact path="/pagamento" component={Payment} />
+        <Route exact path="/alterarpagamento" component={RecoverPay} />
+        <Route exact path="/cancelarassinatura" component={CancelPlan} />
 
+        {/* Telas Childs */}
+        <Route path="/buscar" component={ListItem} />
+        <Route path="/esqueci-a-senha" component={ForgotPass} />
 
-          {/* Telas Manager */}
-          <Route path="/dashboard" component={Dashboard}/>
-          <Route exact path="/alterardados" component={ModifyDados}/>
+        {/* Telas Manager */}
+        <Route path="/dashboard" component={Dashboard} />
+        <Route exact path="/alterardados" component={ModifyDados} />
 
+        {/* Telas de Conteúdo */}
+        <Route path="/item" component={item} />
+        <Route path="/player" component={videoClass} />
 
-          {/* Telas Grandson */}
-          <Route path="/item" component={item}/>
-          <Route path="/player" component={videoClass}/>
-
-
-
-          {/* Telas Admin */}
-          <Route path="/adminMeuhallRoot" component={admin}/>
-
-
-        </Switch>
-      
-        <footer className="footer">
-        <div className="footer-logo">
-          <p> <a href="/" >Blu Tecnologias</a> &copy; 2020 - {moment().format('YYYY')} </p>
-        </div>
-      </footer>
+        {/* Telas Admin */}
+        <Route path="/adminMeuhallRoot" component={admin} />
+      </Switch>
     </div>
-    
   );
 }
 

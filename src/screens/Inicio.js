@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../App.css'
 
-import {connect} from 'react-redux'
-import {clickButton, LoggedIn} from '../store/actions/index'
+import { connect } from 'react-redux'
+import { clickButton, LoggedIn } from '../store/actions/index'
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios'
@@ -16,91 +16,93 @@ import MainMenu from '../components/mainMenu'
 import Sessoes from '../components/sections'
 import LiveAtual from '../components/liveAtual'
 import Reunioes from '../components/reunioes'
+import Vereadores from '../components/vereadores'
+import Footer from '../components/footer'
 
 
 
-  //mudança de páginas
-  
-  class Home extends Component{
-    constructor(props){
-      super(props)
-      this.state = {
-        userType: this.props.tipo,
-        ouvidoria: '',
-        botao:'Enviar',
-        title: '',
-        description: '',
-        teacher: '',
-        logoUrl: '',
-        idCourseDestaque: '',
-        cousesAll: '',
-      }
+//mudança de páginas
+
+class Home extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      userType: this.props.tipo,
+      ouvidoria: '',
+      botao: 'Enviar',
+      title: '',
+      description: '',
+      teacher: '',
+      logoUrl: '',
+      idCourseDestaque: '',
+      cousesAll: '',
     }
+  }
 
-    loadAllCourse = async () => {
-      // await axios.get(`courseFeacture.json`)
-      await axios.get(``)
-        .catch(err => console.log(err))
-        .then(res => {
-          this.setState({
-            cousesAll: res.data.items
-          })
-          // console.log(this.state.cousesAll)
-
-          this.loadCouseFeactures()
+  loadAllCourse = async () => {
+    // await axios.get(`courseFeacture.json`)
+    await axios.get(``)
+      .catch(err => console.log(err))
+      .then(res => {
+        this.setState({
+          cousesAll: res.data.items
         })
+        // console.log(this.state.cousesAll)
+
+        this.loadCouseFeactures()
+      })
+  }
+
+
+  loadCouseFeactures = async () => {
+    // await axios.get(`courses/${this.state.cousesAll}.json`)
+    await axios.get(``)
+      .catch(err => console.log(err))
+      .then(res => {
+        this.setState({
+          // title: res.data.title,
+          // subtitle: res.data.subtitle,
+          // description: res.data.description,
+          // teacher: res.data.teacher,
+          // logoUrl: res.data.logoUrl,
+          // imgUrl: res.data.bgUrl,
+          title: res.data.items[1].snippet.title,
+          description: res.data.items[1].snippet.description,
+          // imgUrl: 'https://www.cmpacatuba.ce.gov.br/fotos/260/Capa260.png',
+          imgUrl: '../../src/assets/images/capa.png',
+        })
+        // console.log(this.state.title)
+      })
+  }
+
+  componentDidMount() {
+    const loadPage = () => {
+      this.loadAllCourse()
     }
 
+    loadPage()
+  }
 
-    loadCouseFeactures = async () => {
-      // await axios.get(`courses/${this.state.cousesAll}.json`)
-      await axios.get(``)
-              .catch(err => console.log(err))
-              .then(res => {
-                this.setState({
-                  // title: res.data.title,
-                  // subtitle: res.data.subtitle,
-                  // description: res.data.description,
-                  // teacher: res.data.teacher,
-                  // logoUrl: res.data.logoUrl,
-                  // imgUrl: res.data.bgUrl,
-                  title: res.data.items[1].snippet.title,
-                  description: res.data.items[1].snippet.description,
-                  // imgUrl: 'https://www.cmpacatuba.ce.gov.br/fotos/260/Capa260.png',
-                  imgUrl: '../../src/assets/images/capa.png',
-                })
-                // console.log(this.state.title)
-              })
-    }
-  
-    componentDidMount() {
-      const loadPage = () => {
-        this.loadAllCourse()
-      }
 
-      loadPage()
-    }
+  render() {
 
-  
-  render(){  
-
-   const userType = () => {
-      if(this.props.tipo === 'sindico'){
+    const userType = () => {
+      if (this.props.tipo === 'sindico') {
         window.location.href = "/homeManager"
-      }else if(this.props.tipo === ''){
+      } else if (this.props.tipo === '') {
         window.location.href = "/"
-      }else{
+      } else {
 
       }
     }
-    
+
     return (
 
       <div className="App" onClick={
         userType()
       }>
-        <MainMenu/>
-        
+        <MainMenu />
+
         {/* <div className="backgroundHero">
           <p><img className="backgroundHero" src={bgSite} alt='background site'/></p>
           <div className="curso-destaque">
@@ -116,23 +118,17 @@ import Reunioes from '../components/reunioes'
                 /></p>
           </div>
         </div> */}
-         <div className="divTitleSection divTitleSectionLive">
-          <h1 className='titleSection titleLive'>Tv Câmara Pacatuba</h1>
-          <p className="newsSection msgLive">Estamos ao vivo</p>
-          <div className='circleLive'></div>
-        </div>
-
-        {/* <Lancamentos/>    */}
-        
-        <LiveAtual/>
+        <LiveAtual />
 
         <Sessoes />
 
-        {/* <Event /> */}
-
         <Reunioes />
 
-        
+        <Vereadores />
+
+        <Footer />
+
+
 
       </div>
     );
@@ -140,7 +136,7 @@ import Reunioes from '../components/reunioes'
 }
 
 const mapStateToProps = store => {
-  return{
+  return {
     // id: store.lembretes.id,
     // tipo: store.user.tipo,
     // nome: store.user.name,
@@ -149,7 +145,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({clickButton, LoggedIn}, dispatch);
+  return bindActionCreators({ clickButton, LoggedIn }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
