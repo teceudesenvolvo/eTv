@@ -1345,16 +1345,24 @@ body>iframe {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding: 10px;
+}
+
+.footer-section.institutional {
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .footer-logo {
-  height: 60px;
+  height: 80px;
   width: auto;
   object-fit: contain;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   align-self: flex-start;
-  /* Remove brightness filter to show original colors if needed, 
-     but keeping it clean for the dark background */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
 
@@ -3324,7 +3332,6 @@ body>iframe {
 .footer-logo {
   margin-top: -100px;
   width: 30px;
-  background-color: #00128A;
   height: 130px;
   width: 100%;
   margin-left: -10px;

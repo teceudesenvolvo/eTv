@@ -7,11 +7,9 @@ const Footer = () => {
         <footer className="footer">
             <div className="footer-container">
                 <div className="footer-section institutional">
-                    <h4 className="footer-title">Contato</h4>
-                    <ul className="footer-list">
-                        <li>CNPJ: 06.578.447/0001-29</li>
-                        <li> Legislatura: 2025/2028</li>
-                    </ul>
+                    <img src="https://www.cmpacatuba.ce.gov.br/imagens/logovazada.png" alt="Câmara Pacatuba Logo" className="footer-logo" />
+                    <p className="footer-cnpj">CNPJ: 06.578.447/0001-29</p>
+                    <p className="footer-legislature">Legislatura: 2025/2028</p>
                 </div>
 
                 <div className="footer-section contact">
