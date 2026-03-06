@@ -13,8 +13,8 @@ import '../../App.css'
 
 import { FaSearch, FaPlay } from 'react-icons/fa';
 
-const API_KEY = 'AIzaSyAvzOdQzU-H_tneJBcbVnmO60dEzWMKhT4';
-const CHANNEL_ID = 'UCGXhrFTkevDVos5fFyl7HHg';
+const API_KEY = 'AIzaSyCfZfFR3QzWmQWBYMgwmXx8n2EdyjdFi2s';
+const CHANNEL_ID = 'UCDIm8G-WBXBXbRpCNwwI_Wg';
 
 // function onClickHandler(){
 //     // const data = new FormData() 

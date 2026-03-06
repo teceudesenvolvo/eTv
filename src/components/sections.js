@@ -1,88 +1,90 @@
 import React from 'react';
 import '../App.css';
 
-import {connect} from 'react-redux';
-import {openAula, LoggedOut} from '../store/actions/index';
+import { connect } from 'react-redux';
+import { openAula, LoggedOut } from '../store/actions/index';
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
 
 // Icones
 
-  class Avisos extends React.Component{
-    
-    constructor(props){
-      super(props)
-      this.state = {
-        id: '566',
-        idCourse: '',
-        idCurso: '',
-        idAula: '',
-        tipo: 'aviso',
-        avisos: [],
-        carregar: 'Carregar Avisos',
-        btnLoad: "visitanteBtn"
-      }
-    }
+class Avisos extends React.Component {
 
-    loadAvisos = async () => {
-      await axios.get(``)
-              .catch(err => console.log(err))
-              .then(res => {
-                const avisoAll = res.data.items
-                let avisos = []
-                for(let key in avisoAll){
-                    avisos.push({
-                        ...avisoAll[key],
-                        id: key
-                    })
-                }
-                  avisos = avisos.filter(content => content.snippet.title.toUpperCase().includes('SESSÃO'))
-                  this.setState({avisos: avisos})
-                  if(avisos.length > 4){
-                    avisos.length = 4;
-                  }
-              })
+  constructor(props) {
+    super(props)
+    this.state = {
+      id: '566',
+      idCourse: '',
+      idCurso: '',
+      idAula: '',
+      tipo: 'aviso',
+      avisos: [],
+      carregar: 'Carregar Avisos',
+      btnLoad: "visitanteBtn"
     }
+  }
 
-    componentDidMount() {
-      const loadPage  = () => console.log(this.loadAvisos())
-      loadPage()
-    }
-  
-  render(){
+  loadAvisos = async () => {
+    await axios.get(``)
+      .catch(err => console.log(err))
+      .then(res => {
+        const avisoAll = res.data.items
+        let avisos = []
+        Object.keys(avisoAll || {}).forEach(k => {
+          avisos.push({
+            ...avisoAll[k],
+            id: k
+          });
+        });
+        avisos = avisos.filter(content => content.snippet.title.toUpperCase().includes('SESSÃO'))
+        this.setState({ avisos: avisos })
+        if (avisos.length > 4) {
+          avisos.length = 4;
+        }
+      })
+  }
+
+  componentDidMount() {
+    const loadPage = () => console.log(this.loadAvisos())
+    loadPage()
+  }
+
+  render() {
 
     // Carregar Aulas
-    const avisos = this.state.avisos 
-  
-    const listAvisos = avisos.map((aviso) => 
-        <li className="Areas type1" key={aviso.id}
+    const avisos = this.state.avisos
+
+    const listAvisos = avisos.map((aviso) =>
+      <li className="Areas type1" key={aviso.id}
         onClick={
-          () => {this.setState({idAula: aviso.contentDetails.videoId, idCurso: aviso.id, tipo: 'class'}, () => {
-            (this.props.openAula(this.state))
-            console.log(this.props.idAula)
-            (window.location.href = "/player")
-          })}
+          () => {
+            this.setState({ idAula: aviso.contentDetails.videoId, idCurso: aviso.id, tipo: 'class' }, () => {
+              (this.props.openAula(this.state))
+              console.log(this.props.idAula)
+                (window.location.href = "/player")
+            })
+          }
         }
-        >
-              <img src={aviso.snippet.thumbnails.high.url} alt='thurmb'/>
-              <p className='titleCard'> {aviso.snippet.title} </p>
-              {/* <p className='titleCard'> {aviso.etag} </p> */}
-              {/* <p className='txtCard'> {aviso.description} </p> */}
+      >
+        <img src={aviso.snippet.thumbnails.high.url} alt='thurmb' />
+        <p className='titleCard'> {aviso.snippet.title} </p>
+        {/* <p className='titleCard'> {aviso.etag} </p> */}
+        {/* <p className='txtCard'> {aviso.description} </p> */}
       </li>
     )
-  
+
     return (
-    <div>
+      <div>
         <section className="courses">
           <div className="divTitleSection">
             {/* <div className="item-separator"></div> */}
             <h1 className="titleSection">Sessões</h1>
             <p className="newsSection">Ultimas Sessões</p>
           </div>
-            <ul  className="listAreas2">
-              {listAvisos}
-            </ul>
+          <ul className="listAreas2">
+            {listAvisos}
+          </ul>
         </section>
 
       </div>
@@ -91,7 +93,7 @@ import axios from 'axios';
 }
 
 const mapStateToProps = store => {
-  return{
+  return {
     id: store.course.id,
     idAula: store.course.idAula,
     idCurso: store.course.idCurso,
@@ -103,7 +105,7 @@ const mapStateToProps = store => {
 
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({openAula, LoggedOut}, dispatch);
+  return bindActionCreators({ openAula, LoggedOut }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Avisos);
