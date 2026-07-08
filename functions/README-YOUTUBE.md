@@ -7,7 +7,7 @@ This module keeps a public YouTube playlist in sync with the channel uploads:
 
 - `youtubeChannelWebhook` — WebSub (PubSubHubbub) callback which receives near real-time notifications from YouTube and inserts new uploads into the public playlist.
 - `atualizarPlaylistYoutube` — HTTP endpoint that performs a manual backfill: lists all uploads and inserts missing videos into the public playlist.
-- `atualizarPlaylistYoutubeScheduled` — scheduled backfill every 30 minutes from 08:00 to 19:59 in `America/Fortaleza`.
+- `atualizarPlaylistYoutubeScheduled` — hourly scheduled search that checks recent channel videos and active live streams, then inserts missing items into the playlist.
 - `renovarWebhookYoutube` — HTTP endpoint that renews the YouTube WebSub subscription.
 - `renovarWebhookYoutubeScheduled` — renews that subscription every 3 days.
 - `listarVideosTvCamara` — public endpoint consumed by the React app to load the synchronized playlist.

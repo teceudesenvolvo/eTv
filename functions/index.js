@@ -72,7 +72,7 @@ exports.proxyCmpacatubaOpenData = youtubeRegion.https.onRequest(withCors(proxyCm
 exports.renovarWebhookYoutube = youtubeRegion.https.onRequest(withCors(renovarWebhookYoutube));
 
 exports.atualizarPlaylistYoutubeScheduled = youtubeRegion.pubsub
-    .schedule('*/30 8-19 * * *')
+    .schedule('0 * * * *')
     .timeZone('America/Fortaleza')
     .onRun(atualizarPlaylistYoutubeScheduled);
 

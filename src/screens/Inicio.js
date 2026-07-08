@@ -7,7 +7,7 @@ import { openAula } from '../store/actions/index';
 
 import MainMenu from '../components/mainMenu';
 import Footer from '../components/footer';
-import { fetchPlaylistItems, startPlaylistPolling, refreshPlaylistFromChannel } from '../services/youtubeService';
+import { fetchPlaylistItems, startPlaylistPolling } from '../services/youtubeService';
 import { fetchMaterias, fetchVereadores, fetchNoticias } from '../services/cmpacatubaService';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/splide.min.css';
@@ -103,40 +103,6 @@ class Inicio extends Component {
   playVideo = video => {
     this.props.openAula({ idAula: video.videoId, tipo: 'class' });
     window.location.href = '/player';
-  };
-
-  refreshPlaylist = async () => {
-    // manual refresh: uses the more expensive search endpoint under the hood,
-    // which is intended to be called sparingly
-    try {
-      const items = await refreshPlaylistFromChannel();
-      if (!items || items.length === 0) {
-        this.setState({ loading: false, error: 'Nenhum vídeo encontrado na playlist.' });
-        return;
-      }
-
-      const videos = items.map(item => ({
-        videoId: item.videoId,
-        title: item.snippet.title,
-        description: item.snippet.description,
-        publishedAt: item.publishedAt,
-        thumbnail:
-          item.snippet.thumbnails?.maxres?.url ||
-          item.snippet.thumbnails?.high?.url ||
-          item.snippet.thumbnails?.default?.url ||
-          '',
-      }));
-
-      this.setState({
-        videos,
-        featured: videos[0],
-        loading: false,
-        error: null,
-      });
-    } catch (err) {
-      console.error('Erro ao atualizar playlist (refresh):', err);
-      this.setState({ loading: false, error: 'Falha ao atualizar playlist.' });
-    }
   };
 
   getImageUrl = item => {
@@ -263,9 +229,6 @@ class Inicio extends Component {
               <div className="hero-cta-group">
                 <button className="btn-primary-hero" onClick={() => featured && this.playVideo(featured)}>
                   Assistir agora
-                </button>
-                <button className="btn-secondary-hero" onClick={this.refreshPlaylist}>
-                  Atualizar lista
                 </button>
               </div>
               {/* hero meta removed per design: no update notice */}

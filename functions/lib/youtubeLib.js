@@ -146,6 +146,45 @@ async function listAllPlaylistVideos(youtube, playlistId, publicShape) {
   return videos;
 }
 
+async function searchRecentChannelVideos(youtube, channelId) {
+  const searchRequests = [
+    youtube.search.list({
+      part: ['snippet'],
+      channelId,
+      maxResults: 25,
+      order: 'date',
+      type: ['video'],
+    }),
+    youtube.search.list({
+      part: ['snippet'],
+      channelId,
+      eventType: 'live',
+      maxResults: 10,
+      type: ['video'],
+    }),
+  ];
+
+  const responses = await Promise.all(searchRequests);
+  const videos = [];
+
+  for (const response of responses) {
+    for (const item of response.data.items || []) {
+      const videoId = item.id && item.id.videoId;
+      if (!videoId) {
+        continue;
+      }
+
+      videos.push({
+        videoId,
+        title: (item.snippet && item.snippet.title) || 'Novo video na TV Câmara',
+        publishedAt: item.snippet && item.snippet.publishedAt,
+      });
+    }
+  }
+
+  return Array.from(new Map(videos.map((video) => [video.videoId, video])).values());
+}
+
 async function addVideoToPlaylistIfMissing({ youtube, playlistId, videoId, knownPlaylistVideoIds }) {
   const db = admin.firestore();
   const cacheRef = db.collection('youtubePlaylistVideos').doc(videoId);
@@ -367,6 +406,49 @@ async function runAtualizarPlaylistYoutube() {
   };
 }
 
+async function runAtualizarPlaylistYoutubeRecentSearch() {
+  const channelId = requireConfigValue('channel_id');
+  const playlistId = requireConfigValue('playlist_id');
+  const youtube = await createYoutubeClient();
+
+  const [recentChannelVideos, currentPlaylistVideos] = await Promise.all([
+    searchRecentChannelVideos(youtube, channelId),
+    listAllPlaylistVideos(youtube, playlistId, false),
+  ]);
+
+  const currentIds = new Set(currentPlaylistVideos.map((video) => video.videoId));
+  const originalPlaylistVideosCount = currentIds.size;
+  let inserted = 0;
+
+  for (const video of recentChannelVideos) {
+    const wasInserted = await addVideoToPlaylistIfMissing({
+      youtube,
+      playlistId,
+      videoId: video.videoId,
+      knownPlaylistVideoIds: currentIds,
+    });
+
+    if (wasInserted) {
+      inserted += 1;
+      const notificationsCreated = await notifyUsersAboutNewYoutubeVideo({
+        videoId: video.videoId,
+        title: video.title,
+      });
+      console.log('Video recente adicionado na playlist pela busca agendada.', {
+        videoId: video.videoId,
+        notificationsCreated,
+      });
+    }
+  }
+
+  return {
+    searchedVideosCount: recentChannelVideos.length,
+    playlistVideosCount: originalPlaylistVideosCount,
+    finalPlaylistVideosCount: currentIds.size,
+    inserted,
+  };
+}
+
 async function atualizarPlaylistYoutube(request, response) {
   response.set('Access-Control-Allow-Origin', '*');
 
@@ -387,9 +469,9 @@ async function atualizarPlaylistYoutube(request, response) {
 }
 
 async function atualizarPlaylistYoutubeScheduled() {
-  console.log('Iniciando backfill da playlist do YouTube.');
-  const result = await runAtualizarPlaylistYoutube();
-  console.log('Backfill da playlist do YouTube concluido.', result);
+  console.log('Iniciando busca agendada por videos recentes do YouTube.');
+  const result = await runAtualizarPlaylistYoutubeRecentSearch();
+  console.log('Busca agendada por videos recentes do YouTube concluida.', result);
   return null;
 }
 
