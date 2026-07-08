@@ -10,6 +10,9 @@ const TV_CAMARA_VIDEOS_URL =
 const TV_CAMARA_SYNC_URL =
   process.env.REACT_APP_TV_CAMARA_SYNC_URL ||
   'https://southamerica-east1-cm-pacatuba.cloudfunctions.net/atualizarPlaylistYoutube'
+const TV_CAMARA_TRANSCRIPT_URL =
+  process.env.REACT_APP_TV_CAMARA_TRANSCRIPT_URL ||
+  'https://southamerica-east1-cm-pacatuba.cloudfunctions.net/obterTranscricaoYoutube'
 
 function normalizeServerVideo(video) {
   const thumbnailUrl =
@@ -158,6 +161,23 @@ export function startPlaylistPolling(onUpdate, intervalMs = 60000) {
   onUpdate()
   const timer = setInterval(onUpdate, intervalMs)
   return () => clearInterval(timer)
+}
+
+export async function fetchYoutubeTranscript(videoId) {
+  if (!videoId) {
+    return { status: 'pending', text: '' }
+  }
+
+  const response = await axios.get(TV_CAMARA_TRANSCRIPT_URL, {
+    params: {
+      videoId,
+      t: Date.now(),
+    },
+    headers: {
+      'Cache-Control': 'no-cache',
+    },
+  })
+  return response.data || { status: 'pending', text: '' }
 }
 
 // Convenience function: fetch merged playlist (using refresh) and persist it.

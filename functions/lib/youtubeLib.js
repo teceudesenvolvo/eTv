@@ -9,6 +9,9 @@ if (!admin.apps.length) {
 
 const REGION = 'southamerica-east1';
 const DEFAULT_PROJECT_ID = 'cm-pacatuba';
+const TRANSCRIPT_DELAY_MS = 3 * 60 * 60 * 1000;
+const TRANSCRIPT_RETRY_MS = 60 * 60 * 1000;
+const MAX_TRANSCRIPT_ATTEMPTS = 6;
 
 function normalizeConfigValue(key, value) {
   if (typeof value !== 'string') return value;
@@ -45,6 +48,32 @@ function getApiErrorMessage(error) {
 function normalizeArray(value) {
   if (!value) return [];
   return Array.isArray(value) ? value : [value];
+}
+
+function getTranscriptAvailableAfter() {
+  return admin.firestore.Timestamp.fromMillis(Date.now() + TRANSCRIPT_DELAY_MS);
+}
+
+function getTranscriptRetryAfter() {
+  return admin.firestore.Timestamp.fromMillis(Date.now() + TRANSCRIPT_RETRY_MS);
+}
+
+function normalizeCaptionText(rawText) {
+  return String(rawText || '')
+    .replace(/\r/g, '')
+    .split('\n')
+    .filter((line) => {
+      const trimmed = line.trim();
+      return trimmed &&
+        trimmed !== 'WEBVTT' &&
+        !/^\d+$/.test(trimmed) &&
+        !/^\d{1,2}:\d{2}:\d{2}[,.]\d{3}\s+-->\s+\d{1,2}:\d{2}:\d{2}[,.]\d{3}/.test(trimmed);
+    })
+    .map((line) => line.replace(/<[^>]+>/g, '').trim())
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 async function createYoutubeClient() {
@@ -223,6 +252,8 @@ async function addVideoToPlaylistIfMissing({ youtube, playlistId, videoId, known
     videoId,
     playlistId,
     addedAt: admin.firestore.FieldValue.serverTimestamp(),
+    transcriptStatus: 'pending',
+    transcriptAvailableAfter: getTranscriptAvailableAfter(),
   }, { merge: true });
 
   if (knownPlaylistVideoIds) {
@@ -230,6 +261,119 @@ async function addVideoToPlaylistIfMissing({ youtube, playlistId, videoId, known
   }
 
   return true;
+}
+
+function chooseCaptionTrack(captions) {
+  const items = captions || [];
+  return items.find((caption) => caption.snippet && caption.snippet.language === 'pt' && caption.snippet.trackKind !== 'ASR') ||
+    items.find((caption) => caption.snippet && caption.snippet.language === 'pt') ||
+    items.find((caption) => caption.snippet && /^pt-/i.test(caption.snippet.language || '')) ||
+    items.find((caption) => caption.snippet && caption.snippet.trackKind !== 'ASR') ||
+    items[0] ||
+    null;
+}
+
+async function downloadYoutubeTranscript({ youtube, videoId }) {
+  const captionsResponse = await youtube.captions.list({
+    part: ['snippet'],
+    videoId,
+  });
+  const caption = chooseCaptionTrack(captionsResponse.data.items || []);
+
+  if (!caption || !caption.id) {
+    return {
+      status: 'unavailable',
+      text: '',
+      language: null,
+      source: null,
+      error: 'Nenhuma legenda/transcrição disponível para este vídeo.',
+    };
+  }
+
+  const downloadResponse = await youtube.captions.download(
+    {
+      id: caption.id,
+      tfmt: 'srt',
+    },
+    {
+      responseType: 'text',
+    }
+  );
+  const text = normalizeCaptionText(downloadResponse.data);
+
+  if (!text) {
+    return {
+      status: 'unavailable',
+      text: '',
+      language: caption.snippet && caption.snippet.language,
+      source: caption.snippet && caption.snippet.trackKind,
+      error: 'A legenda foi encontrada, mas não retornou texto utilizável.',
+    };
+  }
+
+  return {
+    status: 'ready',
+    text,
+    language: caption.snippet && caption.snippet.language,
+    source: caption.snippet && caption.snippet.trackKind,
+    error: null,
+  };
+}
+
+async function processYoutubeTranscriptDoc(doc, youtube) {
+  const db = admin.firestore();
+  const data = doc.data() || {};
+  const videoId = data.videoId || doc.id;
+  const transcriptAttempts = Number(data.transcriptAttempts || 0) + 1;
+
+  await doc.ref.set({
+    transcriptStatus: 'processing',
+    transcriptAttempts,
+    transcriptProcessingStartedAt: admin.firestore.FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  try {
+    const transcript = await downloadYoutubeTranscript({ youtube, videoId });
+    const shouldRetry = transcript.status !== 'ready' && transcriptAttempts < MAX_TRANSCRIPT_ATTEMPTS;
+    const finalStatus = shouldRetry ? 'pending' : transcript.status;
+
+    await db.collection('youtubeVideoTranscripts').doc(videoId).set({
+      videoId,
+      playlistId: data.playlistId || null,
+      status: finalStatus,
+      text: transcript.text,
+      language: transcript.language,
+      source: transcript.source,
+      error: transcript.error,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    await doc.ref.set({
+      transcriptStatus: finalStatus,
+      transcriptAvailableAfter: shouldRetry ? getTranscriptRetryAfter() : null,
+      transcriptProcessedAt: admin.firestore.FieldValue.serverTimestamp(),
+      transcriptError: transcript.error || null,
+    }, { merge: true });
+
+    return transcript.status === 'ready';
+  } catch (err) {
+    const errorMessage = getApiErrorMessage(err);
+    console.error('Falha ao processar transcrição do YouTube.', { videoId, error: errorMessage });
+    await doc.ref.set({
+      transcriptStatus: 'failed',
+      transcriptError: errorMessage,
+      transcriptProcessedAt: admin.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+    await db.collection('youtubeVideoTranscripts').doc(videoId).set({
+      videoId,
+      playlistId: data.playlistId || null,
+      status: 'failed',
+      text: '',
+      error: errorMessage,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+    return false;
+  }
 }
 
 async function notifyUsersAboutNewYoutubeVideo({ videoId, title }) {
@@ -509,6 +653,83 @@ async function listarVideosTvCamara(request, response) {
   }
 }
 
+async function processarTranscricoesYoutubeScheduled() {
+  const db = admin.firestore();
+  const youtube = await createYoutubeClient();
+  const now = admin.firestore.Timestamp.now();
+  const snapshot = await db.collection('youtubePlaylistVideos')
+    .where('transcriptStatus', '==', 'pending')
+    .limit(25)
+    .get();
+
+  let processed = 0;
+  let ready = 0;
+
+  for (const doc of snapshot.docs) {
+    const data = doc.data() || {};
+    if (data.transcriptAvailableAfter && data.transcriptAvailableAfter.toMillis() > now.toMillis()) {
+      continue;
+    }
+
+    processed += 1;
+    const wasReady = await processYoutubeTranscriptDoc(doc, youtube);
+    if (wasReady) {
+      ready += 1;
+    }
+  }
+
+  console.log('Processamento agendado de transcrições concluído.', {
+    processed,
+    ready,
+  });
+  return null;
+}
+
+async function obterTranscricaoYoutube(request, response) {
+  response.set('Access-Control-Allow-Origin', '*');
+
+  if (request.method === 'OPTIONS') {
+    response.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    response.set('Access-Control-Allow-Headers', 'Content-Type');
+    response.status(204).send('');
+    return;
+  }
+
+  if (request.method !== 'GET') {
+    response.status(405).json({ ok: false, error: 'Method not allowed' });
+    return;
+  }
+
+  const videoId = String(request.query.videoId || '').trim();
+  if (!videoId) {
+    response.status(400).json({ ok: false, error: 'videoId é obrigatório.' });
+    return;
+  }
+
+  try {
+    const doc = await admin.firestore().collection('youtubeVideoTranscripts').doc(videoId).get();
+    if (!doc.exists) {
+      response.json({ ok: true, videoId, status: 'pending', text: '' });
+      return;
+    }
+
+    const data = doc.data() || {};
+    response.set('Cache-Control', 'public, max-age=300, s-maxage=300');
+    response.json({
+      ok: true,
+      videoId,
+      status: data.status || 'pending',
+      text: data.text || '',
+      language: data.language || null,
+      source: data.source || null,
+      error: data.error || null,
+    });
+  } catch (err) {
+    console.error('obterTranscricaoYoutube error:', getApiErrorMessage(err));
+    response.status(500).json({ ok: false, error: 'Falha ao carregar transcrição.' });
+  }
+}
+
 async function proxyCmpacatubaOpenData(request, response) {
   response.set('Access-Control-Allow-Origin', '*');
 
@@ -615,6 +836,8 @@ module.exports = {
   youtubeChannelWebhook,
   atualizarPlaylistYoutube,
   atualizarPlaylistYoutubeScheduled,
+  processarTranscricoesYoutubeScheduled,
   listarVideosTvCamara,
+  obterTranscricaoYoutube,
   renovarWebhookYoutube,
 };

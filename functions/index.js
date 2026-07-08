@@ -58,7 +58,9 @@ const {
     youtubeChannelWebhook,
     atualizarPlaylistYoutube,
     atualizarPlaylistYoutubeScheduled,
+    processarTranscricoesYoutubeScheduled,
     listarVideosTvCamara,
+    obterTranscricaoYoutube,
     proxyCmpacatubaOpenData,
     renovarWebhookYoutube,
 } = require('./lib/youtubeLib');
@@ -68,6 +70,7 @@ const youtubeRegion = functions.region('southamerica-east1');
 exports.youtubeChannelWebhook = youtubeRegion.https.onRequest(youtubeChannelWebhook);
 exports.atualizarPlaylistYoutube = youtubeRegion.https.onRequest(withCors(atualizarPlaylistYoutube));
 exports.listarVideosTvCamara = youtubeRegion.https.onRequest(withCors(listarVideosTvCamara));
+exports.obterTranscricaoYoutube = youtubeRegion.https.onRequest(withCors(obterTranscricaoYoutube));
 exports.proxyCmpacatubaOpenData = youtubeRegion.https.onRequest(withCors(proxyCmpacatubaOpenData));
 exports.renovarWebhookYoutube = youtubeRegion.https.onRequest(withCors(renovarWebhookYoutube));
 
@@ -80,3 +83,8 @@ exports.renovarWebhookYoutubeScheduled = youtubeRegion.pubsub
     .schedule('0 3 */3 * *')
     .timeZone('America/Fortaleza')
     .onRun(() => renovarWebhookYoutube());
+
+exports.processarTranscricoesYoutubeScheduled = youtubeRegion.pubsub
+    .schedule('20 * * * *')
+    .timeZone('America/Fortaleza')
+    .onRun(processarTranscricoesYoutubeScheduled);

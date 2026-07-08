@@ -14,6 +14,7 @@ import MainMenu from '../../components/mainMenu'
 import Footer from '../../components/footer'
 import '../../App.css'
 import { fetchSessoes, fetchMaterias, materiasForSession } from '../../services/cmpacatubaService'
+import { fetchYoutubeTranscript } from '../../services/youtubeService'
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || null;
 
@@ -52,6 +53,9 @@ class Gestao extends Component {
       sessionLoading: true,
       sessionError: null,
       activeModal: null,
+      transcript: null,
+      transcriptLoading: true,
+      transcriptError: null,
     }
   }
 
@@ -130,8 +134,27 @@ class Gestao extends Component {
     const loadPage = () => {
       this.loadAula()
       this.loadSessionData()
+      this.loadTranscript()
     }
     loadPage()
+  }
+
+  loadTranscript = async () => {
+    try {
+      const transcript = await fetchYoutubeTranscript(this.props.idAula);
+      this.setState({
+        transcript,
+        transcriptLoading: false,
+        transcriptError: null,
+      });
+    } catch (err) {
+      console.error('Erro ao carregar transcrição:', err);
+      this.setState({
+        transcript: null,
+        transcriptLoading: false,
+        transcriptError: 'Não foi possível carregar a transcrição.',
+      });
+    }
   }
 
   loadSessionData = async () => {
@@ -161,6 +184,9 @@ class Gestao extends Component {
       sessionLoading,
       sessionError,
       activeModal,
+      transcript,
+      transcriptLoading,
+      transcriptError,
     } = this.state;
 
     return (
@@ -196,6 +222,26 @@ class Gestao extends Component {
                 <span className="player-section-label">Resumo do vídeo</span>
                 <p>{description || 'Descrição não disponível para este vídeo.'}</p>
               </div>
+
+              <section className="player-data-section video-transcript-panel">
+                <span className="player-section-label">Transcrição</span>
+                {transcriptLoading && (
+                  <p>Preparando transcrição do vídeo...</p>
+                )}
+                {!transcriptLoading && transcript && transcript.status === 'ready' && transcript.text && (
+                  <p>{transcript.text}</p>
+                )}
+                {!transcriptLoading && transcript && transcript.status !== 'ready' && (
+                  <p>
+                    {transcript.status === 'pending'
+                      ? 'A transcrição será exibida quando estiver disponível.'
+                      : transcript.error || 'Transcrição indisponível para este vídeo.'}
+                  </p>
+                )}
+                {!transcriptLoading && transcriptError && (
+                  <p>{transcriptError}</p>
+                )}
+              </section>
             </section>
 
             <aside className="player-side-panel">

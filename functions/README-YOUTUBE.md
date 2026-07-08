@@ -8,6 +8,8 @@ This module keeps a public YouTube playlist in sync with the channel uploads:
 - `youtubeChannelWebhook` — WebSub (PubSubHubbub) callback which receives near real-time notifications from YouTube and inserts new uploads into the public playlist.
 - `atualizarPlaylistYoutube` — HTTP endpoint that performs a manual backfill: lists all uploads and inserts missing videos into the public playlist.
 - `atualizarPlaylistYoutubeScheduled` — hourly scheduled search that checks recent channel videos and active live streams, then inserts missing items into the playlist.
+- `processarTranscricoesYoutubeScheduled` — hourly job that processes videos queued for transcription after a 3-hour delay.
+- `obterTranscricaoYoutube` — public endpoint consumed by the React player to display a saved video transcript.
 - `renovarWebhookYoutube` — HTTP endpoint that renews the YouTube WebSub subscription.
 - `renovarWebhookYoutubeScheduled` — renews that subscription every 3 days.
 - `listarVideosTvCamara` — public endpoint consumed by the React app to load the synchronized playlist.
@@ -85,7 +87,7 @@ From the repository root:
 
 cd functions
 npm install
-firebase deploy --only functions:youtubeChannelWebhook,functions:atualizarPlaylistYoutube,functions:atualizarPlaylistYoutubeScheduled,functions:renovarWebhookYoutube,functions:renovarWebhookYoutubeScheduled,functions:listarVideosTvCamara
+firebase deploy --only functions:youtubeChannelWebhook,functions:atualizarPlaylistYoutube,functions:atualizarPlaylistYoutubeScheduled,functions:processarTranscricoesYoutubeScheduled,functions:renovarWebhookYoutube,functions:renovarWebhookYoutubeScheduled,functions:listarVideosTvCamara,functions:obterTranscricaoYoutube
 
 This repository is configured with `.firebaserc` default project `cm-pacatuba`.
 
