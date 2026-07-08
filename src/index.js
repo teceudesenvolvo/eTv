@@ -12,10 +12,8 @@ import {BrowserRouter} from 'react-router-dom'
 
 import * as serviceWorker from './serviceWorker';
 
-import axios from 'axios'
-// axios.defaults.baseURL = 'https://eu-desenvolvo-default-rtdb.firebaseio.com/'
-// axios.defaults.baseURL = 'https://e-tv-camara-default-rtdb.firebaseio.com'
-axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=10000&playlistId=PLmz0IMGXMgF996ottv9cmJQvZDzglOtXR&key=AIzaSyCfZfFR3QzWmQWBYMgwmXx8n2EdyjdFi2s'
+// YouTube playlist calls are now made explicitly via src/services/youtubeService.js
+// This avoids a single global baseURL and makes the app cleaner.
 
 ReactDOM.render(
 

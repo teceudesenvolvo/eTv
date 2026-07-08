@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { openAula, clickButton } from '../store/actions/index'
 import { bindActionCreators } from 'redux';
 
-import axios from 'axios'
+import { fetchPlaylistItems } from '../services/youtubeService'
 
 import { FaPlayCircle } from 'react-icons/fa'
 
@@ -40,18 +40,12 @@ class Class extends React.Component {
   }
 
   loadAvisos = async () => {
-    // Lista de itens
-    await axios.get(``)
-      .catch(err => console.log(err))
-      .then(res => {
-        const aulaAll = res.data.items
-        let aulas = []
-        Object.keys(aulaAll || {}).forEach(k => {
-          aulas.push({
-            ...aulaAll[k],
-            id: k
-          });
-        });
+    try {
+      const items = await fetchPlaylistItems()
+      let aulas = items.map(it => ({
+        id: it.videoId,
+        snippet: it.snippet,
+      }))
 
 
         // console.log('aula: ' + this.props.idAula)
@@ -68,12 +62,11 @@ class Class extends React.Component {
         // aulas = aulas.filter(aula => aula.idCourse === this.props.id)
 
 
-        if (aulas.length > 4) {
-          aulas.length = 6;
-          this.setState({ aulas: aulas })
-        }
-
-      })
+      if (aulas.length > 6) aulas.length = 6
+      this.setState({ aulas })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   componentDidMount() {

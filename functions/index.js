@@ -51,3 +51,9 @@ const express = require('express')
 exports.uploadImage = functions.https.onRequest((request, response) => {
     
 });
+
+// YouTube playlist sync functions
+const { youtubeChannelWebhook, atualizarPlaylistYoutube } = require('./lib/youtubeLib');
+
+exports.youtubeChannelWebhook = functions.https.onRequest(youtubeChannelWebhook);
+exports.atualizarPlaylistYoutube = functions.https.onRequest(atualizarPlaylistYoutube);

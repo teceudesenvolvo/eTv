@@ -34,7 +34,7 @@ const Footer = () => {
                     <div className="social-links">
                         <a href="https://www.instagram.com/camara_pacatuba/" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
                         <a href="https://www.facebook.com/tvcamarapacatuba/" target="_blank" rel="noopener noreferrer"><FaFacebook /></a>
-                        <a href="https://www.youtube.com/channel/UCGXhrFTkevDVos5fFyl7HHg" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
+                        <a href="https://www.youtube.com/@camarapacatuba" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
                     </div>
                 </div>
             </div>
