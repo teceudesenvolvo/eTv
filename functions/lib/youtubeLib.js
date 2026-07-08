@@ -8,7 +8,7 @@ if (!admin.apps.length) {
 }
 
 const REGION = 'southamerica-east1';
-const DEFAULT_PROJECT_ID = 'eu-desenvolvo';
+const DEFAULT_PROJECT_ID = 'cm-pacatuba';
 
 function getConfigValue(key, fallback) {
   const config = functions.config().youtube || {};
@@ -136,7 +136,19 @@ async function addVideoToPlaylistIfMissing({ youtube, playlistId, videoId, known
   const cacheRef = db.collection('youtubePlaylistVideos').doc(videoId);
   const cached = await cacheRef.get();
 
-  if (cached.exists || (knownPlaylistVideoIds && knownPlaylistVideoIds.has(videoId))) {
+  if (knownPlaylistVideoIds && knownPlaylistVideoIds.has(videoId)) {
+    if (!cached.exists) {
+      await cacheRef.set({
+        videoId,
+        playlistId,
+        addedAt: admin.firestore.FieldValue.serverTimestamp(),
+        verifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+    }
+    return false;
+  }
+
+  if (!knownPlaylistVideoIds && cached.exists) {
     return false;
   }
 
@@ -213,6 +225,8 @@ async function handleYoutubeFeedEntries(entries) {
   const channelId = requireConfigValue('channel_id');
   const playlistId = requireConfigValue('playlist_id');
   const youtube = await createYoutubeClient();
+  const currentPlaylistVideos = await listAllPlaylistVideos(youtube, playlistId, false);
+  const currentIds = new Set(currentPlaylistVideos.map((video) => video.videoId));
   let inserted = 0;
 
   for (const entry of entries) {
@@ -232,6 +246,7 @@ async function handleYoutubeFeedEntries(entries) {
       youtube,
       playlistId,
       videoId,
+      knownPlaylistVideoIds: currentIds,
     });
 
     if (wasInserted) {
@@ -302,6 +317,7 @@ async function runAtualizarPlaylistYoutube() {
   ]);
 
   const currentIds = new Set(currentPlaylistVideos.map((video) => video.videoId));
+  const originalPlaylistVideosCount = currentIds.size;
   const uniqueChannelVideos = Array.from(
     new Map(channelUploads.map((video) => [video.videoId, video])).values()
   );
@@ -330,7 +346,8 @@ async function runAtualizarPlaylistYoutube() {
 
   return {
     channelVideosCount: uniqueChannelVideos.length,
-    playlistVideosCount: currentIds.size,
+    playlistVideosCount: originalPlaylistVideosCount,
+    finalPlaylistVideosCount: currentIds.size,
     inserted,
   };
 }

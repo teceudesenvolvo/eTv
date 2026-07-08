@@ -8,7 +8,9 @@ import { openAula } from '../store/actions/index';
 import MainMenu from '../components/mainMenu';
 import Footer from '../components/footer';
 import { fetchPlaylistItems, startPlaylistPolling, refreshPlaylistFromChannel } from '../services/youtubeService';
-import { fetchSessoes, fetchMaterias, materiasForSession } from '../services/cmpacatubaService';
+import { fetchMaterias, fetchVereadores, fetchNoticias } from '../services/cmpacatubaService';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/splide/dist/css/splide.min.css';
 
 class Inicio extends Component {
   constructor(props) {
@@ -19,15 +21,18 @@ class Inicio extends Component {
       loading: true,
       error: null,
       searchTerm: '',
-      sessions: [],
       materias: [],
-      sessionError: null,
+      vereadores: [],
+      noticias: [],
+      civicError: null,
+      activeModal: null,
     };
   }
 
   componentDidMount() {
     this.playlistCleanup = startPlaylistPolling(this.updatePlaylist, 60000);
     this.loadSessionData();
+    this.loadCivicData();
   }
 
   componentWillUnmount() {
@@ -70,15 +75,28 @@ class Inicio extends Component {
 
   loadSessionData = async () => {
     try {
-      const [sessions, materias] = await Promise.all([fetchSessoes(), fetchMaterias()]);
+      const materias = await fetchMaterias();
       this.setState({
-        sessions,
         materias,
-        sessionError: null,
+        civicError: null,
       });
     } catch (err) {
-      console.error('Erro ao carregar dados de sessões:', err);
-      this.setState({ sessionError: 'Falha ao carregar informações de sessão.' });
+      console.error('Erro ao carregar matérias:', err);
+      this.setState({ civicError: 'Falha ao carregar dados públicos da Câmara.' });
+    }
+  };
+
+  loadCivicData = async () => {
+    try {
+      const [vereadores, noticias] = await Promise.all([fetchVereadores(), fetchNoticias()]);
+      this.setState({
+        vereadores,
+        noticias,
+        civicError: null,
+      });
+    } catch (err) {
+      console.error('Erro ao carregar vereadores/notícias:', err);
+      this.setState({ civicError: 'Falha ao carregar dados públicos da Câmara.' });
     }
   };
 
@@ -121,12 +139,110 @@ class Inicio extends Component {
     }
   };
 
+  getImageUrl = item => {
+    if (!item) return '';
+    const image =
+      item.Foto ||
+      item.Imagem ||
+      item.ImagemCapa ||
+      item.Capa ||
+      item.CapaURL ||
+      item.Thumb ||
+      item.UrlImagem ||
+      item.foto ||
+      item.imagem ||
+      '';
+
+    if (!image || String(image).startsWith('http')) return image;
+    return `https://www.cmpacatuba.ce.gov.br/${String(image).replace(/^\/+/, '')}`;
+  };
+
+  getNewsTitle = noticia => {
+    return noticia.Titulo || noticia.Nome || noticia.Chamada || noticia.Descricao || 'Notícia da Câmara';
+  };
+
+  getNewsSummary = noticia => {
+    const rawSummary = noticia.Subtitulo || noticia.Resumo || noticia.Descricao || noticia.Texto || '';
+    return String(rawSummary).replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  };
+
+  openNewsModal = noticia => {
+    this.setState({
+      activeModal: {
+        kicker: noticia.Categoria || 'Notícia',
+        title: this.getNewsTitle(noticia),
+        date: this.formatDate(noticia.Data || noticia.DataCadastro),
+        body: this.getNewsSummary(noticia) || 'Sem descrição cadastrada para esta notícia.',
+        url: noticia.Url,
+      },
+    });
+  };
+
+  getMateriaTitle = materia => {
+    const tipo = materia.Tipo || materia.Especie || 'Matéria';
+    const numero = materia.Numero ? ` ${materia.Numero}` : '';
+    const exercicio = materia.Exercicio ? `/${materia.Exercicio}` : '';
+    return `${tipo}${numero}${exercicio}`.trim();
+  };
+
+  getMateriaSummary = materia => {
+    const rawSummary = materia.Ementa || materia.Descricao || materia.Assunto || materia.Texto || '';
+    return String(rawSummary).replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  };
+
+  openMateriaModal = materia => {
+    this.setState({
+      activeModal: {
+        kicker: materia.Tipo || 'Matéria legislativa',
+        title: this.getMateriaTitle(materia),
+        date: this.formatDate(materia.Data || materia.DataCadastro),
+        body: this.getMateriaSummary(materia) || 'Sem ementa cadastrada para esta matéria.',
+        url: materia.Url,
+      },
+    });
+  };
+
+  closeModal = () => {
+    this.setState({ activeModal: null });
+  };
+
+  formatDate = date => {
+    if (!date) return '';
+    const parsedDate = new Date(date);
+    if (Number.isNaN(parsedDate.getTime())) return String(date);
+    return parsedDate.toLocaleDateString('pt-BR');
+  };
+
   render() {
-    const { featured, videos, loading, error, searchTerm, sessionError } = this.state;
+    const { featured, videos, loading, error, searchTerm, materias, vereadores, noticias, civicError, activeModal } = this.state;
     const filteredVideos = videos.filter(video =>
       video.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
+    const carouselOptions = {
+      type: 'loop',
+      perMove: 1,
+      gap: '22px',
+      autoplay: true,
+      interval: 4200,
+      pauseOnHover: true,
+      arrows: true,
+      pagination: true,
+      breakpoints: {
+        1200: { perPage: 3 },
+        768: { perPage: 2 },
+        560: { perPage: 1 },
+      },
+    };
+    const vereadorOptions = {
+      ...carouselOptions,
+      perPage: 5,
+      breakpoints: {
+        1200: { perPage: 4 },
+        900: { perPage: 3 },
+        640: { perPage: 2 },
+        420: { perPage: 1 },
+      },
+    };
     return (
       <div className="streaming-home-page">
         <MainMenu />
@@ -157,49 +273,103 @@ class Inicio extends Component {
           </div>
         </section>
 
-        {this.state.sessions.length > 0 && !sessionError && (
-          <section className="session-info-row">
-            <div className="container-modern">
-              <div className="section-header-row">
-                <div>
-                  <h2>Informações da sessão</h2>
-                  <p>Dados oficiais das sessões e matérias conforme a API da Câmara.</p>
-                </div>
+        <section className="civic-glass-section vereadores-home-section">
+          <div className="container-modern">
+            <div className="section-header-row glass-section-header">
+              <div>
+                <span className="section-kicker">Legislativo</span>
+                <h2>Vereadores</h2>
+                <p>Parlamentares da Câmara Municipal de Pacatuba.</p>
               </div>
+            </div>
 
-              <div className="session-card-grid">
-                {this.state.sessions.slice(0, 2).map(session => (
-                  <article key={session.Id} className="session-card-modern">
-                    <div className="session-card-body">
-                      <span className="session-type">{session.Tipo}</span>
-                      <h3>{`Sessão ${session.Numero}`}</h3>
-                      <p>{new Date(session.Data).toLocaleDateString('pt-BR')}</p>
-                      <p>{session.Expediente || 'Sem expediente cadastrado'}</p>
-                      <a href={session.Url} target="_blank" rel="noopener noreferrer">Ver sessão</a>
+            {civicError && <div className="home-error">{civicError}</div>}
+            {vereadores.length > 0 && (
+              <Splide options={vereadorOptions} className="glass-carousel vereadores-home-carousel">
+                {vereadores.map(vereador => (
+                  <SplideSlide key={vereador.Id || vereador.NomeParlamentar || vereador.Nome}>
+                    <article
+                      className="glass-person-card"
+                      onClick={() => vereador.Url && window.open(vereador.Url, '_blank')}
+                    >
+                      <div className="glass-person-photo">
+                        <img src={this.getImageUrl(vereador)} alt={vereador.NomeParlamentar || vereador.Nome} loading="lazy" />
+                      </div>
+                      <div className="glass-person-info">
+                        <h3>{vereador.NomeParlamentar || vereador.Nome}</h3>
+                        <p>{vereador.Cargo || 'Vereador(a)'}</p>
+                        <span>{vereador.Partido || vereador.SiglaPartido || ''}</span>
+                      </div>
+                    </article>
+                  </SplideSlide>
+                ))}
+              </Splide>
+            )}
+          </div>
+        </section>
+
+        <section className="civic-glass-section news-home-section">
+          <div className="container-modern">
+            <div className="section-header-row glass-section-header">
+              <div>
+                <span className="section-kicker">Acontece na Câmara</span>
+                <h2>Notícias</h2>
+                <p>Atualizações oficiais em destaque.</p>
+              </div>
+            </div>
+
+            {noticias.length > 0 && (
+              <div className="news-card-grid">
+                {noticias.slice(0, 4).map(noticia => (
+                  <article className="glass-news-card" key={noticia.Id || this.getNewsTitle(noticia)}>
+                    <div className="glass-news-image">
+                      {this.getImageUrl(noticia) ? (
+                        <img src={this.getImageUrl(noticia)} alt={this.getNewsTitle(noticia)} loading="lazy" />
+                      ) : (
+                        <div className="news-image-placeholder">CM</div>
+                      )}
+                    </div>
+                    <div className="glass-news-content">
+                      <span>{this.formatDate(noticia.Data || noticia.DataCadastro)}</span>
+                      <h3>{this.getNewsTitle(noticia)}</h3>
+                      <p>{this.getNewsSummary(noticia) || 'Sem descrição cadastrada.'}</p>
+                      <button type="button" className="news-read-button" onClick={() => this.openNewsModal(noticia)}>
+                        Ler notícia
+                      </button>
                     </div>
                   </article>
                 ))}
               </div>
+            )}
+          </div>
+        </section>
 
-              {this.state.sessions.length > 0 && (
-                <div className="materias-list-row">
-                  <h3>Matérias da última sessão</h3>
-                  {materiasForSession(this.state.sessions[0], this.state.materias).length > 0 ? (
-                    <ul className="materias-list">
-                      {materiasForSession(this.state.sessions[0], this.state.materias).map(materia => (
-                        <li key={materia.Id} className="materia-item">
-                          <a href={materia.Url} target="_blank" rel="noopener noreferrer">
-                            {`${materia.Tipo} ${materia.Numero}/${materia.Exercicio}`}
-                          </a>
-                          <p>{materia.Ementa}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>Nenhuma matéria encontrada para esta sessão.</p>
-                  )}
+        {materias.length > 0 && (
+          <section className="civic-glass-section materias-home-section">
+            <div className="container-modern">
+              <div className="section-header-row glass-section-header">
+                <div>
+                  <span className="section-kicker">Legislativo em pauta</span>
+                  <h2>Matérias recentes</h2>
+                  <p>Proposições e documentos oficiais organizados para leitura rápida.</p>
                 </div>
-              )}
+              </div>
+
+              <div className="matter-grid-modern">
+                {materias.slice(0, 8).map(materia => (
+                  <article key={materia.Id || `${materia.Numero}-${materia.Exercicio}`} className="matter-card-modern">
+                    <span className="matter-card-kicker">{materia.Tipo || 'Matéria'}</span>
+                    <h3>{this.getMateriaTitle(materia)}</h3>
+                    <p>{this.getMateriaSummary(materia) || 'Sem ementa cadastrada.'}</p>
+                    <div className="matter-card-footer">
+                      <span>{this.formatDate(materia.Data || materia.DataCadastro)}</span>
+                      <button type="button" onClick={() => this.openMateriaModal(materia)}>
+                        Ler ementa
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </section>
         )}
@@ -246,6 +416,25 @@ class Inicio extends Component {
         </section>
 
         <Footer />
+
+        {activeModal && (
+          <div className="content-modal-overlay" role="presentation" onClick={this.closeModal}>
+            <div className="content-modal-card" role="dialog" aria-modal="true" aria-labelledby="content-modal-title" onClick={event => event.stopPropagation()}>
+              <button type="button" className="content-modal-close" aria-label="Fechar" onClick={this.closeModal}>
+                ×
+              </button>
+              <span className="content-modal-kicker">{activeModal.kicker}</span>
+              <h2 id="content-modal-title">{activeModal.title}</h2>
+              {activeModal.date && <time>{activeModal.date}</time>}
+              <p>{activeModal.body}</p>
+              {activeModal.url && (
+                <a href={activeModal.url} target="_blank" rel="noopener noreferrer">
+                  Abrir no portal
+                </a>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }

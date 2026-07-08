@@ -28,7 +28,7 @@ Set the following environment variables / functions config before deploying (do 
 - `YOUTUBE_CHANNEL_ID` — the channel id (ex: UCDIm8G-...)
 - `YOUTUBE_PLAYLIST_ID` — the public playlist id to maintain
 - `YOUTUBE_WEBHOOK_VERIFY_TOKEN` — random token used to verify WebSub subscribes
-- `YOUTUBE_WEBHOOK_CALLBACK_URL` — optional explicit callback URL. If omitted, the function uses `https://southamerica-east1-eu-desenvolvo.cloudfunctions.net/youtubeChannelWebhook`
+- `YOUTUBE_WEBHOOK_CALLBACK_URL` — optional explicit callback URL. If omitted, the function uses `https://southamerica-east1-cm-pacatuba.cloudfunctions.net/youtubeChannelWebhook`
 
 Examples (Firebase CLI)
 
@@ -45,11 +45,11 @@ export YOUTUBE_CHANNEL_ID=...
 export YOUTUBE_PLAYLIST_ID=...
 export YOUTUBE_WEBHOOK_VERIFY_TOKEN=...
 
-If your normal Firebase CLI auth is invalid, you can generate a service account token with the provided `functions/eu-desenvolvo.json` key:
+If your normal Firebase CLI auth is invalid, you can generate a service account token with a Firebase service account key:
 
 cd functions
 TOKEN=$(./scripts/get-firebase-sa-token.sh)
-npx firebase-tools@9.2.0 --project=eu-desenvolvo --token "$TOKEN" functions:config:set youtube.client_id="YOUR_CLIENT_ID" youtube.client_secret="YOUR_CLIENT_SECRET" youtube.refresh_token="YOUR_REFRESH_TOKEN" youtube.channel_id="YOUR_CHANNEL_ID" youtube.playlist_id="YOUR_PLAYLIST_ID" youtube.webhook_verify_token="SOME_RANDOM"
+npx firebase-tools@9.2.0 --project=cm-pacatuba --token "$TOKEN" functions:config:set youtube.client_id="YOUR_CLIENT_ID" youtube.client_secret="YOUR_CLIENT_SECRET" youtube.refresh_token="YOUR_REFRESH_TOKEN" youtube.channel_id="YOUR_CHANNEL_ID" youtube.playlist_id="YOUR_PLAYLIST_ID" youtube.webhook_verify_token="SOME_RANDOM"
 
 The `youtube.webhook_verify_token` is not provided by Google — you choose a secret value yourself, such as `my-webhook-secret-123`, and use that same value when subscribing the callback URL to YouTube's PubSubHubbub.
 
@@ -87,7 +87,7 @@ cd functions
 npm install
 firebase deploy --only functions:youtubeChannelWebhook,functions:atualizarPlaylistYoutube,functions:atualizarPlaylistYoutubeScheduled,functions:renovarWebhookYoutube,functions:renovarWebhookYoutubeScheduled,functions:listarVideosTvCamara
 
-This repository is configured with `.firebaserc` default project `eu-desenvolvo`.
+This repository is configured with `.firebaserc` default project `cm-pacatuba`.
 
 Troubleshooting redirect_uri_mismatch
 -------------------------------------
@@ -126,8 +126,8 @@ After deploy
 Run the manual endpoints once after configuring credentials:
 
 ```bash
-curl https://southamerica-east1-eu-desenvolvo.cloudfunctions.net/renovarWebhookYoutube
-curl https://southamerica-east1-eu-desenvolvo.cloudfunctions.net/atualizarPlaylistYoutube
+curl https://southamerica-east1-cm-pacatuba.cloudfunctions.net/renovarWebhookYoutube
+curl https://southamerica-east1-cm-pacatuba.cloudfunctions.net/atualizarPlaylistYoutube
 ```
 
 Notes

@@ -3,10 +3,7 @@ const cors = require('cors')({origin: true})
 const fs = require('fs')
 const uuid = require('uuid-v4')
 const {Storage} = require('@google-cloud/storage')
-const storage = new Storage({
-    projectId: 'eu-desenvolvo',
-    keyFile: 'eu-desenvolvo.json'
-})
+const storage = new Storage()
 
 // Dep. Express
 const bodyParser = require('body-parser')

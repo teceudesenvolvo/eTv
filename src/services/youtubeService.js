@@ -1,9 +1,42 @@
 import axios from 'axios'
 
-const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || null;
+const API_KEY = 'AIzaSyCfZfFR3QzWmQWBYMgwmXx8n2EdyjdFi2s'
 const CHANNEL_ID = 'UCDIm8G-WBXBXbRpCNwwI_Wg'
 const BASE_URL = 'https://www.googleapis.com/youtube/v3'
 const MAX_RESULTS = 50
+const TV_CAMARA_VIDEOS_URL =
+  process.env.REACT_APP_TV_CAMARA_VIDEOS_URL ||
+  'https://southamerica-east1-cm-pacatuba.cloudfunctions.net/listarVideosTvCamara'
+const TV_CAMARA_SYNC_URL =
+  process.env.REACT_APP_TV_CAMARA_SYNC_URL ||
+  'https://southamerica-east1-cm-pacatuba.cloudfunctions.net/atualizarPlaylistYoutube'
+
+function normalizeServerVideo(video) {
+  const thumbnailUrl =
+    video.thumbnailUrl ||
+    video.snippet?.thumbnails?.maxres?.url ||
+    video.snippet?.thumbnails?.standard?.url ||
+    video.snippet?.thumbnails?.high?.url ||
+    video.snippet?.thumbnails?.medium?.url ||
+    video.snippet?.thumbnails?.default?.url ||
+    ''
+
+  return {
+    videoId: video.videoId,
+    publishedAt: video.publishedAt || null,
+    snippet: {
+      ...(video.snippet || {}),
+      title: video.title || video.snippet?.title || 'TV Câmara',
+      description: video.description || video.snippet?.description || '',
+      publishedAt: video.publishedAt || video.snippet?.publishedAt || null,
+      thumbnails: {
+        ...(video.snippet?.thumbnails || {}),
+        high: video.snippet?.thumbnails?.high || { url: thumbnailUrl },
+        default: video.snippet?.thumbnails?.default || { url: thumbnailUrl },
+      },
+    },
+  }
+}
 
 async function fetchChannelVideos() {
   const response = await axios.get(`${BASE_URL}/search`, {
@@ -19,7 +52,24 @@ async function fetchChannelVideos() {
   return response.data.items || []
 }
 
-export async function fetchPlaylistItems() {
+export async function fetchPlaylistItems(options = {}) {
+  const requestOptions = options.noCache
+    ? {
+        params: { t: Date.now() },
+        headers: { 'Cache-Control': 'no-cache' },
+      }
+    : undefined
+
+  try {
+    const serverResponse = await axios.get(TV_CAMARA_VIDEOS_URL, requestOptions)
+    const serverVideos = serverResponse.data?.videos || []
+    if (serverResponse.data?.ok && serverVideos.length > 0) {
+      return serverVideos.map(normalizeServerVideo)
+    }
+  } catch (err) {
+    console.warn('Server playlist fetch failed, falling back to public YouTube API:', err.message)
+  }
+
   try {
     const playlistResponse = await axios.get(`${BASE_URL}/playlistItems`, {
       params: {
@@ -54,6 +104,13 @@ export async function fetchPlaylistItems() {
 // and merge them with the playlist. Call this only when you want to refresh the
 // playlist from recent uploads (e.g. manual refresh button or low-frequency cron).
 export async function refreshPlaylistFromChannel() {
+  try {
+    await axios.get(TV_CAMARA_SYNC_URL)
+    return fetchPlaylistItems({ noCache: true })
+  } catch (err) {
+    console.warn('Server playlist sync failed, falling back to client refresh:', err.message)
+  }
+
   // fetch playlist items first
   const playlist = await fetchPlaylistItems()
 
@@ -132,7 +189,4 @@ export async function updatePlaylistOnServer(endpointUrl) {
 }
 
 
-// axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=10000&playlistId=PLmz0IMGXMgF996ottv9cmJQvZDzglOtXR&key=<YOUR_API_KEY>'
-
-// YouTube OAuth credentials are stored securely in Firebase configuration.
-// Do not commit any OAuth client IDs, secrets, API keys, or refresh tokens to source control.
+// axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=10000&playlistId=PLmz0IMGXMgF996ottv9cmJQvZDzglOtXR&key=AIzaSyCfZfFR3QzWmQWBYMgwmXx8n2EdyjdFi2s'

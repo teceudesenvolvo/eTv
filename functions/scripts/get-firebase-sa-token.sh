@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-KEYFILE="${1:-$SCRIPT_DIR/../eu-desenvolvo.json}"
+KEYFILE="${1:-$SCRIPT_DIR/../cm-pacatuba.json}"
 if [[ ! -f "$KEYFILE" ]]; then
   echo "Error: service account key not found at $KEYFILE" >&2
   exit 1
