@@ -43,7 +43,7 @@ class Inicio extends Component {
 
   updatePlaylist = async () => {
     try {
-      const items = await fetchPlaylistItems();
+      const items = await fetchPlaylistItems({ noCache: true });
       if (!items || items.length === 0) {
         this.setState({ loading: false, error: 'Nenhum vídeo encontrado na playlist.' });
         return;

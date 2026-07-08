@@ -2578,7 +2578,7 @@ body>iframe {
   }
 
   .player-side-panel {
-    position: static;
+    position: relative !important;
   }
 
   .home-hero-copy { padding: 18px; border-radius: 12px; }
@@ -2632,7 +2632,6 @@ body>iframe {
 }
 
 .player-side-panel {
-  position: sticky;
   top: 96px;
   background: #fff;
   border: 1px solid var(--apple-border);
@@ -2645,6 +2644,7 @@ body>iframe {
   border-bottom: 1px solid var(--apple-border);
   padding-bottom: 24px;
   margin-bottom: 24px;
+  text-align: left;
 }
 
 .player-kicker,

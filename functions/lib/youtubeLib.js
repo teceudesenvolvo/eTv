@@ -502,7 +502,7 @@ async function listarVideosTvCamara(request, response) {
     });
 
     response.set('Cache-Control', 'public, max-age=300, s-maxage=300');
-    response.json({ ok: true, videos });
+    response.json({ ok: true, playlistId, videos });
   } catch (err) {
     console.error('listarVideosTvCamara error:', getApiErrorMessage(err));
     response.status(500).json({ ok: false, error: 'Falha ao carregar videos da TV Camara.' });
