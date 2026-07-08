@@ -3,10 +3,14 @@ YouTube playlist sync functions
 
 Overview
 --------
-This module provides two Firebase HTTP functions to keep a public YouTube playlist in sync with the channel uploads:
+This module keeps a public YouTube playlist in sync with the channel uploads:
 
 - `youtubeChannelWebhook` — WebSub (PubSubHubbub) callback which receives near real-time notifications from YouTube and inserts new uploads into the public playlist.
-- `atualizarPlaylistYoutube` — HTTP endpoint that performs a backfill: lists all uploads and inserts missing videos into the public playlist.
+- `atualizarPlaylistYoutube` — HTTP endpoint that performs a manual backfill: lists all uploads and inserts missing videos into the public playlist.
+- `atualizarPlaylistYoutubeScheduled` — scheduled backfill every 30 minutes from 08:00 to 19:59 in `America/Fortaleza`.
+- `renovarWebhookYoutube` — HTTP endpoint that renews the YouTube WebSub subscription.
+- `renovarWebhookYoutubeScheduled` — renews that subscription every 3 days.
+- `listarVideosTvCamara` — public endpoint consumed by the React app to load the synchronized playlist.
 
 Requirements
 ------------
@@ -24,6 +28,7 @@ Set the following environment variables / functions config before deploying (do 
 - `YOUTUBE_CHANNEL_ID` — the channel id (ex: UCDIm8G-...)
 - `YOUTUBE_PLAYLIST_ID` — the public playlist id to maintain
 - `YOUTUBE_WEBHOOK_VERIFY_TOKEN` — random token used to verify WebSub subscribes
+- `YOUTUBE_WEBHOOK_CALLBACK_URL` — optional explicit callback URL. If omitted, the function uses `https://southamerica-east1-eu-desenvolvo.cloudfunctions.net/youtubeChannelWebhook`
 
 Examples (Firebase CLI)
 
@@ -80,7 +85,7 @@ From the repository root:
 
 cd functions
 npm install
-firebase deploy --only functions:youtubeChannelWebhook,functions:atualizarPlaylistYoutube
+firebase deploy --only functions:youtubeChannelWebhook,functions:atualizarPlaylistYoutube,functions:atualizarPlaylistYoutubeScheduled,functions:renovarWebhookYoutube,functions:renovarWebhookYoutubeScheduled,functions:listarVideosTvCamara
 
 This repository is configured with `.firebaserc` default project `eu-desenvolvo`.
 
@@ -116,10 +121,20 @@ If you see `invalid_grant` when exchanging the authorization code, this usually 
 
 Solution: generate a brand-new code, copy the full redirect URL immediately after authorization, and paste it into the prompt.
 
+After deploy
+------------
+Run the manual endpoints once after configuring credentials:
+
+```bash
+curl https://southamerica-east1-eu-desenvolvo.cloudfunctions.net/renovarWebhookYoutube
+curl https://southamerica-east1-eu-desenvolvo.cloudfunctions.net/atualizarPlaylistYoutube
+```
+
 Notes
 -----
-- The endpoint `youtubeChannelWebhook` must be subscribed to the YouTube hub (PubSubHubbub). The project `blu-app-camaras` uses a scheduled function to renew the subscription periodically; you can either call `subscribe` manually (see their repo) or configure a schedule.
+- The endpoint `youtubeChannelWebhook` is subscribed to YouTube WebSub by `renovarWebhookYoutube`.
 - The functions use Firestore collection `youtubePlaylistVideos` as a cache to avoid inserting the same video multiple times.
-- The functions perform `playlistItems.insert` and therefore require OAuth credentials (API key only cannot modify playlists).
+- The functions perform `playlistItems.insert` and therefore require OAuth credentials. API key only cannot modify playlists.
+- The React app first reads `listarVideosTvCamara` and only falls back to the public YouTube API if the Function is unavailable.
 
 If you want, I can add a helper script to create the webhook subscription and a Cloud Scheduler job example — tell me which option you prefer (Cloud Scheduler, Firebase onSchedule, or manual subscribe script).

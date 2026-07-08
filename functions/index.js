@@ -53,7 +53,27 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
 });
 
 // YouTube playlist sync functions
-const { youtubeChannelWebhook, atualizarPlaylistYoutube } = require('./lib/youtubeLib');
+const {
+    youtubeChannelWebhook,
+    atualizarPlaylistYoutube,
+    atualizarPlaylistYoutubeScheduled,
+    listarVideosTvCamara,
+    renovarWebhookYoutube,
+} = require('./lib/youtubeLib');
 
-exports.youtubeChannelWebhook = functions.https.onRequest(youtubeChannelWebhook);
-exports.atualizarPlaylistYoutube = functions.https.onRequest(atualizarPlaylistYoutube);
+const youtubeRegion = functions.region('southamerica-east1');
+
+exports.youtubeChannelWebhook = youtubeRegion.https.onRequest(youtubeChannelWebhook);
+exports.atualizarPlaylistYoutube = youtubeRegion.https.onRequest(atualizarPlaylistYoutube);
+exports.listarVideosTvCamara = youtubeRegion.https.onRequest(listarVideosTvCamara);
+exports.renovarWebhookYoutube = youtubeRegion.https.onRequest(renovarWebhookYoutube);
+
+exports.atualizarPlaylistYoutubeScheduled = youtubeRegion.pubsub
+    .schedule('*/30 8-19 * * *')
+    .timeZone('America/Fortaleza')
+    .onRun(atualizarPlaylistYoutubeScheduled);
+
+exports.renovarWebhookYoutubeScheduled = youtubeRegion.pubsub
+    .schedule('0 3 */3 * *')
+    .timeZone('America/Fortaleza')
+    .onRun(() => renovarWebhookYoutube());
