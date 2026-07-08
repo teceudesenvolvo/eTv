@@ -9,6 +9,7 @@ import axios from 'axios'
 
 import firebase from 'firebase'
 import firebaseConfig from './firebaseConfig'
+import { FIREBASE_API_KEY } from '../config'
 
 import { cpf } from 'cpf-cnpj-validator'
 
@@ -19,7 +20,7 @@ import '../App.css'
 
 
 const authBaseURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
-const API_KEY_FIREBASE = 'AIzaSyARJhClRUouS0OCKm1YzdNna-ayyTRZjwU'
+const API_KEY_FIREBASE = FIREBASE_API_KEY
 
 
 //Icones

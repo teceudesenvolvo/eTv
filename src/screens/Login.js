@@ -9,6 +9,7 @@ import axios from 'axios'
 import logo from '../assets/images/logo-pacatuba.png'
 
 import '../App.css'
+import { PAGARME_API_KEY, PAGARME_BASE_URL } from '../config'
 
 // Firebase
 import firebase from 'firebase'
@@ -17,10 +18,10 @@ import firebaseConfig from './firebaseConfig'
 
 
 
-const API_KEY = 'ak_live_b8qQSH3mDivhqgwXhFNc5JnAggaA8m'
-const BaseURL = 'https://api.pagar.me/1/subscriptions'
-// const EK_KEY = 'ek_live_CwgSVhbDMCSIIKt0hxCdyQ2EOHB4b1'
-// const IDPLAN = '1212867'
+const API_KEY = PAGARME_API_KEY
+const BaseURL = PAGARME_BASE_URL
+// const EK_KEY = process.env.REACT_APP_PAGARME_ENCRYPTION_KEY || ''
+// const IDPLAN = process.env.REACT_APP_PAGARME_PLAN_ID || '1212867'
 
 
 

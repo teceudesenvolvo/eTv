@@ -12,9 +12,10 @@ import Footer from '../../components/footer'
 import '../../App.css'
 
 import { FaSearch, FaPlay } from 'react-icons/fa';
+import { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } from '../../config';
 
-const API_KEY = 'AIzaSyCfZfFR3QzWmQWBYMgwmXx8n2EdyjdFi2s';
-const CHANNEL_ID = 'UCDIm8G-WBXBXbRpCNwwI_Wg';
+const API_KEY = YOUTUBE_API_KEY;
+const CHANNEL_ID = YOUTUBE_CHANNEL_ID;
 
 // function onClickHandler(){
 //     // const data = new FormData() 

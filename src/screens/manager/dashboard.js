@@ -12,12 +12,12 @@ import MainMenu from '../../components/mainMenu'
 // Firebase
 import firebase from 'firebase'
 import firebaseConfig from '../firebaseConfig'
+import { PAGARME_API_KEY, PAGARME_BASE_URL } from '../../config'
 
 
 
-
-const API_KEY = 'ak_live_b8qQSH3mDivhqgwXhFNc5JnAggaA8m'
-const BaseURL = 'https://api.pagar.me/1/subscriptions'
+const API_KEY = PAGARME_API_KEY
+const BaseURL = PAGARME_BASE_URL
 
 
 

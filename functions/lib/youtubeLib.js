@@ -10,9 +10,24 @@ if (!admin.apps.length) {
 const REGION = 'southamerica-east1';
 const DEFAULT_PROJECT_ID = 'cm-pacatuba';
 
+function normalizeConfigValue(key, value) {
+  if (typeof value !== 'string') return value;
+  let cleaned = value.trim();
+
+  if (key === 'refresh_token') {
+    // Remove expiry_date metadata if present
+    cleaned = cleaned.replace(/\s*expiry_date:.*$/is, '').trim();
+    // Remove any additional newlines or extra whitespace within token
+    cleaned = cleaned.replace(/[\r\n]+/g, '').trim();
+  }
+
+  return cleaned || null;
+}
+
 function getConfigValue(key, fallback) {
   const config = functions.config().youtube || {};
-  return config[key] || process.env[`YOUTUBE_${key.toUpperCase()}`] || process.env[key] || fallback || null;
+  const rawValue = config[key] || process.env[`YOUTUBE_${key.toUpperCase()}`] || process.env[key] || fallback || null;
+  return normalizeConfigValue(key, rawValue);
 }
 
 function requireConfigValue(key) {
@@ -409,6 +424,49 @@ async function listarVideosTvCamara(request, response) {
   } catch (err) {
     console.error('listarVideosTvCamara error:', getApiErrorMessage(err));
     response.status(500).json({ ok: false, error: 'Falha ao carregar videos da TV Camara.' });
+  }
+}
+
+async function proxyCmpacatubaOpenData(request, response) {
+  response.set('Access-Control-Allow-Origin', '*');
+
+  if (request.method === 'OPTIONS') {
+    response.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    response.set('Access-Control-Allow-Headers', 'Content-Type');
+    response.status(204).send('');
+    return;
+  }
+
+  if (request.method !== 'GET') {
+    response.status(405).json({ ok: false, error: 'Method not allowed' });
+    return;
+  }
+
+  try {
+    const query = new URLSearchParams(request.query).toString();
+    const targetUrl = `https://www.cmpacatuba.ce.gov.br/dadosabertosexportar?${query}`;
+    const fetchResponse = await fetch(targetUrl, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    const text = await fetchResponse.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (jsonErr) {
+      console.error('proxyCmpacatubaOpenData parse error:', jsonErr, 'body:', text);
+      response.status(502).json({ ok: false, error: 'Falha ao analisar dados da Câmara.' });
+      return;
+    }
+
+    response.set('Cache-Control', 'public, max-age=300, s-maxage=300');
+    response.status(fetchResponse.ok ? 200 : 502).json(data);
+  } catch (err) {
+    console.error('proxyCmpacatubaOpenData error:', getApiErrorMessage(err));
+    response.status(500).json({ ok: false, error: 'Erro ao buscar dados abertos da Câmara.' });
   }
 }
 

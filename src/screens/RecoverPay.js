@@ -16,11 +16,12 @@ import MainMenu from '../components/mainMenu'
 import pagarme from 'pagarme'
 // import firebase from 'firebase'
 
+import { PAGARME_API_KEY, PAGARME_BASE_URL, PAGARME_ENCRYPTION_KEY, PAGARME_PLAN_ID } from '../config'
 
-const API_KEY = 'ak_live_b8qQSH3mDivhqgwXhFNc5JnAggaA8m'
-const BaseURL = 'https://api.pagar.me/1/subscriptions'
-const EK_KEY = 'ek_live_CwgSVhbDMCSIIKt0hxCdyQ2EOHB4b1'
-const IDPLAN = '1212867'
+const API_KEY = PAGARME_API_KEY
+const BaseURL = PAGARME_BASE_URL
+const EK_KEY = PAGARME_ENCRYPTION_KEY
+const IDPLAN = PAGARME_PLAN_ID
 
 
 

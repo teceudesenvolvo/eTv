@@ -63,11 +63,15 @@ export async function fetchPlaylistItems(options = {}) {
   try {
     const serverResponse = await axios.get(TV_CAMARA_VIDEOS_URL, requestOptions)
     const serverVideos = serverResponse.data?.videos || []
-    if (serverResponse.data?.ok && serverVideos.length > 0) {
+    if (serverVideos.length > 0) {
       return serverVideos.map(normalizeServerVideo)
     }
   } catch (err) {
     console.warn('Server playlist fetch failed, falling back to public YouTube API:', err.message)
+  }
+
+  if (!API_KEY) {
+    throw new Error('YouTube API key não definido. Configure REACT_APP_YOUTUBE_API_KEY ou corrija o endpoint do servidor.');
   }
 
   try {

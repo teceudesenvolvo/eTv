@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { clickButton, LoggedOut } from '../store/actions/index';
 import axios from 'axios';
+import { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } from '../config';
 
-// Câmara Pacatuba YouTube Channel
-const CHANNEL_ID = 'UCGXhrFTkevDVos5fFyl7HHg';
-const API_KEY = 'AIzaSyAvzOdQzU-H_tneJBcbVnmO60dEzWMKhT4';
+const CHANNEL_ID = YOUTUBE_CHANNEL_ID;
+const API_KEY = YOUTUBE_API_KEY;
 // Fallback: most recent known session (valid ID from channel)
 const FALLBACK_VIDEO_ID = '5bWnirEQwVU';
 

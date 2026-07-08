@@ -1,14 +1,16 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://www.cmpacatuba.ce.gov.br/dadosabertosexportar'
+const BASE_URL = process.env.REACT_APP_CMPACATUBA_PROXY_URL ||
+  'https://southamerica-east1-cm-pacatuba.cloudfunctions.net/proxyCmpacatubaOpenData'
 
 async function fetchOpenData(params) {
+  const query = new URLSearchParams(params).toString()
   try {
     const response = await axios.get(BASE_URL, { params })
     return response.data || []
   } catch (error) {
-    const query = new URLSearchParams(params).toString()
-    const proxiedUrl = `https://corsproxy.io/?${encodeURIComponent(`${BASE_URL}?${query}`)}`
+    console.warn('Direct cmpacatuba proxy fetch failed, retrying with public CORS proxy:', error.message)
+    const proxiedUrl = `https://corsproxy.io/?${encodeURIComponent(`https://www.cmpacatuba.ce.gov.br/dadosabertosexportar?${query}`)}`
     const response = await axios.get(proxiedUrl)
     return response.data || []
   }

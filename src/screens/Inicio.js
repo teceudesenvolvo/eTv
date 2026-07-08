@@ -409,7 +409,9 @@ class Inicio extends Component {
 
             {filteredVideos.length === 0 && !loading && (
               <div className="home-no-results">
-                Nenhum vídeo encontrado para <strong>{searchTerm}</strong>.
+                {searchTerm
+                  ? `Nenhum vídeo encontrado para ${searchTerm}.`
+                  : 'Nenhum vídeo encontrado.'}
               </div>
             )}
           </div>

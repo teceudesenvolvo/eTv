@@ -1,8 +1,8 @@
 import {CLICK_UPDATE, VISIT_REGISTER, USER_LOGGED_IN, USER_LOGGED_OUT, OPEN_AULA} from './actionsTypes'
 import axios from 'axios'
 
-const authBaseURL = 'https://www.googleapis.com/identitytookit/v3/realyingparty'
-const API_KEY = 'AIzaSyARJhClRUouS0OCKm1YzdNna-ayyTRZjwU'
+const authBaseURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
+const API_KEY = process.env.REACT_APP_FIREBASE_API_KEY || ''
 
 export const clickButton = course => ({
   type: CLICK_UPDATE,

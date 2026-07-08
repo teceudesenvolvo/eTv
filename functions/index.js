@@ -1,9 +1,13 @@
 const functions = require("firebase-functions");
-const cors = require('cors')({origin: true})
+const cors = require('cors')({ origin: true });
 const fs = require('fs')
 const uuid = require('uuid-v4')
 const {Storage} = require('@google-cloud/storage')
 const storage = new Storage()
+
+function withCors(handler) {
+  return (req, res) => cors(req, res, () => handler(req, res));
+}
 
 // Dep. Express
 const bodyParser = require('body-parser')
@@ -55,15 +59,17 @@ const {
     atualizarPlaylistYoutube,
     atualizarPlaylistYoutubeScheduled,
     listarVideosTvCamara,
+    proxyCmpacatubaOpenData,
     renovarWebhookYoutube,
 } = require('./lib/youtubeLib');
 
 const youtubeRegion = functions.region('southamerica-east1');
 
 exports.youtubeChannelWebhook = youtubeRegion.https.onRequest(youtubeChannelWebhook);
-exports.atualizarPlaylistYoutube = youtubeRegion.https.onRequest(atualizarPlaylistYoutube);
-exports.listarVideosTvCamara = youtubeRegion.https.onRequest(listarVideosTvCamara);
-exports.renovarWebhookYoutube = youtubeRegion.https.onRequest(renovarWebhookYoutube);
+exports.atualizarPlaylistYoutube = youtubeRegion.https.onRequest(withCors(atualizarPlaylistYoutube));
+exports.listarVideosTvCamara = youtubeRegion.https.onRequest(withCors(listarVideosTvCamara));
+exports.proxyCmpacatubaOpenData = youtubeRegion.https.onRequest(withCors(proxyCmpacatubaOpenData));
+exports.renovarWebhookYoutube = youtubeRegion.https.onRequest(withCors(renovarWebhookYoutube));
 
 exports.atualizarPlaylistYoutubeScheduled = youtubeRegion.pubsub
     .schedule('*/30 8-19 * * *')
