@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_KEY = 'AIzaSyCfZfFR3QzWmQWBYMgwmXx8n2EdyjdFi2s'
+const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || null;
 const CHANNEL_ID = 'UCDIm8G-WBXBXbRpCNwwI_Wg'
 const BASE_URL = 'https://www.googleapis.com/youtube/v3'
 const MAX_RESULTS = 50
@@ -189,4 +189,4 @@ export async function updatePlaylistOnServer(endpointUrl) {
 }
 
 
-// axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=10000&playlistId=PLmz0IMGXMgF996ottv9cmJQvZDzglOtXR&key=AIzaSyCfZfFR3QzWmQWBYMgwmXx8n2EdyjdFi2s'
+// axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=10000&playlistId=PLmz0IMGXMgF996ottv9cmJQvZDzglOtXR&key=<YOUR_API_KEY>'

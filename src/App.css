@@ -2437,54 +2437,62 @@ body>iframe {
 }
 
 .session-panel {
-  margin-top: 32px;
+  margin-top: 34px;
 }
 
 .session-panel h2 {
-  margin: 28px 0 12px;
-  color: #fff;
+  margin: 4px 0 0;
+  color: var(--apple-accent);
+  font-size: 24px;
 }
 
 .session-details-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 22px;
-  padding: 24px;
-  color: #e2e8f0;
-}
-
-.session-details-card p {
-  margin: 10px 0;
+  background: #fff;
+  border: 1px solid var(--apple-border);
+  border-radius: 8px;
+  padding: 22px;
+  color: var(--apple-accent);
+  box-shadow: 0 10px 30px rgba(15, 74, 138, 0.06);
 }
 
 .session-details-card a {
-  display: inline-block;
-  margin-top: 12px;
-  color: #7dd3fc;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 18px;
+  color: #0f5faf;
+  font-weight: 700;
   text-decoration: none;
 }
 
 .materias-session-block {
-  margin-top: 18px;
-}
-
-.materias-session-block h3 {
-  margin-bottom: 12px;
+  margin-top: 28px;
 }
 
 .materias-session-block ul {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 16px 0 0;
+  display: grid;
+  gap: 12px;
 }
 
 .materias-session-block li {
-  margin-bottom: 16px;
+  background: #fff;
+  border: 1px solid var(--apple-border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.materias-session-block li a {
+  color: #0f5faf;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .materias-session-block li p {
-  margin: 6px 0 0;
-  color: #cbd5e1;
+  margin: 8px 0 0;
+  color: var(--apple-text);
+  line-height: 1.55;
 }
 
 .card-date-modern {
@@ -2555,6 +2563,17 @@ body>iframe {
 
   .video-title-premium { font-size: 20px; }
 
+  .player-data-grid,
+  .session-facts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-data-section,
+  .session-details-card,
+  .materias-session-block li {
+    padding: 16px;
+  }
+
   .home-hero-copy { padding: 18px; border-radius: 12px; }
 
   .home-hero-bg { background-position: center top; }
@@ -2600,6 +2619,17 @@ body>iframe {
   margin-bottom: 24px;
 }
 
+.player-kicker,
+.player-section-label {
+  display: block;
+  color: #0f5faf;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
 .video-title-premium {
   font-size: 32px;
   font-weight: 700;
@@ -2611,9 +2641,25 @@ body>iframe {
 
 .video-meta-premium {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   font-size: 15px;
   color: var(--apple-text-light);
+}
+
+.player-data-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.player-data-section {
+  background: #fff;
+  border: 1px solid var(--apple-border);
+  border-radius: 8px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(15, 74, 138, 0.05);
 }
 
 .video-description-premium {
@@ -2621,6 +2667,56 @@ body>iframe {
   line-height: 1.6;
   color: var(--apple-accent);
   white-space: pre-wrap;
+}
+
+.video-description-premium p {
+  margin: 0;
+}
+
+.player-facts-list,
+.session-facts-grid {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.player-facts-list div,
+.session-facts-grid div {
+  min-width: 0;
+}
+
+.player-facts-list dt,
+.session-facts-grid dt {
+  color: var(--apple-text-light);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.player-facts-list dd,
+.session-facts-grid dd {
+  color: var(--apple-accent);
+  font-size: 15px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.session-facts-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.player-section-heading {
+  margin-bottom: 14px;
+}
+
+.player-data-alert {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  color: #9a3412;
+  margin-top: 18px;
+  padding: 14px 16px;
 }
 
 .more-videos-section {
