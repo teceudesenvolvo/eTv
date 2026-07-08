@@ -2437,6 +2437,7 @@ body>iframe {
 }
 
 .session-panel {
+  grid-column: 1 / -1;
   margin-top: 34px;
 }
 
@@ -2564,14 +2565,20 @@ body>iframe {
   .video-title-premium { font-size: 20px; }
 
   .player-data-grid,
+  .player-content-layout,
   .session-facts-grid {
     grid-template-columns: 1fr;
   }
 
   .player-data-section,
+  .player-side-panel,
   .session-details-card,
   .materias-session-block li {
     padding: 16px;
+  }
+
+  .player-side-panel {
+    position: static;
   }
 
   .home-hero-copy { padding: 18px; border-radius: 12px; }
@@ -2608,9 +2615,30 @@ body>iframe {
 }
 
 .video-details-container {
-  max-width: 1000px;
+  max-width: 1180px;
   margin: 40px auto;
   padding: 0 20px;
+}
+
+.player-content-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+.player-primary-column {
+  min-width: 0;
+}
+
+.player-side-panel {
+  position: sticky;
+  top: 96px;
+  background: #fff;
+  border: 1px solid var(--apple-border);
+  border-radius: 8px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(15, 74, 138, 0.05);
 }
 
 .video-info-header {
@@ -2711,12 +2739,21 @@ body>iframe {
 }
 
 .player-data-alert {
+  grid-column: 1 / -1;
   background: #fff7ed;
   border: 1px solid #fed7aa;
   border-radius: 8px;
   color: #9a3412;
   margin-top: 18px;
   padding: 14px 16px;
+}
+
+.player-matter-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+}
+
+.player-matter-card {
+  min-height: 240px !important;
 }
 
 .more-videos-section {
