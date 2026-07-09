@@ -30,6 +30,10 @@ function goHome() {
   window.location.href = "/"
 }
 
+function hasFirebaseLoginConfig(config) {
+  return Boolean(config.apiKey && config.authDomain && config.projectId)
+}
+
 class Login extends Component {
   providerGoogle = null;
   user = undefined;
@@ -47,24 +51,59 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    firebase.initializeApp(firebaseConfig)
+    if (!hasFirebaseLoginConfig(firebaseConfig)) {
+      this.setState({
+        status: 'Configuração do Firebase ausente. Verifique o arquivo .env local.',
+        classErr: 'txtErro'
+      })
+      return
+    }
+
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig)
+      }
+    } catch (err) {
+      this.setState({
+        status: 'Não foi possível iniciar o Firebase. Verifique a API key.',
+        classErr: 'txtErro'
+      })
+      return
+    }
+
     // this.providerGoogle = new firebase.auth.GoogleAuthProvider();
     if (this.state.userId) {
       window.location.href = "/"
     }
-    firebase.auth().onAuthStateChanged((signedUser) => {
-      if (signedUser) {
+    try {
+      firebase.auth().onAuthStateChanged((signedUser) => {
+        if (signedUser) {
+          this.setState({
+            user: signedUser,
+            userId: signedUser.uid,
+          });
+        }
+        else {
+          this.setState({
+            user: undefined
+          });
+        }
+      }, (err) => {
         this.setState({
-          user: signedUser,
-          userId: signedUser.uid,
-        });
-      }
-      else {
-        this.setState({
-          user: undefined
-        });
-      }
-    })
+          status: err.code === 'auth/invalid-api-key'
+            ? 'API key do Firebase inválida. Verifique o arquivo .env local.'
+            : 'Não foi possível conectar ao Firebase Auth.',
+          classErr: 'txtErro'
+        })
+      })
+    } catch (err) {
+      this.setState({
+        status: err.code === 'auth/invalid-api-key'
+          ? 'API key do Firebase inválida. Verifique o arquivo .env local.'
+          : 'Não foi possível conectar ao Firebase Auth.',
+        classErr: 'txtErro'
+      })
+    }
 
   }
 
@@ -101,6 +140,14 @@ class Login extends Component {
   }
 
   authenticate() {
+    if (!hasFirebaseLoginConfig(firebaseConfig)) {
+      this.setState({
+        status: 'Configuração do Firebase ausente. Verifique o arquivo .env local.',
+        classErr: 'txtErro'
+      })
+      return
+    }
+
     var ref = this;
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .then((userOn) => {
@@ -207,75 +254,56 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="App app-login">
-        {/* <div className="backgroundHero heroPg">
-        <img className="backgroundHero heroPg heroLogin" src={bg101}/>
-    </div> */}
+      <div className="modern-login-page">
+        <section className="modern-login-shell">
+          <div className="modern-login-copy">
+            <span className="section-kicker">Área de acesso</span>
+            <h1>Entrar na TV Câmara</h1>
+            <p>Acesse sua conta para continuar acompanhando os conteúdos da Câmara Municipal de Pacatuba.</p>
+          </div>
 
-        <header className="item-header-dashboard"></header>
-
-        <div className="searchBox itemBoxInsert loginBox">
-          <img className="logo-login" src={logo} alt="Logotipo" onClick={goHome} />
-          <h1 className={this.state.classErr}>{this.state.status}</h1>
-          {/* <p className="searchTitle">Login</p> */}
-          <form>
-            <input type="email" className="input-login" placeholder="Email"
-              value={this.state.email} onChange={(event) => this.setState({ email: event.target.value })}
-            /><br />
-            <input type="password" className="input-login" placeholder="Senha"
-              value={this.state.password} onChange={(event) => this.setState({ password: event.target.value })}
-            />
-            <div className="btnBox">
-              <input type="button" onClick={
-                (() => {
-                  if (this.state.email === '') {
-                    this.setState({ status: 'Digite seu email', classErr: 'txtErro' })
-                  } else if (this.state.password === '') {
-                    this.setState({ status: 'Digite sua senha', classErr: 'txtErro' })
-                  } else {
-                    this.authenticate()
-                  }
+          <div className="modern-login-card">
+            <button type="button" className="modern-login-brand" onClick={goHome}>
+              <img className="logo-login" src={logo} alt="Câmara Municipal de Pacatuba" />
+            </button>
+            <h2 className={this.state.classErr}>{this.state.status}</h2>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                if (this.state.email === '') {
+                  this.setState({ status: 'Digite seu email', classErr: 'txtErro' })
+                } else if (this.state.password === '') {
+                  this.setState({ status: 'Digite sua senha', classErr: 'txtErro' })
+                } else {
+                  this.authenticate()
                 }
-                )
-              } className="btnLogin" value="Entrar" />
-              <br />
-              
-              
-              
-              
-              
-              
-              
-              {/* <input type="button" className="btnLogin btnCadastro" value="Cadastre-se" onClick={
-                (() => {
-                  window.location.href = "/cadastro"
-                }
-                )
-              }/> */}
-
-
-
-
-
-            </div>
-            <br />
-            {/* <input type="button" className="btnLoginSM" value="Conectar Facebook"
-              onClick={() => {
-                this.handleLoginWithFacebook()
               }}
-            />
-            <br />
-            <input type="button" className="btnLoginSM" value="Conectar Google"
-              onClick={() => {
-                this.handleLoginWithGoogle()
-              }
-              }
-            /> */}
-            <br />
-            <a className="btnLoginTxt forgotPass" href="/esqueci-a-senha">Esqueceu a senha?</a>
-          </form>
-        </div>
-
+            >
+              <label>
+                Email
+                <input
+                  type="email"
+                  className="input-login"
+                  placeholder="seuemail@exemplo.com"
+                  value={this.state.email}
+                  onChange={(event) => this.setState({ email: event.target.value })}
+                />
+              </label>
+              <label>
+                Senha
+                <input
+                  type="password"
+                  className="input-login"
+                  placeholder="Digite sua senha"
+                  value={this.state.password}
+                  onChange={(event) => this.setState({ password: event.target.value })}
+                />
+              </label>
+              <button type="submit" className="btnLogin">Entrar</button>
+              <a className="btnLoginTxt forgotPass" href="/esqueci-a-senha">Esqueceu a senha?</a>
+            </form>
+          </div>
+        </section>
       </div>
     )
   }

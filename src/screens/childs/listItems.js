@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import axios from 'axios'
-
 import { connect } from 'react-redux';
 import { openAula, clickButton, LoggedOut } from '../../store/actions/index';
 import { bindActionCreators } from 'redux';
@@ -12,10 +10,7 @@ import Footer from '../../components/footer'
 import '../../App.css'
 
 import { FaSearch, FaPlay } from 'react-icons/fa';
-import { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } from '../../config';
-
-const API_KEY = YOUTUBE_API_KEY;
-const CHANNEL_ID = YOUTUBE_CHANNEL_ID;
+import { fetchPlaylistItems } from '../../services/youtubeService';
 
 // function onClickHandler(){
 //     // const data = new FormData() 
@@ -46,24 +41,33 @@ class ListItem extends Component {
       carregar: 'Carregar Avisos',
       btnLoad: "visitanteBtn",
       searchCourse: '',
+      allVideos: [],
+      loading: true,
+      error: null,
 
     }
   }
 
   loadAvisos = async () => {
     try {
-      const response = await axios.get(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=12&order=date&type=video&key=${API_KEY}`
-      );
-      const videoItems = response.data.items;
+      const videoItems = await fetchPlaylistItems({ noCache: true });
 
       const filteredVideos = videoItems.filter(video =>
         video.snippet.title.toUpperCase().includes(this.state.searchCourse.toUpperCase())
       );
 
-      this.setState({ avisos: filteredVideos });
+      this.setState({
+        avisos: filteredVideos,
+        allVideos: videoItems,
+        loading: false,
+        error: null,
+      });
     } catch (err) {
       console.error('Error fetching videos:', err);
+      this.setState({
+        loading: false,
+        error: 'Falha ao carregar os vídeos. Tente novamente em instantes.',
+      });
     }
   }
 
@@ -83,19 +87,27 @@ class ListItem extends Component {
   render() {
 
     // Carregar Aulas
-    const avisos = this.state.avisos
+    const { avisos, loading, error, searchCourse } = this.state
 
     const listAvisos = avisos.map((aviso) => (
-      <div className="video-card-modern" key={aviso.id.videoId}
+      <div className="video-card-modern" key={aviso.videoId}
         onClick={() => {
-          this.setState({ idAula: aviso.id.videoId, tipo: 'class' }, () => {
+          this.setState({ idAula: aviso.videoId, tipo: 'class' }, () => {
             this.props.openAula(this.state);
             window.location.href = "/player";
           });
         }}
       >
         <div className="card-thumb-container">
-          <img src={aviso.snippet.thumbnails.high.url} alt={aviso.snippet.title} />
+          <img
+            src={
+              aviso.snippet.thumbnails?.maxres?.url ||
+              aviso.snippet.thumbnails?.high?.url ||
+              aviso.snippet.thumbnails?.default?.url ||
+              ''
+            }
+            alt={aviso.snippet.title}
+          />
           <div className="play-overlay">
             <FaPlay />
           </div>
@@ -103,7 +115,7 @@ class ListItem extends Component {
         <div className="card-content-modern">
           <h3 className="card-title-modern">{aviso.snippet.title}</h3>
           <p className="card-date-modern">
-            {new Date(aviso.snippet.publishedAt).toLocaleDateString('pt-BR')}
+            {new Date(aviso.publishedAt || aviso.snippet.publishedAt).toLocaleDateString('pt-BR')}
           </p>
         </div>
       </div>
@@ -112,32 +124,49 @@ class ListItem extends Component {
     return (
       <div className="search-page-wrapper">
         <MainMenu />
-        <div className="search-hero-modern">
+        <section className="search-hero-modern">
           <div className="search-container-modern">
-            <FaSearch className="search-icon-modern" />
-            <input
-              type="text"
-              className="search-input-modern"
-              placeholder="Pesquisar transmissões, sessões ou eventos..."
-              value={this.state.searchCourse}
-              onChange={(event) => {
-                this.setState({ searchCourse: event.target.value }, () => {
-                  this.loadAvisos();
-                });
-              }}
-            />
+            <div className="search-copy-modern">
+              <span className="section-kicker">Busca</span>
+              <h1>Encontrar transmissões</h1>
+              <p>Pesquise sessões, audiências públicas e conteúdos recentes da TV Câmara.</p>
+            </div>
+            <label className="search-field-modern">
+              <FaSearch className="search-icon-modern" />
+              <input
+                type="search"
+                className="search-input-modern"
+                placeholder="Pesquisar por título..."
+                value={searchCourse}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  this.setState({
+                    searchCourse: value,
+                    avisos: this.state.allVideos.filter(video =>
+                      video.snippet.title.toUpperCase().includes(value.toUpperCase())
+                    ),
+                  });
+                }}
+              />
+            </label>
           </div>
-        </div>
+        </section>
 
         <main className="search-results-area">
           <div className="container-modern">
-            <h2 className="section-title-modern">Resultados da Busca</h2>
+            <div className="section-header-row search-results-header">
+              <div>
+                <h2>Resultados</h2>
+                <p>{loading ? 'Carregando vídeos...' : `${avisos.length} conteúdo(s) encontrado(s).`}</p>
+              </div>
+            </div>
+            {error && <div className="home-error">{error}</div>}
             <div className="video-grid-modern">
               {listAvisos}
             </div>
-            {avisos.length === 0 && (
+            {avisos.length === 0 && !loading && (
               <div className="no-results-modern">
-                <p>Nenhum conteúdo encontrado para "{this.state.searchCourse}"</p>
+                <p>{searchCourse ? `Nenhum conteúdo encontrado para "${searchCourse}"` : 'Nenhum conteúdo encontrado.'}</p>
               </div>
             )}
           </div>

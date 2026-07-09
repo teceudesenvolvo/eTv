@@ -604,7 +604,7 @@ async function atualizarPlaylistYoutube(request, response) {
   }
 
   try {
-    const result = await runAtualizarPlaylistYoutube();
+    const result = await runAtualizarPlaylistYoutubeRecentSearch();
     response.json({ ok: true, ...result });
   } catch (err) {
     console.error('atualizarPlaylistYoutube error:', getApiErrorMessage(err));
@@ -839,5 +839,6 @@ module.exports = {
   processarTranscricoesYoutubeScheduled,
   listarVideosTvCamara,
   obterTranscricaoYoutube,
+  proxyCmpacatubaOpenData,
   renovarWebhookYoutube,
 };

@@ -14,6 +14,43 @@ const TV_CAMARA_TRANSCRIPT_URL =
   process.env.REACT_APP_TV_CAMARA_TRANSCRIPT_URL ||
   'https://southamerica-east1-cm-pacatuba.cloudfunctions.net/obterTranscricaoYoutube'
 
+function getVideoTitle(video) {
+  return video.title || video.snippet?.title || ''
+}
+
+function getVideoDate(video) {
+  return video.publishedAt || video.snippet?.publishedAt || ''
+}
+
+function getSessionNumber(video) {
+  const title = getVideoTitle(video)
+  const match = title.match(/\b(\d{3,5})(?:[ªº]|\s)/)
+  return match ? Number(match[1]) : null
+}
+
+function sortVideosNewestFirst(videos) {
+  return [...videos].sort((firstVideo, secondVideo) => {
+    const firstSessionNumber = getSessionNumber(firstVideo)
+    const secondSessionNumber = getSessionNumber(secondVideo)
+
+    if (firstSessionNumber !== null && secondSessionNumber !== null && firstSessionNumber !== secondSessionNumber) {
+      return secondSessionNumber - firstSessionNumber
+    }
+
+    if (firstSessionNumber !== null && secondSessionNumber === null) {
+      return -1
+    }
+
+    if (firstSessionNumber === null && secondSessionNumber !== null) {
+      return 1
+    }
+
+    const firstTime = getVideoDate(firstVideo) ? Date.parse(getVideoDate(firstVideo)) : 0
+    const secondTime = getVideoDate(secondVideo) ? Date.parse(getVideoDate(secondVideo)) : 0
+    return secondTime - firstTime
+  })
+}
+
 function normalizeServerVideo(video) {
   const thumbnailUrl =
     video.thumbnailUrl ||
@@ -67,7 +104,7 @@ export async function fetchPlaylistItems(options = {}) {
     const serverResponse = await axios.get(TV_CAMARA_VIDEOS_URL, requestOptions)
     const serverVideos = serverResponse.data?.videos || []
     if (serverVideos.length > 0) {
-      return serverVideos.map(normalizeServerVideo)
+      return sortVideosNewestFirst(serverVideos.map(normalizeServerVideo))
     }
   } catch (err) {
     console.warn('Server playlist fetch failed, falling back to public YouTube API:', err.message)
@@ -93,18 +130,18 @@ export async function fetchPlaylistItems(options = {}) {
       snippet: item.snippet,
       publishedAt: item.snippet.publishedAt || item.contentDetails.videoPublishedAt || null,
     }))
-    return normalizedPlaylist
+    return sortVideosNewestFirst(normalizedPlaylist)
   } catch (err) {
     console.warn('Playlist fetch failed, falling back to channel search:', err.message)
   }
 
   // fallback: try channel uploads (only used when playlist call fails)
   const channelItems = await fetchChannelVideos()
-  return channelItems.map(item => ({
+  return sortVideosNewestFirst(channelItems.map(item => ({
     videoId: item.id.videoId,
     snippet: item.snippet,
     publishedAt: item.snippet.publishedAt || null,
-  }))
+  })))
 }
 
 // This function uses the more expensive `search` endpoint to check for new uploads
