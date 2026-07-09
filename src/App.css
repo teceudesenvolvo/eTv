@@ -5282,8 +5282,8 @@ footer>div>p>a {
   }
 
   .streaming-home-page .home-hero-bg {
-    min-height: 580px !important;
-    border-radius: 0 0 28px 28px !important;
+    min-height: 780px !important;
+    border-radius: 28px !important;
   }
 
   .streaming-home-page .home-hero-copy {
