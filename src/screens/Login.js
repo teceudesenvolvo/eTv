@@ -53,7 +53,7 @@ class Login extends Component {
   componentDidMount() {
     if (!hasFirebaseLoginConfig(firebaseConfig)) {
       this.setState({
-        status: 'Configuração do Firebase ausente. Verifique o arquivo .env local.',
+        status: 'Entrar na conta',
         classErr: 'txtErro'
       })
       return
